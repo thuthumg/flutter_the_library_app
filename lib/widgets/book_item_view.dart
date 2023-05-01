@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_the_library_app/resources/dimens.dart';
+import 'package:flutter_the_library_app/widgets/bottom_sheet_view.dart';
 
 class BookItemView extends StatelessWidget {
   final bool isAudioBook;
@@ -45,8 +46,18 @@ class BookItemView extends StatelessWidget {
                       child: Container(
                         width: 32,
                         height: 32,
-                        child: Image(
-                          image: AssetImage('assets/images/contextualMenu.png'),
+                        child: GestureDetector(
+                          onTap: (){
+                            showModalBottomSheet<void>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return BottomSheetView(isMarkAsRead: true,);
+                              },
+                            );
+                          },
+                          child: Image(
+                            image: AssetImage('assets/images/contextualMenu.png'),
+                          ),
                         ),
                       ),
                     ),
@@ -112,3 +123,5 @@ class BookItemView extends StatelessWidget {
     );
   }
 }
+
+
