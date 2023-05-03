@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_the_library_app/data/vos/category_books_list_vo.dart';
 import 'package:flutter_the_library_app/resources/dimens.dart';
 import 'package:flutter_the_library_app/widgets/book_item_view.dart';
 
 class CategoryBookListItemView extends StatelessWidget {
-
+  final CategoryBooksListVO? categoryBooksListVO;
   final bool isAudioBook;
 
-  CategoryBookListItemView({required this.isAudioBook});
+  CategoryBookListItemView({
+    required this.categoryBooksListVO,
+    required this.isAudioBook});
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(MARGIN_MEDIUM),
+      margin: EdgeInsets.only(
+          top: MARGIN_MEDIUM,
+          left: MARGIN_MEDIUM,
+          right:  MARGIN_MEDIUM),
       // height: 300,
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(MARGIN_MEDIUM)),
@@ -21,7 +27,7 @@ class CategoryBookListItemView extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.only(
-                top: MARGIN_MEDIUM_2,
+                top: MARGIN_MEDIUM,
                 left: MARGIN_MEDIUM_2,
                 right: MARGIN_MEDIUM_2),
             height: 50,
@@ -34,10 +40,8 @@ class CategoryBookListItemView extends StatelessWidget {
                       top: MARGIN_MEDIUM,
                       left: MARGIN_MEDIUM_2,
                       right: MARGIN_MEDIUM_2),
-                  child: const Text(
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac dui libero. Nam sed nunc sapien. Suspendisse ornare arcu eu lorem consectetur, sit amet maximus turpis malesuada. '
-                    'Duis ac euismod augue, vel feugiat metus.',
-                    style: TextStyle(
+                  child: Text(categoryBooksListVO?.displayName??"",
+                    style: const TextStyle(
                         fontSize: TEXT_REGULAR_2X, fontWeight: FontWeight.w600),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -60,11 +64,12 @@ class CategoryBookListItemView extends StatelessWidget {
                 // shrinkWrap: true,
                 //  physics: NeverScrollableScrollPhysics(),
                 scrollDirection: Axis.horizontal,
-                itemCount: 10,
+                itemCount: categoryBooksListVO?.books?.length,
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
                     onTap: () {},
-                    child: BookItemView(isAudioBook: isAudioBook,),
+                    child: BookItemView(bookVO:categoryBooksListVO?.books![index],
+                      isAudioBook: isAudioBook,),
                   );
                 },
               )),

@@ -21,7 +21,7 @@ class BottomSheetView extends StatelessWidget {
           //bookInfo
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children:[
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -54,7 +54,8 @@ class BottomSheetView extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(MARGIN_MEDIUM),
                   child: Container(
-                    child: Text(
+                    width: MediaQuery.of(context).size.width*0.7,
+                    child: const Text(
                       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac dui libero. Nam sed nunc sapien. Suspendisse ornare arcu eu lorem consectetur, sit amet maximus turpis malesuada.',
                       style: TextStyle(
                           fontSize: TEXT_REGULAR_2X, fontWeight: FontWeight.w600),
@@ -68,7 +69,8 @@ class BottomSheetView extends StatelessWidget {
                       right: MARGIN_MEDIUM,
                       bottom: MARGIN_MEDIUM),
                   child: Container(
-                    child: Text(
+                    width: MediaQuery.of(context).size.width*0.7,
+                    child: const Text(
                       'Lorem ipsum dolor sit amet, consectetur adi',
                       style: TextStyle(
                           fontSize: TEXT_REGULAR,

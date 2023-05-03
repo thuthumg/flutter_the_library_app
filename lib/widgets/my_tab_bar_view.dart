@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_the_library_app/blocs/home_bloc.dart';
+import 'package:flutter_the_library_app/data/vos/category_books_list_vo.dart';
 import 'package:flutter_the_library_app/resources/dimens.dart';
 import 'package:flutter_the_library_app/resources/strings.dart';
 import 'package:flutter_the_library_app/widgets/book_item_view.dart';
 import 'package:flutter_the_library_app/widgets/category_book_list_item_view.dart';
+import 'package:provider/provider.dart';
 
 class MyTabBarView extends StatefulWidget {
   @override
@@ -55,17 +58,22 @@ class _MyTabBarViewState extends State<MyTabBarView> with SingleTickerProviderSt
               controller: _tabController,
               children: [
                 // set the content for each tab here
-                ListView.builder(
-                 // shrinkWrap: true,
-                //  physics: NeverScrollableScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  itemCount: 10,
-                  itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                      onTap: (){},
-                      child: CategoryBookListItemView(isAudioBook: false,),
-                    );
-                  },
+                Selector<HomeBloc,List<CategoryBooksListVO>?>(
+                  selector: (context,bloc)=> bloc.mCategoryBooksListVOList,
+                  builder:  (context, mCategoryBooksListVOList, child) => ListView.builder(
+                   // shrinkWrap: true,
+                  //  physics: NeverScrollableScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    itemCount: mCategoryBooksListVOList?.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: (){},
+                        child: CategoryBookListItemView(
+                          categoryBooksListVO:mCategoryBooksListVOList![index],
+                          isAudioBook: false,),
+                      );
+                    },
+                  ),
                 ),
 
                 ListView.builder(
@@ -76,7 +84,9 @@ class _MyTabBarViewState extends State<MyTabBarView> with SingleTickerProviderSt
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                       onTap: (){},
-                      child: CategoryBookListItemView(isAudioBook: true,),
+                      child: CategoryBookListItemView(
+                        categoryBooksListVO: null,
+                        isAudioBook: true,),
                     );
                   },
                 )

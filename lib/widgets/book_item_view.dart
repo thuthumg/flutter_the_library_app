@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_the_library_app/data/vos/book_vo.dart';
 import 'package:flutter_the_library_app/resources/dimens.dart';
 import 'package:flutter_the_library_app/widgets/bottom_sheet_view.dart';
 
 class BookItemView extends StatelessWidget {
   final bool isAudioBook;
+  final BookVO? bookVO;
 
-  BookItemView({required this.isAudioBook});
+  BookItemView({required this.isAudioBook,required this.bookVO});
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +30,15 @@ class BookItemView extends StatelessWidget {
                     left: 0.0,
                     right: 0.0,
                     child: Container(
-                      margin: const EdgeInsets.only(top: 3.0, bottom: 3.0),
-                      decoration: const BoxDecoration(
+                      margin: EdgeInsets.only(top: 3.0, bottom: 3.0),
+                      decoration: BoxDecoration(
                           color: Colors.black45,
                           borderRadius: BorderRadius.all(Radius.circular(8)),
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image:
-                                AssetImage("assets/images/sample_book_img.jpg"),
+                                NetworkImage(bookVO?.bookImage??""),
+                               // AssetImage("assets/images/sample_book_img.jpg"),
                           )),
                     ),
                   ),
@@ -98,9 +101,7 @@ class BookItemView extends StatelessWidget {
                 top: MARGIN_MEDIUM,
                 left: MARGIN_MEDIUM_2,
                 right: MARGIN_MEDIUM_2),
-            child: Text(
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac dui libero. Nam sed nunc sapien. Suspendisse ornare arcu eu lorem consectetur, sit amet maximus turpis malesuada. '
-              'Duis ac euismod augue, vel feugiat metus.',
+            child: Text(bookVO?.title??"",
               style: TextStyle(
                   fontSize: TEXT_REGULAR_2X, fontWeight: FontWeight.w600),
               maxLines: 1,
@@ -110,8 +111,7 @@ class BookItemView extends StatelessWidget {
           Container(
             padding:
                 EdgeInsets.only(left: MARGIN_MEDIUM_2, right: MARGIN_MEDIUM_2),
-            child: Text(
-              'Lorem ipsum dolor sit amet, consectetur',
+            child: Text(bookVO?.author??"",
               style: TextStyle(
                   fontSize: TEXT_REGULAR, fontWeight: FontWeight.w600),
               maxLines: 1,
