@@ -1,8 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_the_library_app/blocs/home_bloc.dart';
-import 'package:flutter_the_library_app/resources/colors.dart';
-import 'package:flutter_the_library_app/widgets/my_tab_bar_view.dart';
+import 'package:flutter_the_library_app/widgets/ebooks_audiobook_tab_bar_view.dart';
+
+
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
@@ -90,7 +91,7 @@ class HomePage extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * 0.5,
                   color: Color.fromRGBO(223, 235, 249, 1),
-                  child: MyTabBarView(),
+                  child: EBooksAudioBooksTabBarView(),
                   // color: BACKGROUND_COLOR,
                 ),
               ],

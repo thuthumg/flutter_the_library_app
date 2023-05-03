@@ -6,12 +6,12 @@ import 'package:flutter_the_library_app/resources/strings.dart';
 import 'package:flutter_the_library_app/widgets/category_book_list_item_view.dart';
 import 'package:provider/provider.dart';
 
-class MyTabBarView extends StatefulWidget {
+class EBooksAudioBooksTabBarView extends StatefulWidget {
   @override
-  _MyTabBarViewState createState() => _MyTabBarViewState();
+  _EBooksAudioBooksTabBarViewState createState() => _EBooksAudioBooksTabBarViewState();
 }
 
-class _MyTabBarViewState extends State<MyTabBarView> with SingleTickerProviderStateMixin {
+class _EBooksAudioBooksTabBarViewState extends State<EBooksAudioBooksTabBarView> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override

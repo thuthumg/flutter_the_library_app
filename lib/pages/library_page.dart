@@ -1,13 +1,19 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_the_library_app/widgets/your_books_your_shelves_tab_bar_view.dart';
 
 class LibraryPage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-   return Container(
-       child: Center(
-       child: Text('Second Page'),
-    ));
+   return
+     Container(
+       width: MediaQuery.of(context).size.width,
+       height: MediaQuery.of(context).size.height * 0.5,
+       color: Color.fromRGBO(223, 235, 249, 1),
+       child: YourBooksYourShelvesTabBarView(),
+       // color: BACKGROUND_COLOR,
+     );
+
   }
 
 }
