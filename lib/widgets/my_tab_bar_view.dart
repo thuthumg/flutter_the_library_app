@@ -3,7 +3,6 @@ import 'package:flutter_the_library_app/blocs/home_bloc.dart';
 import 'package:flutter_the_library_app/data/vos/category_books_list_vo.dart';
 import 'package:flutter_the_library_app/resources/dimens.dart';
 import 'package:flutter_the_library_app/resources/strings.dart';
-import 'package:flutter_the_library_app/widgets/book_item_view.dart';
 import 'package:flutter_the_library_app/widgets/category_book_list_item_view.dart';
 import 'package:provider/provider.dart';
 
@@ -69,7 +68,7 @@ class _MyTabBarViewState extends State<MyTabBarView> with SingleTickerProviderSt
                       return GestureDetector(
                         onTap: (){},
                         child: CategoryBookListItemView(
-                          categoryBooksListVO:mCategoryBooksListVOList![index],
+                          categoryBooksListVO:(mCategoryBooksListVOList == null || mCategoryBooksListVOList.isEmpty)? null : mCategoryBooksListVOList[index],
                           isAudioBook: false,),
                       );
                     },

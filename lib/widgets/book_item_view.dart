@@ -7,20 +7,20 @@ class BookItemView extends StatelessWidget {
   final bool isAudioBook;
   final BookVO? bookVO;
 
-  BookItemView({required this.isAudioBook,required this.bookVO});
+  const BookItemView({super.key, required this.isAudioBook,required this.bookVO});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 200,
+    return SizedBox(
+      width: 150,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-              padding: EdgeInsets.only(
-                  top: MARGIN_MEDIUM_2,
+              padding: const EdgeInsets.only(
+                  top: MARGIN_MEDIUM_1,
                   left: MARGIN_MEDIUM_2,
-                  right: MARGIN_MEDIUM_2),
+                  ),
               height: 225,
               child: Stack(
                 children: [
@@ -30,10 +30,10 @@ class BookItemView extends StatelessWidget {
                     left: 0.0,
                     right: 0.0,
                     child: Container(
-                      margin: EdgeInsets.only(top: 3.0, bottom: 3.0),
+                      margin: const EdgeInsets.only(top: 3.0, bottom: 3.0),
                       decoration: BoxDecoration(
                           color: Colors.black45,
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          borderRadius: const BorderRadius.all(Radius.circular(8)),
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image:
@@ -46,7 +46,7 @@ class BookItemView extends StatelessWidget {
                     alignment: Alignment.topRight,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Container(
+                      child: SizedBox(
                         width: 32,
                         height: 32,
                         child: GestureDetector(
@@ -54,11 +54,11 @@ class BookItemView extends StatelessWidget {
                             showModalBottomSheet<void>(
                               context: context,
                               builder: (BuildContext context) {
-                                return BottomSheetView(isMarkAsRead: true,);
+                                return const BottomSheetView(isMarkAsRead: true,);
                               },
                             );
                           },
-                          child: Image(
+                          child: const Image(
                             image: AssetImage('assets/images/contextualMenu.png'),
                           ),
                         ),
@@ -97,12 +97,12 @@ class BookItemView extends StatelessWidget {
               //     image: AssetImage('assets/images/sample_book_img.jpg')),
               ),
           Container(
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
                 top: MARGIN_MEDIUM,
                 left: MARGIN_MEDIUM_2,
                 right: MARGIN_MEDIUM_2),
             child: Text(bookVO?.title??"",
-              style: TextStyle(
+              style: const TextStyle(
                   fontSize: TEXT_REGULAR_2X, fontWeight: FontWeight.w600),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -110,10 +110,10 @@ class BookItemView extends StatelessWidget {
           ),
           Container(
             padding:
-                EdgeInsets.only(left: MARGIN_MEDIUM_2, right: MARGIN_MEDIUM_2),
+                const EdgeInsets.only(left: MARGIN_MEDIUM_2, right: MARGIN_MEDIUM_2),
             child: Text(bookVO?.author??"",
-              style: TextStyle(
-                  fontSize: TEXT_REGULAR, fontWeight: FontWeight.w600),
+              style: const TextStyle(
+                  fontSize: TEXT_REGULAR, fontWeight: FontWeight.w400),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),

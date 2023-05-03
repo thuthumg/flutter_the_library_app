@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_the_library_app/resources/colors.dart';
 import 'package:flutter_the_library_app/resources/dimens.dart';
+import 'package:flutter_the_library_app/resources/strings.dart';
 
 class BottomSheetView extends StatelessWidget {
 
@@ -14,17 +15,16 @@ class BottomSheetView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: MediaQuery.of(context).size.height * 0.55,
       color: PRIMARY_COLOR,
       child:Column(
         children: [
           //bookInfo
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
-         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children:[
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(MARGIN_MEDIUM_2),
               child:
               Container(
                 height: 125,
@@ -39,45 +39,31 @@ class BottomSheetView extends StatelessWidget {
                       AssetImage("assets/images/sample_book_img.jpg"),
                     )),
               )
-
-
-              // Container(
-              //   height: 125,
-              //   width: 80,
-              //   child: Image(image: AssetImage('assets/images/sample_book_img.jpg'),
-              //     fit: BoxFit.cover,),
-              // ),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(MARGIN_MEDIUM),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width*0.7,
-                    child: const Text(
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac dui libero. Nam sed nunc sapien. Suspendisse ornare arcu eu lorem consectetur, sit amet maximus turpis malesuada.',
-                      style: TextStyle(
-                          fontSize: TEXT_REGULAR_2X, fontWeight: FontWeight.w600),
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                Container(
+                  margin: const EdgeInsets.only(top: MARGIN_MEDIUM_2),
+                  width: MediaQuery.of(context).size.width*0.68,
+                  child: const Text(
+                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac dui libero. Nam sed nunc sapien. Suspendisse ornare arcu eu lorem consectetur, sit amet maximus turpis malesuada.',
+                    style: TextStyle(
+                        fontSize: TEXT_REGULAR_2X, fontWeight: FontWeight.w600),
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: MARGIN_MEDIUM,
-                      right: MARGIN_MEDIUM,
-                      bottom: MARGIN_MEDIUM),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width*0.7,
-                    child: const Text(
-                      'Lorem ipsum dolor sit amet, consectetur adi',
-                      style: TextStyle(
-                          fontSize: TEXT_REGULAR,
-                          fontWeight: FontWeight.w400),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                Container(
+                  margin: const EdgeInsets.only(top: MARGIN_MEDIUM_2),
+                  width: MediaQuery.of(context).size.width*0.68,
+                  child: const Text(
+                    'Lorem ipsum dolor sit amet, consectetur adi',
+                    style: TextStyle(
+                        fontSize: TEXT_REGULAR,
+                        fontWeight: FontWeight.w400),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 )
               ],
@@ -91,72 +77,88 @@ class BottomSheetView extends StatelessWidget {
           height: 1,
         ),
         //action button
-          SizedBox(height: 10,),
-          Row(
-            children: [
-            Icon(Icons.download,color: Colors.grey,),
-            SizedBox(width: 10,),
-            Text(
-              'Download',
-              style: TextStyle(
-                  fontSize: TEXT_REGULAR_2X, fontWeight: FontWeight.w600),
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-            )
-          ],),
-          SizedBox(height: 10,),
-          Row(children: [
-            Icon(Icons.delete,color: Colors.grey,),
-            SizedBox(width: 10,),
-            Text(
-              'Delete from your library',
-              style: TextStyle(
-                  fontSize: TEXT_REGULAR_2X, fontWeight: FontWeight.w600),
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-            )
-          ],),
-          SizedBox(height: 10,),
-          Row(children: [
-            Icon(Icons.add,color: Colors.grey,),
-            SizedBox(width: 10,),
-            Text(
-              'Add to shelves...',
-              style: TextStyle(
-                  fontSize: TEXT_REGULAR_2X, fontWeight: FontWeight.w600),
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-            )
-          ],),
-          SizedBox(height: 10,),
-          Row(children: [
-            Icon(Icons.check_outlined,color: Colors.grey,),
-            SizedBox(width: 10,),
-            Text(
-              'Mark as read',
-              style: TextStyle(
-                  fontSize: TEXT_REGULAR_2X, fontWeight: FontWeight.w600),
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-            )
-          ],)
+          const SizedBox(height: MARGIN_MEDIUM_1,),
+          Padding(
+            padding: const EdgeInsets.only(left: MARGIN_MEDIUM_2),
+            child: Row(
+              children: [
+              Container(
+
+                  padding: const EdgeInsets.all(MARGIN_MEDIUM),
+                  width: BOTTOM_SHEET_ICON_SIZE,
+                  height: BOTTOM_SHEET_ICON_SIZE,
+                  child: const Image(image: AssetImage('assets/images/ic_download_64.png'),))  ,
+            //  Icon(Icons.download,color: Colors.grey,),
+              const SizedBox(width: MARGIN_MEDIUM_1,),
+              const Text(
+                DOWNLOAD_TXT,
+                style: TextStyle(
+                    fontSize: TEXT_REGULAR_2X, fontWeight: FontWeight.w600),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              )
+            ],),
+          ),
+          const SizedBox(height: MARGIN_MEDIUM_1,),
+          Padding(
+            padding: const EdgeInsets.only(left: MARGIN_MEDIUM_2),
+            child: Row(children: [
+              Container(
+                  padding: const EdgeInsets.all(MARGIN_MEDIUM),
+                  width: BOTTOM_SHEET_ICON_SIZE,
+                  height: BOTTOM_SHEET_ICON_SIZE,
+                  child: const Image(image: AssetImage('assets/images/ic_delete_64.png'),)),
+              const SizedBox(width: MARGIN_MEDIUM_1,),
+              const Text(
+                DELETE_FROMA_YOUR_LIBRARY_TXT,
+                style: TextStyle(
+                    fontSize: TEXT_REGULAR_2X, fontWeight: FontWeight.w600),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              )
+            ],),
+          ),
+          const SizedBox(height: MARGIN_MEDIUM_1,),
+          Padding(
+            padding: const EdgeInsets.only(left: MARGIN_MEDIUM_2),
+            child: Row(children: [
+              Container(
+                  padding: const EdgeInsets.all(MARGIN_MEDIUM),
+                  width: BOTTOM_SHEET_ICON_SIZE,
+                  height: BOTTOM_SHEET_ICON_SIZE,
+                  child: const Image(image: AssetImage('assets/images/ic_add_64.png'),)),
+              const SizedBox(width: MARGIN_MEDIUM_1,),
+              const Text(
+                ADD_TO_SHELVES_TXT,
+                style: TextStyle(
+                    fontSize: TEXT_REGULAR_2X, fontWeight: FontWeight.w600),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              )
+            ],),
+          ),
+          const SizedBox(height: MARGIN_MEDIUM_1,),
+          Padding(
+            padding: const EdgeInsets.only(left: MARGIN_MEDIUM_2),
+            child: Row(children: [
+              Container(
+                  padding: const EdgeInsets.all(MARGIN_MEDIUM),
+                  width: BOTTOM_SHEET_ICON_SIZE,
+                  height: BOTTOM_SHEET_ICON_SIZE,
+                  child: const Image(image: AssetImage('assets/images/ic_check_64.png'),)),
+              const SizedBox(width: MARGIN_MEDIUM_1,),
+              const Text(
+                MARK_AS_READ_TXT,
+                style: TextStyle(
+                    fontSize: TEXT_REGULAR_2X, fontWeight: FontWeight.w600),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              )
+            ],),
+          )
         ],
       )
 
-
-      // Center(
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     mainAxisSize: MainAxisSize.min,
-      //     children: <Widget>[
-      //       const Text('Modal BottomSheet'),
-      //       ElevatedButton(
-      //         child: const Text('Close BottomSheet'),
-      //         onPressed: () => Navigator.pop(context),
-      //       ),
-      //     ],
-      //   ),
-      // ),
     );
   }
 }

@@ -7,13 +7,13 @@ class CategoryBookListItemView extends StatelessWidget {
   final CategoryBooksListVO? categoryBooksListVO;
   final bool isAudioBook;
 
-  CategoryBookListItemView({
+  const CategoryBookListItemView({super.key,
     required this.categoryBooksListVO,
     required this.isAudioBook});
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(
+      margin: const EdgeInsets.only(
           top: MARGIN_MEDIUM,
           left: MARGIN_MEDIUM,
           right:  MARGIN_MEDIUM),
@@ -25,21 +25,16 @@ class CategoryBookListItemView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
+          Padding(
             padding: const EdgeInsets.only(
                 top: MARGIN_MEDIUM,
                 left: MARGIN_MEDIUM_2,
                 right: MARGIN_MEDIUM_2),
-            height: 50,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
+                SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8,
-                  padding: const EdgeInsets.only(
-                      top: MARGIN_MEDIUM,
-                      left: MARGIN_MEDIUM_2,
-                      right: MARGIN_MEDIUM_2),
                   child: Text(categoryBooksListVO?.displayName??"",
                     style: const TextStyle(
                         fontSize: TEXT_REGULAR_2X, fontWeight: FontWeight.w600),
@@ -48,17 +43,13 @@ class CategoryBookListItemView extends StatelessWidget {
                   ),
                 ),
                 const Icon(
-                  Icons.arrow_forward_ios,
+                  Icons.arrow_forward_ios_sharp,
                   color: Colors.grey,
                 )
               ],
             ),
           ),
-          Container(
-              padding: const EdgeInsets.only(
-                  top: MARGIN_MEDIUM,
-                  left: MARGIN_MEDIUM_2,
-                  right: MARGIN_MEDIUM_2),
+          SizedBox(
               height: 300,
               child: ListView.builder(
                 // shrinkWrap: true,
@@ -68,7 +59,8 @@ class CategoryBookListItemView extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
                     onTap: () {},
-                    child: BookItemView(bookVO:categoryBooksListVO?.books![index],
+                    child: BookItemView(
+                      bookVO:categoryBooksListVO?.books![index],
                       isAudioBook: isAudioBook,),
                   );
                 },
