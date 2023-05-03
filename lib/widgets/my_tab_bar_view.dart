@@ -75,19 +75,23 @@ class _MyTabBarViewState extends State<MyTabBarView> with SingleTickerProviderSt
                   ),
                 ),
 
-                ListView.builder(
-                  // shrinkWrap: true,
-                  //  physics: NeverScrollableScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  itemCount: 10,
-                  itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                      onTap: (){},
-                      child: CategoryBookListItemView(
-                        categoryBooksListVO: null,
-                        isAudioBook: true,),
-                    );
-                  },
+                Selector<HomeBloc,List<CategoryBooksListVO>?>(
+                  selector: (context,bloc)=> bloc.mCategoryBooksListVOList,
+                  builder: (context, mCategoryBooksListVOList, child) => ListView.builder(
+                    // shrinkWrap: true,
+                    //  physics: NeverScrollableScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    itemCount: mCategoryBooksListVOList?.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: (){},
+                        child: CategoryBookListItemView(
+                          categoryBooksListVO:
+                          (mCategoryBooksListVOList == null || mCategoryBooksListVOList.isEmpty)? null : mCategoryBooksListVOList[index],
+                          isAudioBook: true,),
+                      );
+                    },
+                  ),
                 )
                 // Center(
                 //   child: Container(

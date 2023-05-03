@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_the_library_app/data/vos/book_vo.dart';
 import 'package:flutter_the_library_app/resources/colors.dart';
 import 'package:flutter_the_library_app/resources/dimens.dart';
 import 'package:flutter_the_library_app/resources/strings.dart';
 
 class BottomSheetView extends StatelessWidget {
 
+  final BookVO? bookVO;
   final bool isMarkAsRead;
 
   const BottomSheetView({
     super.key,
-    required this.isMarkAsRead
+    required this.isMarkAsRead,
+    required this.bookVO
   });
 
   @override
@@ -30,13 +33,15 @@ class BottomSheetView extends StatelessWidget {
                 height: 125,
                 width: 80,
 
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                     color: Colors.black45,
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
                     image: DecorationImage(
                       fit: BoxFit.cover,
                       image:
-                      AssetImage("assets/images/sample_book_img.jpg"),
+                      //(bookVO?.bookImage == null) ?
+                     // AssetImage("assets/images/sample_book_img.jpg") :
+                      NetworkImage(bookVO?.bookImage??""),
                     )),
               )
             ),
@@ -46,20 +51,20 @@ class BottomSheetView extends StatelessWidget {
                 Container(
                   margin: const EdgeInsets.only(top: MARGIN_MEDIUM_2),
                   width: MediaQuery.of(context).size.width*0.68,
-                  child: const Text(
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac dui libero. Nam sed nunc sapien. Suspendisse ornare arcu eu lorem consectetur, sit amet maximus turpis malesuada.',
-                    style: TextStyle(
+                  child: Text(
+                    bookVO?.title??"",
+                    style: const TextStyle(
                         fontSize: TEXT_REGULAR_2X, fontWeight: FontWeight.w600),
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.only(top: MARGIN_MEDIUM_2),
+                  margin: const EdgeInsets.only(top: MARGIN_MEDIUM),
                   width: MediaQuery.of(context).size.width*0.68,
-                  child: const Text(
-                    'Lorem ipsum dolor sit amet, consectetur adi',
-                    style: TextStyle(
+                  child: Text(
+                    bookVO?.author??"",
+                    style: const TextStyle(
                         fontSize: TEXT_REGULAR,
                         fontWeight: FontWeight.w400),
                     maxLines: 1,

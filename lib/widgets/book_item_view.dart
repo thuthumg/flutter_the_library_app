@@ -54,7 +54,9 @@ class BookItemView extends StatelessWidget {
                             showModalBottomSheet<void>(
                               context: context,
                               builder: (BuildContext context) {
-                                return const BottomSheetView(isMarkAsRead: true,);
+                                return BottomSheetView(
+                                  bookVO: bookVO,
+                                  isMarkAsRead: true,);
                               },
                             );
                           },
