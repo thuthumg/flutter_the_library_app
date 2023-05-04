@@ -3,16 +3,20 @@ import 'package:flutter_the_library_app/resources/dimens.dart';
 import 'package:flutter_the_library_app/resources/strings.dart';
 import 'package:flutter_the_library_app/widgets/filter_bottom_sheet_view.dart';
 
-class DisplayAndSortingView extends StatelessWidget {
-
-
+class DisplayAndSortingView extends StatefulWidget {
 
   const DisplayAndSortingView({
     super.key,
   });
 
   @override
+  State<DisplayAndSortingView> createState() => _DisplayAndSortingViewState();
+}
+
+class _DisplayAndSortingViewState extends State<DisplayAndSortingView> {
+  @override
   Widget build(BuildContext context) {
+    String selectedItemData = "";
     return CustomScrollView(
       slivers: [
         SliverList(
@@ -33,13 +37,19 @@ class DisplayAndSortingView extends StatelessWidget {
                               bookVO: null,
                               isMarkAsRead: true,
                               filterTypeList: items,
-                            filterTitle: SORT_BY_TXT,);
+                            filterTitle: SORT_BY_TXT,
+                            onTapFilterItem: (selectedItem){
+                                setState(() {
+                                  selectedItemData = selectedItem??"";
+                                });
+
+                            },);
                           },
                         );
                       },
                       child: Row(
-                        children: const [
-                          Padding(
+                        children: [
+                          const Padding(
                             padding: EdgeInsets.all(MARGIN_MEDIUM_1),
                             child: SizedBox(
                               width: 25,
@@ -50,10 +60,10 @@ class DisplayAndSortingView extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(width: MARGIN_MEDIUM_1,),
+                          const SizedBox(width: MARGIN_MEDIUM_1,),
                           Text(
-                            "Sort by : Recent",
-                            style: TextStyle(
+                            "Sort by : ${selectedItemData}",
+                            style: const TextStyle(
                                 fontSize: TEXT_REGULAR_2X, fontWeight: FontWeight.w600),
                           )
                         ],
@@ -69,7 +79,16 @@ class DisplayAndSortingView extends StatelessWidget {
                               bookVO: null,
                               isMarkAsRead: true,
                             filterTypeList: items,
-                            filterTitle: VIEW_AS_TXT,);
+                            filterTitle: VIEW_AS_TXT,
+                              onTapFilterItem: (selectedItem){
+                                setState(() {
+                                  selectedItemData = selectedItem??"";
+                                });
+
+                              },
+
+
+                            );
                           },
                         );
                       },

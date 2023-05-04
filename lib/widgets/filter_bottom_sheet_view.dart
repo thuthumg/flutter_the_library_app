@@ -10,6 +10,7 @@ class FilterBottomSheetView extends StatelessWidget {
   final BookVO? bookVO;
   final bool isMarkAsRead;
   final String filterTitle;
+  final Function(String?) onTapFilterItem;
 
 
 
@@ -18,7 +19,8 @@ class FilterBottomSheetView extends StatelessWidget {
     required this.isMarkAsRead,
     required this.bookVO,
     required this.filterTypeList,
-    required this.filterTitle
+    required this.filterTitle,
+    required this.onTapFilterItem
   });
 
   @override
@@ -47,7 +49,9 @@ class FilterBottomSheetView extends StatelessWidget {
             ),
             //action button
             const SizedBox(height: MARGIN_MEDIUM_1,),
-            RadioGroupView(filterTypeList: filterTypeList)
+            RadioGroupView(filterTypeList: filterTypeList,onTapFilterItem: (selectedItem){
+              this.onTapFilterItem(selectedItem);
+            },)
           ],
         )
 
