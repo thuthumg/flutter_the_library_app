@@ -3,12 +3,99 @@
 part of 'book_vo.dart';
 
 // **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
+
+class BookVOAdapter extends TypeAdapter<BookVO> {
+  @override
+  final int typeId = 1;
+
+  @override
+  BookVO read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return BookVO(
+      fields[0] as String?,
+      fields[1] as int?,
+      fields[2] as String?,
+      fields[3] as String?,
+      fields[4] as String?,
+      fields[5] as int?,
+      fields[6] as int?,
+      fields[7] as String?,
+      fields[8] as String?,
+      fields[9] as String?,
+      fields[10] as String?,
+      fields[11] as String?,
+      fields[12] as String?,
+      fields[13] as String?,
+      fields[14] as String?,
+      fields[15] as String?,
+      fields[16] as String?,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, BookVO obj) {
+    writer
+      ..writeByte(17)
+      ..writeByte(0)
+      ..write(obj.bookId)
+      ..writeByte(1)
+      ..write(obj.categoryId)
+      ..writeByte(2)
+      ..write(obj.categoryName)
+      ..writeByte(3)
+      ..write(obj.author)
+      ..writeByte(4)
+      ..write(obj.bookImage)
+      ..writeByte(5)
+      ..write(obj.bookImageWidth)
+      ..writeByte(6)
+      ..write(obj.bookImageHeight)
+      ..writeByte(7)
+      ..write(obj.bookReviewLink)
+      ..writeByte(8)
+      ..write(obj.contributor)
+      ..writeByte(9)
+      ..write(obj.contributorNote)
+      ..writeByte(10)
+      ..write(obj.createdDate)
+      ..writeByte(11)
+      ..write(obj.description)
+      ..writeByte(12)
+      ..write(obj.price)
+      ..writeByte(13)
+      ..write(obj.book_uri)
+      ..writeByte(14)
+      ..write(obj.publisher)
+      ..writeByte(15)
+      ..write(obj.title)
+      ..writeByte(16)
+      ..write(obj.updatedDate);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is BookVOAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+// **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
 BookVO _$BookVOFromJson(Map<String, dynamic> json) => BookVO(
-      json['category_id'] as int?,
-      json['category_name'] as String?,
+      json['bookId'] as String?,
+      json['categoryId'] as int?,
+      json['categoryName'] as String?,
       json['author'] as String?,
       json['book_image'] as String?,
       json['book_image_width'] as int?,
@@ -26,8 +113,9 @@ BookVO _$BookVOFromJson(Map<String, dynamic> json) => BookVO(
     );
 
 Map<String, dynamic> _$BookVOToJson(BookVO instance) => <String, dynamic>{
-      'category_id': instance.categoryId,
-      'category_name': instance.categoryName,
+      'bookId': instance.bookId,
+      'categoryId': instance.categoryId,
+      'categoryName': instance.categoryName,
       'author': instance.author,
       'book_image': instance.bookImage,
       'book_image_width': instance.bookImageWidth,

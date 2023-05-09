@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_the_library_app/data/vos/book_vo.dart';
 import 'package:flutter_the_library_app/data/vos/category_books_list_vo.dart';
 import 'package:flutter_the_library_app/pages/book_detail_page.dart';
 import 'package:flutter_the_library_app/pages/each_category_books_list_page.dart';
@@ -81,12 +82,14 @@ class _CategoryBookListItemViewState extends State<CategoryBookListItemView> {
                   return GestureDetector(
                     onTap: () {
                       setState(() {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => BookDetailPage(bookVO: widget.categoryBooksListVO?.books![index],),
-                          ),
-                        );
+                        widget.categoryBooksListVO?.books?[index].categoryId = widget.categoryBooksListVO?.listId;
+                        widget.categoryBooksListVO?.books?[index].categoryName = widget.categoryBooksListVO?.listName;
+                        if( widget.categoryBooksListVO?.books?[index] != null)
+                          {
+                            _navigateToBookDetailsScreen(context,  widget.categoryBooksListVO?.books?[index]);
+                          }
+
+
                       });
 
                     },
@@ -100,5 +103,17 @@ class _CategoryBookListItemViewState extends State<CategoryBookListItemView> {
         ],
       ),
     );
+  }
+
+  Future<dynamic> _navigateToBookDetailsScreen(BuildContext context, BookVO? bookVO) {
+
+
+
+    return Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BookDetailPage(bookVO: bookVO,),
+                        ),
+                      );
   }
 }

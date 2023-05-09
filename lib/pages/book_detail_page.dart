@@ -1,11 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_the_library_app/blocs/book_detail_bloc.dart';
 import 'package:flutter_the_library_app/data/vos/book_vo.dart';
 import 'package:flutter_the_library_app/pages/about_ebook_detail_page.dart';
 import 'package:flutter_the_library_app/pages/rating_and_review_detail_page.dart';
 import 'package:flutter_the_library_app/resources/colors.dart';
 import 'package:flutter_the_library_app/resources/dimens.dart';
+import 'package:provider/provider.dart';
 
 class BookDetailPage extends StatelessWidget{
 
@@ -17,42 +18,49 @@ class BookDetailPage extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        leading: GestureDetector(
-          onTap: (){
-            Navigator.pop(context);
-          },
-          child: const Padding(
-            padding: EdgeInsets.all(MARGIN_MEDIUM_2),
-            child: Icon(Icons.arrow_back_ios_new_outlined,color: Colors.grey,size: 25,),
+    return ChangeNotifierProvider(
+      create: (context)=> BookDetailsBloc(bookVO),
+      child: Selector<BookDetailsBloc,BookVO?>(
+        selector:(context,bloc)=> bloc.bookVO,
+        builder: (context,bookVO,child)=>
+        Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            elevation: 0,
+            backgroundColor: Colors.white,
+            leading: GestureDetector(
+              onTap: (){
+                Navigator.pop(context);
+              },
+              child: const Padding(
+                padding: EdgeInsets.all(MARGIN_MEDIUM_2),
+                child: Icon(Icons.arrow_back_ios_new_outlined,color: Colors.grey,size: 25,),
+              ),
+            ),
+            actions: const [
+              Padding(
+                padding: EdgeInsets.all(MARGIN_MEDIUM_2),
+                child: Image(image: AssetImage('assets/images/ic_export_gray_64.png')),
+              )
+            ],
           ),
-        ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.all(MARGIN_MEDIUM_2),
-            child: Image(image: AssetImage('assets/images/ic_export_gray_64.png')),
-          )
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-         // mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            BookDetailInfoView(bookVO: bookVO,),
-            DividerView(),
-            FreeSampleAndWishlistButtonView(),
-            DividerView(),
-            AboutEbookDescView(bookVO: bookVO,),
-            RatingAndReviewSectionView(),
-            PublishedSectionView(),
-            SizedBox(height: MARGIN_MEDIUM_3,)
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+             // mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                BookDetailInfoView(bookVO: bookVO,),
+                DividerView(),
+                FreeSampleAndWishlistButtonView(),
+                DividerView(),
+                AboutEbookDescView(bookVO: bookVO,),
+                RatingAndReviewSectionView(),
+                PublishedSectionView(),
+                SizedBox(height: MARGIN_MEDIUM_3,)
 
-          ],
+              ],
+            ),
+          ),
         ),
       ),
     );

@@ -1,8 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_the_library_app/data/vos/book_vo.dart';
 import 'package:flutter_the_library_app/pages/app_main_page.dart';
-import 'package:flutter_the_library_app/resources/colors.dart';
+import 'package:flutter_the_library_app/persistence/hive_constants.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+void main() async {
 
-void main() {
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(BookVOAdapter());
+
+  await Hive.openBox<BookVO>(BOX_NAME_BOOK_VO);
+
+
+  // check if the box is open
+  bool isOpen = Hive.isBoxOpen(BOX_NAME_BOOK_VO);
+
+  print('Box is open: $isOpen');
+
   runApp(const MyApp());
 }
 

@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_the_library_app/blocs/home_bloc.dart';
+import 'package:flutter_the_library_app/data/vos/book_vo.dart';
 import 'package:flutter_the_library_app/resources/dimens.dart';
 import 'package:flutter_the_library_app/widgets/ebooks_audiobook_tab_bar_view.dart';
 
@@ -113,22 +114,25 @@ class FloatingHeader extends SliverPersistentHeaderDelegate {
       //           Color.fromRGBO(25, 91, 183, 1),
       //           Color.fromRGBO(18, 17, 151, 1)
       //         ])),
-      child: CarouselSlider(
-        items: items.map((item) {
-          return Container(width: 200, child: ReadBookItemView());
-        }).toList(),
-        options: CarouselOptions(
-          // aspectRatio: 16/8,
-          viewportFraction: 0.5,
-          enlargeFactor: 0.25,
-          enableInfiniteScroll: false,
-          // enable circular loop
-          height: 200,
-          enlargeCenterPage: true,
-          autoPlay: false,
-          onPageChanged: (index, reason) {
-            // Do something when the page changes.
-          },
+      child:  Selector<HomeBloc,List<BookVO>?>(
+        selector: (context,bloc)=> bloc.mReadBookList,
+        builder: (context, readBookList, child) => CarouselSlider(
+          items: readBookList?.map((item) {
+            return Container(width: 200, child: ReadBookItemView(bookVO:item));
+          }).toList(),
+          options: CarouselOptions(
+            // aspectRatio: 16/8,
+            viewportFraction: 0.5,
+            enlargeFactor: 0.25,
+            enableInfiniteScroll: false,
+            // enable circular loop
+            height: 200,
+            enlargeCenterPage: true,
+            autoPlay: false,
+            onPageChanged: (index, reason) {
+              // Do something when the page changes.
+            },
+          ),
         ),
       ),
       // color: BACKGROUND_COLOR,
@@ -146,8 +150,12 @@ class FloatingHeader extends SliverPersistentHeaderDelegate {
 }
 
 class ReadBookItemView extends StatelessWidget {
+
+  final BookVO bookVO;
+
   const ReadBookItemView({
     super.key,
+    required this.bookVO
   });
 
   @override
@@ -161,12 +169,14 @@ class ReadBookItemView extends StatelessWidget {
           right: 0.0,
           child: Container(
             margin: const EdgeInsets.only(top: 3.0, bottom: 3.0),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
                 color: Colors.black45,
                 borderRadius: BorderRadius.all(Radius.circular(8)),
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: AssetImage("assets/images/sample_book_img.jpg"),
+                  image:
+                  NetworkImage(bookVO.bookImage??""),
+                 // AssetImage("assets/images/sample_book_img.jpg"),
                 )),
           ),
         ),
