@@ -4,6 +4,7 @@ import 'package:flutter_the_library_app/components/display_and_sorting_view.dart
 
 import 'package:flutter_the_library_app/resources/dimens.dart';
 import 'package:flutter_the_library_app/resources/strings.dart';
+import 'package:flutter_the_library_app/widgets/book_shelves_view.dart';
 
 
 class YourBooksYourShelvesTabBarView extends StatefulWidget {
@@ -29,43 +30,52 @@ class _YourBooksYourShelvesTabBarViewState extends State<YourBooksYourShelvesTab
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          TabBar(
-            // indicatorColor: Colors.blue, // set the color of the selected tab indicator
-            indicatorSize:TabBarIndicatorSize.label,
-            labelColor: Colors.blue, // set the color of the selected tab
-            unselectedLabelColor: Colors.grey, // set the color of the unselected tabs
-            controller: _tabController,
-            tabs: const [
-              Tab(child: Text(
-                YOUR_BOOKS_TXT,
-                style: TextStyle(
-                    fontSize: TEXT_REGULAR_2X,
-                    fontWeight: FontWeight.w600), // set the tab label size
-              ),), //
-              Tab(child: Text(
-                YOUR_SHELVES_TXT,
-                style: TextStyle(
-                    fontSize: TEXT_REGULAR_2X,
-                    fontWeight: FontWeight.w600), // set the tab label size
-              ),),
-            ],
-          ),
-          Expanded(
-            child: TabBarView(
+      body: Container(
+        // color: Colors.red,
+        // height: MediaQuery.of(context).size.height,
+        child: Column(
+          children: [
+            TabBar(
+              // indicatorColor: Colors.blue, // set the color of the selected tab indicator
+              indicatorSize:TabBarIndicatorSize.label,
+              labelColor: Colors.blue, // set the color of the selected tab
+              unselectedLabelColor: Colors.grey, // set the color of the unselected tabs
               controller: _tabController,
-              children: [
-                // set the content for each tab here
-                DisplayAndSortingView(),
-                Container()
-
+              tabs: const [
+                Tab(child: Text(
+                  YOUR_BOOKS_TXT,
+                  style: TextStyle(
+                      fontSize: TEXT_REGULAR_2X,
+                      fontWeight: FontWeight.w600), // set the tab label size
+                ),), //
+                Tab(child: Text(
+                  YOUR_SHELVES_TXT,
+                  style: TextStyle(
+                      fontSize: TEXT_REGULAR_2X,
+                      fontWeight: FontWeight.w600), // set the tab label size
+                ),),
               ],
             ),
-          ),
-        ],
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  // set the content for each tab here
+                //  DisplayAndSortingView(),
+                  Container(height: MediaQuery.of(context).size.height,
+                      child:DisplayAndSortingView()),
+                  Container(height: MediaQuery.of(context).size.height,
+                  child: BookShelvesView(),),
+
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+
+
 

@@ -7,8 +7,8 @@ class LibraryPage extends StatelessWidget{
   Widget build(BuildContext context) {
    return
      Container(
-       width: MediaQuery.of(context).size.width,
-       height: MediaQuery.of(context).size.height * 0.5,
+      //  width: MediaQuery.of(context).size.width,
+      //  height: MediaQuery.of(context).size.height,
        color: Color.fromRGBO(223, 235, 249, 1),
        child: YourBooksYourShelvesTabBarView(),
        // color: BACKGROUND_COLOR,

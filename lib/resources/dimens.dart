@@ -17,7 +17,8 @@ const TEXT_HEADING_1X = 24.0;
 const TEXT_HEADING_2X = 28.0;
 const TEXT_SMALL = 10.0;
 const TEXT_BIG = 32.0;
-
+const TEXT_BIG_1X = 48.0;
+const TEXT_BIG_2X = 64.0;
 
 ///specified
 const BOTTOM_SHEET_ICON_SIZE = 35.0;

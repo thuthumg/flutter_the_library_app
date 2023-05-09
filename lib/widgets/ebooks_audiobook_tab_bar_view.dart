@@ -53,57 +53,57 @@ class _EBooksAudioBooksTabBarViewState extends State<EBooksAudioBooksTabBarView>
             ],
           ),
           Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                // set the content for each tab here
-                Selector<HomeBloc,List<CategoryBooksListVO>?>(
-                  selector: (context,bloc)=> bloc.mCategoryBooksListVOList,
-                  builder:  (context, mCategoryBooksListVOList, child) => ListView.builder(
-                   // shrinkWrap: true,
-                  //  physics: NeverScrollableScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    itemCount: mCategoryBooksListVOList?.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onTap: (){},
-                        child: CategoryBookListItemView(
-                          categoryBooksListVO:(mCategoryBooksListVOList == null || mCategoryBooksListVOList.isEmpty)? null : mCategoryBooksListVOList[index],
-                          isAudioBook: false,),
-                      );
-                    },
-                  ),
-                ),
-
-                Selector<HomeBloc,List<CategoryBooksListVO>?>(
-                  selector: (context,bloc)=> bloc.mCategoryBooksListVOList,
-                  builder: (context, mCategoryBooksListVOList, child) => ListView.builder(
-                    // shrinkWrap: true,
+            child: Container(
+              margin: EdgeInsets.only(top: MARGIN_MEDIUM),
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  // set the content for each tab here
+                  Selector<HomeBloc,List<CategoryBooksListVO>?>(
+                    selector: (context,bloc)=> bloc.mCategoryBooksListVOList,
+                    builder:  (context, mCategoryBooksListVOList, child) => ListView.builder(
+                     // shrinkWrap: true,
                     //  physics: NeverScrollableScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    itemCount: mCategoryBooksListVOList?.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onTap: (){},
-                        child: CategoryBookListItemView(
-                          categoryBooksListVO:
-                          (mCategoryBooksListVOList == null || mCategoryBooksListVOList.isEmpty)? null : mCategoryBooksListVOList[index],
-                          isAudioBook: true,),
-                      );
-                    },
+                      scrollDirection: Axis.vertical,
+                      itemCount: mCategoryBooksListVOList?.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return CategoryBookListItemView(
+                          categoryBooksListVO:(mCategoryBooksListVOList == null || mCategoryBooksListVOList.isEmpty)? null : mCategoryBooksListVOList[index],
+                          isAudioBook: false,);
+                      },
+                    ),
                   ),
-                )
-                // Center(
-                //   child: Container(
-                //     child: Text(
-                //       AUDIOBOOKS_TXT,
-                //       style: TextStyle(
-                //           fontSize: TEXT_REGULAR_2X,
-                //           fontWeight: FontWeight.w600), // set the tab label size
-                //     ),
-                //   ),
-                // )
-              ],
+
+                  Selector<HomeBloc,List<CategoryBooksListVO>?>(
+                    selector: (context,bloc)=> bloc.mCategoryBooksListVOList,
+                    builder: (context, mCategoryBooksListVOList, child) => ListView.builder(
+                      // shrinkWrap: true,
+                      //  physics: NeverScrollableScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      itemCount: mCategoryBooksListVOList?.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                          onTap: (){},
+                          child: CategoryBookListItemView(
+                            categoryBooksListVO:
+                            (mCategoryBooksListVOList == null || mCategoryBooksListVOList.isEmpty)? null : mCategoryBooksListVOList[index],
+                            isAudioBook: true,),
+                        );
+                      },
+                    ),
+                  )
+                  // Center(
+                  //   child: Container(
+                  //     child: Text(
+                  //       AUDIOBOOKS_TXT,
+                  //       style: TextStyle(
+                  //           fontSize: TEXT_REGULAR_2X,
+                  //           fontWeight: FontWeight.w600), // set the tab label size
+                  //     ),
+                  //   ),
+                  // )
+                ],
+              ),
             ),
           ),
         ],

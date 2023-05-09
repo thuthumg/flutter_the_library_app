@@ -1,8 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_the_library_app/blocs/home_bloc.dart';
+import 'package:flutter_the_library_app/resources/dimens.dart';
 import 'package:flutter_the_library_app/widgets/ebooks_audiobook_tab_bar_view.dart';
-
 
 import 'package:provider/provider.dart';
 
@@ -12,95 +12,137 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => HomeBloc(),
-      child: CustomScrollView(
-        slivers: [
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                // Container(
-                // height: MediaQuery.of(context).size.height*0.8,
-                //   child: Stack(
-                //     children: <Widget>[
-                //       Positioned(
-                //         left: 0.0,
-                //         top: 0.0,
-                //         right: 0,
-                //         child: Container(
-                //           width: MediaQuery.of(context).size.width,
-                //           height: 250,
-                //           decoration: const BoxDecoration(
-                //               gradient: LinearGradient(
-                //                   begin: Alignment.centerLeft,
-                //                   end: Alignment.centerRight,
-                //                   colors: [
-                //                     Color.fromRGBO(25, 91, 183, 1),
-                //                     Color.fromRGBO(18, 17, 151, 1)
-                //                   ])),
-                //           // color: BACKGROUND_COLOR,
-                //         ),
-                //       ),
-                //       Positioned(
-                //         left: 0.0,
-                //         top: 250.0,
-                //         right: 0,
-                //         child: Container(
-                //           width: MediaQuery.of(context).size.width,
-                //           height: MediaQuery.of(context).size.height,
-                //           color: Color.fromRGBO(223, 235, 249, 1),
-                //           child: MyTabBarView(),
-                //           // color: BACKGROUND_COLOR,
-                //         ),
-                //       ),
-                //
-                //     ],
-                //   ),),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  // height: MediaQuery.of(context).size.height*0.3,
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  // decoration: const BoxDecoration(
-                  //     gradient: LinearGradient(
-                  //         begin: Alignment.centerLeft,
-                  //         end: Alignment.centerRight,
-                  //         colors: [
-                  //           Color.fromRGBO(25, 91, 183, 1),
-                  //           Color.fromRGBO(18, 17, 151, 1)
-                  //         ])),
-                  child: CarouselSlider(
-                    items: items.map((item) {
-                      return Container(width: 200, child: ReadBookItemView());
-                    }).toList(),
-                    options: CarouselOptions(
-                      // aspectRatio: 16/8,
-                      viewportFraction: 0.5,
-                      enlargeFactor: 0.25,
-                      enableInfiniteScroll: false,
-                      // enable circular loop
-                      height: 200,
-                      enlargeCenterPage: true,
-                      autoPlay: false,
-                      onPageChanged: (index, reason) {
-                        // Do something when the page changes.
-                      },
-                    ),
-                  ),
-                  // color: BACKGROUND_COLOR,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.5,
-                  color: Color.fromRGBO(223, 235, 249, 1),
-                  child: EBooksAudioBooksTabBarView(),
-                  // color: BACKGROUND_COLOR,
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
+        create: (context) => HomeBloc(),
+        child: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverPersistentHeader(
+                floating: true,
+                delegate: FloatingHeader(),
+              ),
+            ];
+          },
+          body: Container(
+
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 0.5,
+            color: const Color.fromRGBO(223, 235, 249, 1),
+            child: EBooksAudioBooksTabBarView(),
+            // color: BACKGROUND_COLOR,
+          ),
+        )
+
+      // CustomScrollView(
+      //   slivers: [
+      //     SliverPersistentHeader(
+      //       floating: true,
+      //       delegate: FloatingHeader(),
+      //     ),
+      //     SliverList(
+      //       delegate: SliverChildListDelegate(
+      //         [
+      //           // Container(
+      //           // height: MediaQuery.of(context).size.height*0.8,
+      //           //   child: Stack(
+      //           //     children: <Widget>[
+      //           //       Positioned(
+      //           //         left: 0.0,
+      //           //         top: 0.0,
+      //           //         right: 0,
+      //           //         child: Container(
+      //           //           width: MediaQuery.of(context).size.width,
+      //           //           height: 250,
+      //           //           decoration: const BoxDecoration(
+      //           //               gradient: LinearGradient(
+      //           //                   begin: Alignment.centerLeft,
+      //           //                   end: Alignment.centerRight,
+      //           //                   colors: [
+      //           //                     Color.fromRGBO(25, 91, 183, 1),
+      //           //                     Color.fromRGBO(18, 17, 151, 1)
+      //           //                   ])),
+      //           //           // color: BACKGROUND_COLOR,
+      //           //         ),
+      //           //       ),
+      //           //       Positioned(
+      //           //         left: 0.0,
+      //           //         top: 250.0,
+      //           //         right: 0,
+      //           //         child: Container(
+      //           //           width: MediaQuery.of(context).size.width,
+      //           //           height: MediaQuery.of(context).size.height,
+      //           //           color: Color.fromRGBO(223, 235, 249, 1),
+      //           //           child: MyTabBarView(),
+      //           //           // color: BACKGROUND_COLOR,
+      //           //         ),
+      //           //       ),
+      //           //
+      //           //     ],
+      //           //   ),),
+
+      //           Container(
+      //             width: MediaQuery.of(context).size.width,
+      //             height: MediaQuery.of(context).size.height * 0.5,
+      //             color: const Color.fromRGBO(223, 235, 249, 1),
+      //             child: EBooksAudioBooksTabBarView(),
+      //             // color: BACKGROUND_COLOR,
+      //           ),
+      //         ],
+      //       ),
+      //     )
+      //   ],
+      // ),
     );
   }
+}
+
+class FloatingHeader extends SliverPersistentHeaderDelegate {
+  List<String> items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      margin: EdgeInsets.only(top: MARGIN_MEDIUM_2),
+      width: MediaQuery.of(context).size.width,
+      // height: MediaQuery.of(context).size.height*0.3,
+      height: MediaQuery.of(context).size.height * 0.3,
+      // decoration: const BoxDecoration(
+      //     gradient: LinearGradient(
+      //         begin: Alignment.centerLeft,
+      //         end: Alignment.centerRight,
+      //         colors: [
+      //           Color.fromRGBO(25, 91, 183, 1),
+      //           Color.fromRGBO(18, 17, 151, 1)
+      //         ])),
+      child: CarouselSlider(
+        items: items.map((item) {
+          return Container(width: 200, child: ReadBookItemView());
+        }).toList(),
+        options: CarouselOptions(
+          // aspectRatio: 16/8,
+          viewportFraction: 0.5,
+          enlargeFactor: 0.25,
+          enableInfiniteScroll: false,
+          // enable circular loop
+          height: 200,
+          enlargeCenterPage: true,
+          autoPlay: false,
+          onPageChanged: (index, reason) {
+            // Do something when the page changes.
+          },
+        ),
+      ),
+      // color: BACKGROUND_COLOR,
+    );
+  }
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate _) => true;
+
+  @override
+  double get maxExtent => 230.0;
+
+  @override
+  double get minExtent => 80.0;
 }
 
 class ReadBookItemView extends StatelessWidget {

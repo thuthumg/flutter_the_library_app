@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_the_library_app/pages/home_page.dart';
 import 'package:flutter_the_library_app/pages/library_page.dart';
+import 'package:flutter_the_library_app/pages/search_page.dart';
 import 'package:flutter_the_library_app/resources/colors.dart';
 import 'package:flutter_the_library_app/resources/dimens.dart';
 import 'package:flutter_the_library_app/resources/strings.dart';
@@ -22,13 +23,14 @@ class _AppMainPageState extends State<AppMainPage> {
     return Scaffold(
       appBar: AppBar(
          // centerTitle: true,
+        elevation: 0,
           backgroundColor: PRIMARY_COLOR,
           title: Padding(
             padding: const EdgeInsets.only(
                 top: MARGIN_MEDIUM_3,
                 bottom: MARGIN_MEDIUM_3,
-                left: MARGIN_MEDIUM_2,
-                right: MARGIN_MEDIUM_2),
+                left: 0,
+                right: 0),
             child: Container(
               width: MediaQuery.of(context).size.width,
               height:45,
@@ -50,24 +52,7 @@ class _AppMainPageState extends State<AppMainPage> {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: MARGIN_MEDIUM_2),
-                        child: Row(
-                          children: const [
-                            Icon(Icons.search,color: Colors.grey,),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                             SEARCH_TXT,
-                              style: TextStyle(
-                                  color: Color.fromRGBO(85, 85, 85, 1),
-                                  fontSize: TEXT_REGULAR_2X,
-                                  fontWeight: FontWeight.w600),
-                            )
-                          ],
-                        ),
-                      ),
+                      SearchSectionView(),
                       Container(
                         margin: const EdgeInsets.only(top: 3.0,bottom: 3.0),
                         width: 50,
@@ -113,5 +98,43 @@ class _AppMainPageState extends State<AppMainPage> {
     setState(() {
       _currentIndex = index;
     });
+  }
+}
+
+class SearchSectionView extends StatelessWidget {
+  const SearchSectionView({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SearchPage(),
+          ),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(left: MARGIN_MEDIUM_2),
+        child: Row(
+          children: const [
+            Icon(Icons.search,color: Colors.grey,),
+            SizedBox(
+              width: 10,
+            ),
+            Text(
+             SEARCH_TXT,
+              style: TextStyle(
+                  color: Color.fromRGBO(85, 85, 85, 1),
+                  fontSize: TEXT_REGULAR_2X,
+                  fontWeight: FontWeight.w600),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

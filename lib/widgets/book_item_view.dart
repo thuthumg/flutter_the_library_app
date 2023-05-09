@@ -12,7 +12,7 @@ class BookItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 150,
+      width: 135,//bookVO?.bookImageWidth?.toDouble()
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -21,7 +21,7 @@ class BookItemView extends StatelessWidget {
                   top: MARGIN_MEDIUM_1,
                   left: MARGIN_MEDIUM_2,
                   ),
-              height: 225,
+              height: 200,// bookVO?.bookImageHeight?.toDouble()
               child: Stack(
                 children: [
                   Positioned(
@@ -56,7 +56,8 @@ class BookItemView extends StatelessWidget {
                               builder: (BuildContext context) {
                                 return BottomSheetView(
                                   bookVO: bookVO,
-                                  isMarkAsRead: true,);
+                                  isMarkAsRead: true,
+                                isFromFilterPage: false,);
                               },
                             );
                           },

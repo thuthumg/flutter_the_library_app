@@ -11,6 +11,7 @@ class FilterBottomSheetView extends StatelessWidget {
   final bool isMarkAsRead;
   final String filterTitle;
   final Function(String?) onTapFilterItem;
+  final String autoSelectedData;
 
 
 
@@ -20,13 +21,14 @@ class FilterBottomSheetView extends StatelessWidget {
     required this.bookVO,
     required this.filterTypeList,
     required this.filterTitle,
-    required this.onTapFilterItem
+    required this.onTapFilterItem,
+    required this.autoSelectedData
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: MediaQuery.of(context).size.height * 0.35,
+       // height: MediaQuery.of(context).size.height * 0.35,
         color: PRIMARY_COLOR,
         child:Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,7 +51,11 @@ class FilterBottomSheetView extends StatelessWidget {
             ),
             //action button
             const SizedBox(height: MARGIN_MEDIUM_1,),
-            RadioGroupView(filterTypeList: filterTypeList,onTapFilterItem: (selectedItem){
+            RadioGroupView(
+              autoSelectedData:autoSelectedData,
+              filterTypeList: filterTypeList,
+              onTapFilterItem: (selectedItem){
+              debugPrint("FilterBottomSheetView ${selectedItem}");
               this.onTapFilterItem(selectedItem);
             },)
           ],
