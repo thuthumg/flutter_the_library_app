@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_the_library_app/blocs/library_bloc.dart';
+import 'package:flutter_the_library_app/data/vos/book_vo.dart';
 import 'package:flutter_the_library_app/resources/dimens.dart';
 import 'package:flutter_the_library_app/resources/strings.dart';
 import 'package:flutter_the_library_app/widgets/bottom_sheet_view.dart';
 import 'package:flutter_the_library_app/widgets/filter_bottom_sheet_view.dart';
+import 'package:provider/provider.dart';
 
 class DisplayAndSortingView extends StatefulWidget {
   const DisplayAndSortingView({
@@ -21,94 +24,102 @@ class _DisplayAndSortingViewState extends State<DisplayAndSortingView> {
   List<String> items = ['Recently opened', 'Title', 'Author'];
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // height: MediaQuery.of(context).size.height,
-      padding: const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_2),
-      child: Column(
-        children: [
-          FilterChipView(),
-          Padding(
-            padding: const EdgeInsets.only(
-                top: MARGIN_MEDIUM_1, bottom: MARGIN_MEDIUM_1),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet<void>(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return FilterBottomSheetView(
-                          autoSelectedData: selectedItemData,
-                          bookVO: null,
-                          isMarkAsRead: true,
-                          filterTypeList: items,
-                          filterTitle: SORT_BY_TXT,
-                          onTapFilterItem: (selectedItem) {
-                            setState(() {
-                              debugPrint(
-                                  "DisplayAndSortingView ${selectedItem}");
-                              selectedItemData = selectedItem ?? "";
-                              debugPrint(
-                                  "DisplayAndSortingView 2 ${selectedItemData}");
-                              Navigator.pop(context);
-                            });
-                          },
-                        );
-                      },
-                    );
-                  },
-                  child: SortByFilterView(selectedItemData: selectedItemData),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet<void>(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return FilterBottomSheetView(
-                          autoSelectedData: selectedViewItemData,
-                          bookVO: null,
-                          isMarkAsRead: true,
-                          filterTypeList: viewItems,
-                          filterTitle: VIEW_AS_TXT,
-                          onTapFilterItem: (selectedItem) {
-                            setState(() {
-                              debugPrint(
-                                  "DisplayAndSortingView ${selectedItem}");
-                              selectedViewItemData = selectedItem ?? "";
-                              if (selectedViewItemData == "List") {
-                                selectedViewIcon =
-                                "assets/images/ic_list_gray_64.png";
-                              } else if (selectedViewItemData == "Large grid") {
-                                selectedViewIcon =
-                                "assets/images/ic_large_grid_gray_64.png";
-                              } else {
-                                selectedViewIcon =
-                                "assets/images/ic_small_grid_gray_64.png";
-                              }
+    return Selector<LibraryBloc,List<BookVO>?>(
+        selector: (context,bloc)=> bloc.mReadBookList,
+        builder: (context, readBookList, child) =>
+        Container(
+        // height: MediaQuery.of(context).size.height,
+        padding: const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_2),
+        child: Column(
+          children: [
+            ///category list section
+            FilterChipView(),
+            ///filter section (sortbyfilter + viewasview)
+            Padding(
+              padding: const EdgeInsets.only(
+                  top: MARGIN_MEDIUM_1, bottom: MARGIN_MEDIUM_1),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return FilterBottomSheetView(
+                            autoSelectedData: selectedItemData,
+                            bookVO: null,
+                            isMarkAsRead: true,
+                            filterTypeList: items,
+                            filterTitle: SORT_BY_TXT,
+                            onTapFilterItem: (selectedItem) {
+                              setState(() {
+                                debugPrint(
+                                    "DisplayAndSortingView ${selectedItem}");
+                                selectedItemData = selectedItem ?? "";
+                                debugPrint(
+                                    "DisplayAndSortingView 2 ${selectedItemData}");
+                                Navigator.pop(context);
+                              });
+                            },
+                          );
+                        },
+                      );
+                    },
+                    child: SortByFilterView(selectedItemData: selectedItemData),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return FilterBottomSheetView(
+                            autoSelectedData: selectedViewItemData,
+                            bookVO: null,
+                            isMarkAsRead: true,
+                            filterTypeList: viewItems,
+                            filterTitle: VIEW_AS_TXT,
+                            onTapFilterItem: (selectedItem) {
+                              setState(() {
+                                debugPrint(
+                                    "DisplayAndSortingView ${selectedItem}");
+                                selectedViewItemData = selectedItem ?? "";
+                                if (selectedViewItemData == "List") {
+                                  selectedViewIcon =
+                                  "assets/images/ic_list_gray_64.png";
+                                } else if (selectedViewItemData == "Large grid") {
+                                  selectedViewIcon =
+                                  "assets/images/ic_large_grid_gray_64.png";
+                                } else {
+                                  selectedViewIcon =
+                                  "assets/images/ic_small_grid_gray_64.png";
+                                }
 
-                              Navigator.pop(context);
-                            });
-                          },
-                        );
-                      },
-                    );
-                  },
-                  child: ViewAsView(selectedViewIcon: selectedViewIcon),
-                ),
-              ],
+                                Navigator.pop(context);
+                              });
+                            },
+                          );
+                        },
+                      );
+                    },
+                    child: ViewAsView(selectedViewIcon: selectedViewIcon),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: (selectedViewItemData == "Large grid")
-                ? LargeGridView()
-                : (selectedViewItemData == "Small grid")
-                ? SmallGridView()
-                : (selectedViewItemData == "List")
-                ? ListStyleView()
-                : Container(),
-          ),
-        ],
+
+            ///read book list section
+            Expanded(
+              child: (selectedViewItemData == "Large grid")
+                  ? LargeGridView(mBookList: readBookList)
+                  : (selectedViewItemData == "Small grid")
+                  ? SmallGridView()
+                  : (selectedViewItemData == "List")
+                  ? ListStyleView()
+                  : Container(),
+            ),
+          ],
+        ),
       ),
     );
 
@@ -1005,8 +1016,12 @@ class SmallGridView extends StatelessWidget {
 }
 
 class LargeGridView extends StatelessWidget {
-  const LargeGridView({
+
+  List<BookVO>? mBookList;
+
+  LargeGridView({
     super.key,
+    required this.mBookList
   });
 
   @override
@@ -1020,150 +1035,165 @@ class LargeGridView extends StatelessWidget {
             //mainAxisSpacing: 0, // Spacing between rows
             childAspectRatio: 0.6 //
         ),
-        itemCount: 10,
+        itemCount: mBookList?.length,
         itemBuilder: (BuildContext context, int index) {
-          return Container(
-            //height: 500,
-            // alignment: Alignment.center,
-            //color: Colors.blueGrey[100],
-            child: GestureDetector(
-              onTap: () {},
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                      height: 250,
-                      //  height: 225,
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            top: 0.0,
-                            bottom: 0.0,
-                            left: 0.0,
-                            right: 0.0,
-                            child: Container(
-                              // height: 200,
-                              // margin: const EdgeInsets.only(top: 3.0, bottom: 3.0),
-                              decoration: BoxDecoration(
-                                  color: Colors.black45,
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(6)),
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image:
-                                    // NetworkImage(bookVO?.bookImage??""),
-                                    AssetImage(
-                                        "assets/images/sample_book_img.jpg"),
-                                  )),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SizedBox(
-                                width: 32,
-                                height: 32,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    // showModalBottomSheet<void>(
-                                    //   context: context,
-                                    //   builder: (BuildContext context) {
-                                    //     return BottomSheetView(
-                                    //       bookVO: bookVO,
-                                    //       isMarkAsRead: true,);
-                                    //   },
-                                    // );
-                                  },
-                                  child: const Image(
-                                    image: AssetImage(
-                                        'assets/images/contextualMenu.png'),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                width: 32,
-                                height: 32,
-                                decoration: const BoxDecoration(
-                                  color: Colors.black45,
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Image(
-                                    image: AssetImage(
-                                        'assets/images/earphone.png'),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                width: 32,
-                                height: 32,
-                                decoration: const BoxDecoration(
-                                  color: Colors.black45,
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Image(
-                                    image: AssetImage(
-                                        'assets/images/ic_check_white_64.png'),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      )
+          return LargeGridEachItemView(mBookVO: mBookList![index],);
+        },
+      ),
+    );
+  }
+}
 
-                    // Image(
-                    //     fit: BoxFit.cover,
-                    //     image: AssetImage('assets/images/sample_book_img.jpg')),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(
-                        top: MARGIN_MEDIUM,
-                        left: MARGIN_MEDIUM_2,
-                        right: MARGIN_MEDIUM_2),
-                    child: Text(
-                      "Android App Development",
-                      style: const TextStyle(
-                          fontSize: TEXT_REGULAR_2X,
-                          fontWeight: FontWeight.w600),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+class LargeGridEachItemView extends StatelessWidget {
+
+  BookVO mBookVO;
+
+  LargeGridEachItemView({
+    super.key,
+    required this.mBookVO
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      //height: 500,
+      // alignment: Alignment.center,
+      //color: Colors.blueGrey[100],
+      child: GestureDetector(
+        onTap: () {},
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+                height: 250,
+                //  height: 225,
+                child: Stack(
+                  children: [
+                    Positioned(
+                      top: 0.0,
+                      bottom: 0.0,
+                      left: 0.0,
+                      right: 0.0,
+                      child: Container(
+                        // height: 200,
+                        // margin: const EdgeInsets.only(top: 3.0, bottom: 3.0),
+                        decoration: BoxDecoration(
+                            color: Colors.black45,
+                            borderRadius: const BorderRadius.all(
+                                Radius.circular(6)),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image:
+                               NetworkImage(mBookVO.bookImage??""),
+                              /*AssetImage(
+                                  "assets/images/sample_book_img.jpg"),*/
+                            )),
+                      ),
                     ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(
-                        left: MARGIN_MEDIUM_2, right: MARGIN_MEDIUM_2),
-                    child: Text(
-                      "Ebook.Sample",
-                      style: const TextStyle(
-                          fontSize: TEXT_REGULAR, fontWeight: FontWeight.w400),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          width: 32,
+                          height: 32,
+                          child: GestureDetector(
+                            onTap: () {
+                              // showModalBottomSheet<void>(
+                              //   context: context,
+                              //   builder: (BuildContext context) {
+                              //     return BottomSheetView(
+                              //       bookVO: bookVO,
+                              //       isMarkAsRead: true,);
+                              //   },
+                              // );
+                            },
+                            child: const Image(
+                              image: AssetImage(
+                                  'assets/images/contextualMenu.png'),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          width: 32,
+                          height: 32,
+                          decoration: const BoxDecoration(
+                            color: Colors.black45,
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(8)),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Image(
+                              image: AssetImage(
+                                  'assets/images/earphone.png'),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          width: 32,
+                          height: 32,
+                          decoration: const BoxDecoration(
+                            color: Colors.black45,
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(8)),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Image(
+                              image: AssetImage(
+                                  'assets/images/ic_check_white_64.png'),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                )
+
+              // Image(
+              //     fit: BoxFit.cover,
+              //     image: AssetImage('assets/images/sample_book_img.jpg')),
+            ),
+            Container(
+              padding: const EdgeInsets.only(
+                  top: MARGIN_MEDIUM,
+                  left: MARGIN_MEDIUM_2,
+                  right: MARGIN_MEDIUM_2),
+              child: Text(
+                mBookVO.title??"",
+                style: const TextStyle(
+                    fontSize: TEXT_REGULAR_2X,
+                    fontWeight: FontWeight.w600),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
-          );
-        },
+            Container(
+              padding: const EdgeInsets.only(
+                  left: MARGIN_MEDIUM_2, right: MARGIN_MEDIUM_2),
+              child: Text(
+                mBookVO.author??"Ebook.Sample",
+                style: const TextStyle(
+                    fontSize: TEXT_REGULAR, fontWeight: FontWeight.w400),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

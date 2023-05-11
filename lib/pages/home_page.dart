@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_the_library_app/blocs/home_bloc.dart';
@@ -8,7 +9,7 @@ import 'package:flutter_the_library_app/widgets/ebooks_audiobook_tab_bar_view.da
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
-  List<String> items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
+ // List<String> items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +18,7 @@ class HomePage extends StatelessWidget {
         child: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
+              ///Mark as read books list (CarouselSlider)
               SliverPersistentHeader(
                 floating: true,
                 delegate: FloatingHeader(),
@@ -97,23 +99,13 @@ class HomePage extends StatelessWidget {
 }
 
 class FloatingHeader extends SliverPersistentHeaderDelegate {
-  List<String> items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       margin: EdgeInsets.only(top: MARGIN_MEDIUM_2),
       width: MediaQuery.of(context).size.width,
-      // height: MediaQuery.of(context).size.height*0.3,
       height: MediaQuery.of(context).size.height * 0.3,
-      // decoration: const BoxDecoration(
-      //     gradient: LinearGradient(
-      //         begin: Alignment.centerLeft,
-      //         end: Alignment.centerRight,
-      //         colors: [
-      //           Color.fromRGBO(25, 91, 183, 1),
-      //           Color.fromRGBO(18, 17, 151, 1)
-      //         ])),
       child:  Selector<HomeBloc,List<BookVO>?>(
         selector: (context,bloc)=> bloc.mReadBookList,
         builder: (context, readBookList, child) => CarouselSlider(
@@ -168,16 +160,19 @@ class ReadBookItemView extends StatelessWidget {
           left: 0.0,
           right: 0.0,
           child: Container(
-            margin: const EdgeInsets.only(top: 3.0, bottom: 3.0),
+            margin:  EdgeInsets.only(top: 3.0, bottom: 3.0),
             decoration: BoxDecoration(
                 color: Colors.black45,
                 borderRadius: BorderRadius.all(Radius.circular(8)),
-                image: DecorationImage(
+                image:
+
+                DecorationImage(
                   fit: BoxFit.cover,
                   image:
                   NetworkImage(bookVO.bookImage??""),
                  // AssetImage("assets/images/sample_book_img.jpg"),
-                )),
+                )
+            ),
           ),
         ),
         Align(
