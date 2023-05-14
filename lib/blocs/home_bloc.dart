@@ -27,10 +27,6 @@ class HomeBloc extends ChangeNotifier{
     ///bookslist from Database
     mLibraryModel.getReadBookList(1).listen((booklist) {
       mReadBookList = booklist;
-     /* if(mReadBookList?.isNotEmpty?? false)
-        {
-          mReadBookList?.sort((a,b)=> a.bookId?.compareTo(b.bookId));
-        }*/
       notifyListeners();
     }).onError((error) {
       debugPrint(error.toString());

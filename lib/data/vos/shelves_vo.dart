@@ -8,7 +8,7 @@ part 'shelves_vo.g.dart';
 class ShelvesVO{
 
   @HiveField(0)
-  int? shelfId;
+  String? shelfId;
 
   @HiveField(1)
   String? shelfName;

@@ -3,7 +3,7 @@ import 'package:flutter_the_library_app/resources/dimens.dart';
 
 class EditTextWithLimitView extends StatefulWidget {
   final int maxLength;
-  final Function onTapDone;
+  final Function(String) onTapDone;
   final String paramRenameShelfName;
 
   EditTextWithLimitView({Key? key,
@@ -58,7 +58,7 @@ class _EditTextWithLimitViewState extends State<EditTextWithLimitView> {
           ),
          // initialValue: "Initial value",
           onFieldSubmitted: (value){
-            widget.onTapDone();
+            widget.onTapDone(value);
           },
         ),
         SizedBox(height: 8),

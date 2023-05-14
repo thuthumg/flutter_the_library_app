@@ -1,39 +1,112 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_the_library_app/blocs/library_bloc.dart';
+import 'package:flutter_the_library_app/blocs/shelves_bloc.dart';
+import 'package:flutter_the_library_app/data/vos/book_vo.dart';
+import 'package:flutter_the_library_app/data/vos/shelves_vo.dart';
 import 'package:flutter_the_library_app/pages/create_shelf_page.dart';
 import 'package:flutter_the_library_app/resources/dimens.dart';
+import 'package:provider/provider.dart';
 
 class BookShelvesView extends StatelessWidget {
-  const BookShelvesView({
+  // Function(String?,BuildContext) onTapSaveShelf;
+  // List<ShelvesVO> shelvesVOList;
+  // Function(ShelvesVO,BuildContext) onTapShelfDetail;
+
+
+  BookShelvesView({
     super.key,
+    //required this.onTapSaveShelf,
+    // required this.shelvesVOList,
+    //required this.onTapShelfDetail
   });
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Align(
-          alignment: Alignment.bottomCenter,
-          child:
-          EmptyView(),
-        ),
+    return ChangeNotifierProvider(
+      create: (context) => ShelvesBloc(),
+      child: Selector<ShelvesBloc, List<ShelvesVO>?>(
+        selector: (context, bloc) => bloc.mShelvesList,
+        builder: (context, shelvesVOList, child) =>
+            Stack(
+                        children: [
+                          Visibility(
+                              visible: (shelvesVOList?.length == 0) ? true : false,
+                              child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child:
+                                EmptyView(),
+                              ),),
+                          Visibility(
+                            visible: (shelvesVOList?.length == 0) ? false : true,
+                            child: ShelvesListView(
+                              shelvesList: shelvesVOList,
+                                onTapShelfDetail: (shelfVO) {
+                                  // onTapShelfDetail(shelfVO,context);
 
-       // ShelvesListView(),
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (buildContext) =>
+                                          CreateShelfPage(
+                                                                isCreateNewShelf: false,
+                                                                mShelvesVO: shelfVO,
+                                                                onTapSaveShelf: (shelfName,context){},
+                                                                onTapDeleteShelf: (shelfVO,buildContextParam){
+                                                                  ShelvesBloc bloc = Provider.of<ShelvesBloc>(
+                                                                      context,
+                                                                      listen: false);
+                                                                  bloc.onTapDeleteShelfVO(shelfVO!);
+                                                                  Navigator.pop(buildContextParam);
+                                                                },
 
-        Align(
-          alignment: Alignment.bottomCenter,
-          child:
-          ShelfCreateNewView(),
-        )
-      ],
+                                                              ),
+
+                                      //                   ),
+                                      //             ),
+                                      //       ),
+                                      // )
 
 
 
-    );
+                                    ),
+                                  );
+                                }
+                            ),
+                          ),
+                          // ShelvesListView(),
+
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child:
+                            ShelfCreateNewView(onTapSaveShelf: (shelfName, context) {
+                              // onTapSaveShelf(shelfName,context);
+
+                              ShelvesBloc bloc = Provider.of<ShelvesBloc>(
+                                  context,
+                                  listen: false);
+                              bloc.saveShelfVO(
+                                  ShelvesVO("", shelfName, [], false));
+                              Navigator.pop(context);
+                            },),
+                          )
+                        ],
+
+
+                      ),
+
+            ),
+      );
   }
 }
+
 class ShelvesListView extends StatelessWidget {
-  const ShelvesListView({
+  List<ShelvesVO>? shelvesList;
+  Function(ShelvesVO?) onTapShelfDetail;
+
+  ShelvesListView({
     super.key,
+    required this.shelvesList,
+    required this.onTapShelfDetail
   });
 
   @override
@@ -42,10 +115,12 @@ class ShelvesListView extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: ListView.builder(
         scrollDirection: Axis.vertical,
-        itemCount: 10,
+        itemCount: shelvesList?.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
-            onTap: () {},
+            onTap: () {
+              onTapShelfDetail(shelvesList?.elementAt(index));
+            },
             child: Column(
               children: [
                 Row(
@@ -57,18 +132,19 @@ class ShelvesListView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          height: 90,
-                          width: 60,
+                          height: 80,
+                          width: 70,
                           margin: const EdgeInsets.only(
                               top: MARGIN_MEDIUM, bottom: MARGIN_MEDIUM),
                           decoration: const BoxDecoration(
                               color: Colors.black45,
-                              borderRadius: BorderRadius.all(Radius.circular(5)),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(5)),
                               image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image:
                                 // NetworkImage(bookVO?.bookImage??""),
-                                AssetImage("assets/images/sample_book_img.jpg"),
+                                AssetImage("assets/images/empty_book.png"),
                               )),
                         ),
                         Column(
@@ -76,15 +152,20 @@ class ShelvesListView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              width: MediaQuery.of(context).size.width * 0.6,
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width * 0.6,
                               padding: const EdgeInsets.only(
-                                 top: MARGIN_MEDIUM,
+                                  top: MARGIN_MEDIUM,
                                   left: MARGIN_MEDIUM_2,
                                   right: MARGIN_MEDIUM_2),
-                              child: const Text(
-                                "10 Interaction Design Books to Read",
+                              child: Text(
+                                shelvesList
+                                    ?.elementAt(index)
+                                    .shelfName ?? "",
                                 style: TextStyle(
-                                  color: Colors.black,
+                                    color: Colors.black,
                                     fontSize: TEXT_REGULAR_3X,
                                     fontWeight: FontWeight.w500),
                                 maxLines: 1,
@@ -93,9 +174,16 @@ class ShelvesListView extends StatelessWidget {
                             ),
                             Container(
                               padding: const EdgeInsets.only(
-                                  left: MARGIN_MEDIUM_2, right: MARGIN_MEDIUM_2),
-                              child: const Text(
-                                "3 books",
+                                  left: MARGIN_MEDIUM_2,
+                                  right: MARGIN_MEDIUM_2),
+                              child: Text(
+                                (shelvesList
+                                    ?.elementAt(index)
+                                    .booksList
+                                    ?.length == 0) ? "0 book" : "${shelvesList
+                                    ?.elementAt(index)
+                                    .booksList
+                                    ?.length} books",
                                 style: TextStyle(
                                     fontSize: TEXT_REGULAR,
                                     fontWeight: FontWeight.w400),
@@ -115,11 +203,11 @@ class ShelvesListView extends StatelessWidget {
                       //   borderRadius: BorderRadius.all(Radius.circular(8)),
                       // ),
                       child: const Padding(
-                        padding: EdgeInsets.only(
-                            top: MARGIN_MEDIUM_2,
-
-                            right: MARGIN_MEDIUM_2),
-                        child: Icon(Icons.arrow_forward_ios_sharp,color: Colors.grey,)
+                          padding: EdgeInsets.only(
+                              top: MARGIN_MEDIUM_2,
+                              right: MARGIN_MEDIUM_2),
+                          child: Icon(
+                            Icons.arrow_forward_ios_sharp, color: Colors.grey,)
                       ),
                     )
                   ],
@@ -139,18 +227,29 @@ class ShelvesListView extends StatelessWidget {
 
 
 class ShelfCreateNewView extends StatelessWidget {
-  const ShelfCreateNewView({
+  Function(String?, BuildContext) onTapSaveShelf;
+
+  ShelfCreateNewView({
     super.key,
+    required this.onTapSaveShelf
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => CreateShelfPage(isCreateNewShelf: false,),
+            builder: (context) =>
+                CreateShelfPage(
+                  isCreateNewShelf: true,
+                  mShelvesVO: null,
+                  onTapSaveShelf: (shelfName, context) {
+                    onTapSaveShelf(shelfName, context);
+                  },
+                  onTapDeleteShelf: (shelfVO, context) {},
+                ),
           ),
         );
       },
@@ -159,14 +258,14 @@ class ShelfCreateNewView extends StatelessWidget {
         height: 45,
         margin: const EdgeInsets.only(bottom: MARGIN_MEDIUM),
         decoration: BoxDecoration(
-            color: Color.fromRGBO(0, 122, 201, 1),
-            borderRadius: const BorderRadius.all(Radius.circular(25)),
+          color: Color.fromRGBO(0, 122, 201, 1),
+          borderRadius: const BorderRadius.all(Radius.circular(25)),
 
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.edit,color: Colors.white,),
+            Icon(Icons.edit, color: Colors.white,),
             SizedBox(width: MARGIN_MEDIUM,),
             Text(
               "Create new",
@@ -198,7 +297,8 @@ class EmptyView extends StatelessWidget {
         Container(
             width: 200,
             height: 150,
-            child: Image(image:AssetImage("assets/images/empty_shelf_icon.png") ,)),
+            child: Image(
+              image: AssetImage("assets/images/empty_shelf_icon.png"),)),
         Text(
           "No shelves",
           style: const TextStyle(

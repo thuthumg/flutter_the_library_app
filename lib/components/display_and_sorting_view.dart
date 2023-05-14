@@ -13,7 +13,10 @@ class DisplayAndSortingView extends StatelessWidget {
   Function(String?,BuildContext) onTapChangeGridView;
 
   List<BookVO>? sortedBookList;
-
+  List<BookVO>? readBookList;
+  String selectedSortedItemData;
+  String selectedViewItemData;
+  String selectedViewIcon;
  // String selectedItemData = "Recently opened";
 //  String selectedViewItemData = "List";
 //  String selectedViewIcon = "assets/images/ic_list_gray_64.png";
@@ -25,7 +28,11 @@ class DisplayAndSortingView extends StatelessWidget {
       required this.onTapCategoryItem,
       required this.onTapSortFilterItem,
       required this.sortedBookList,
-      required this.onTapChangeGridView});
+      required this.onTapChangeGridView,
+      required this.readBookList,
+      required this.selectedSortedItemData,
+      required this.selectedViewItemData,
+      required this.selectedViewIcon});
 
   @override
   Widget build(BuildContext context) {
@@ -52,16 +59,13 @@ class DisplayAndSortingView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 /// recently opened , title , author sort filter
-                Selector<LibraryBloc,String?>(
-                selector: (context,bloc)=> bloc.selectedItemData,
-              builder: (context, selectedSortedItemData, child)
-                  => GestureDetector(
+                GestureDetector(
                     onTap: () {
                       showModalBottomSheet<void>(
                         context: context,
                         builder: (BuildContext context) {
                           return FilterBottomSheetView(
-                            autoSelectedData: selectedSortedItemData??"Recently opened",
+                            autoSelectedData: selectedSortedItemData,
                             bookVO: null,
                             isMarkAsRead: true,
                             filterTypeList: items,
@@ -86,18 +90,15 @@ class DisplayAndSortingView extends StatelessWidget {
                     },
                     child: SortByFilterView(selectedItemData: selectedSortedItemData??"Recently opened"),
                   ),
-                ),
+
                 ///large grid , small grid , list view filter
-                Selector<LibraryBloc,String?>(
-                  selector: (context,bloc)=> bloc.selectedViewItemData,
-                  builder: (context, selectedViewItemData, child)
-                  => GestureDetector(
+                 GestureDetector(
                     onTap: () {
                       showModalBottomSheet<void>(
                         context: context,
                         builder: (BuildContext context) {
                           return FilterBottomSheetView(
-                            autoSelectedData: selectedViewItemData??"List",
+                            autoSelectedData: selectedViewItemData,
                             bookVO: null,
                             isMarkAsRead: true,
                             filterTypeList: viewItems,
@@ -113,22 +114,22 @@ class DisplayAndSortingView extends StatelessWidget {
                         },
                       );
                     },
-                    child:  Selector<LibraryBloc,String?>(
-                        selector: (context,bloc)=> bloc.selectedViewIcon,
-                        builder: (context, selectedViewIcon, child)
-                        => ViewAsView(selectedViewIcon: selectedViewIcon??"assets/images/ic_list_gray_64.png")),
+                    child:
+                    // Selector<LibraryBloc,String?>(
+                    //     selector: (context,bloc)=> bloc.selectedViewIcon,
+                    //     builder: (context, selectedViewIcon, child)
+                    //     =>
+
+                            ViewAsView(selectedViewIcon: selectedViewIcon),
+                   // ),
                   ),
-                ),
+
               ],
             ),
           ),
 
           ///read book list section
-          Selector<LibraryBloc, List<BookVO>?>(
-            selector: (context, bloc) => bloc.mReadBookList,
-            builder: (context, readBookList, child) => Selector<LibraryBloc, String>(
-              selector: (context, bloc) => bloc.selectedViewItemData,
-              builder: (context, selectedViewItemData, child) => Expanded(
+          Expanded(
                 child: (selectedViewItemData == "Large grid")
                     ? LargeGridView(mBookList: readBookList)
                     : (selectedViewItemData == "Small grid")
@@ -137,8 +138,7 @@ class DisplayAndSortingView extends StatelessWidget {
                             ? ListStyleView(mBookList: readBookList)
                             : Container(),
               ),
-            ),
-          ),
+
         ],
       ),
     );
@@ -222,8 +222,6 @@ class _FilterChipViewState extends State<FilterChipView> {
 
                     return GestureDetector(
                       onTap: () {
-                        // widget.onTapCategoryItem(widget.categoryList?.elementAt(index));
-
                         setState(() {
                           if (isSelected) {
                             selectedChips.remove(chip);
@@ -232,8 +230,6 @@ class _FilterChipViewState extends State<FilterChipView> {
                             selectedChips.add(chip!);
                             widget.onTapCategoryItem(selectedChips);
                           }
-                          // bloc.onTapCategoryFilter(widget.categoryList?.elementAt(index));
-                          // print("check selected data ${widget.categoryList?.elementAt(index).selected}");
                         });
                       },
                       child: Padding(
@@ -471,7 +467,7 @@ class ListEachItemView extends StatelessWidget {
                     context: context,
                     builder: (BuildContext context) {
                       return BottomSheetView(
-                        bookVO: null,
+                        bookVO: mBookVO,
                         isMarkAsRead: true,
                         isFromFilterPage: true,
                       );
