@@ -25,18 +25,20 @@ class HomeBloc extends ChangeNotifier{
     }).catchError((error){debugPrint(error.toString());});
 
     ///bookslist from Database
-    mLibraryModel.getReadBookList().listen((booklist) {
+    mLibraryModel.getReadBookList(1).listen((booklist) {
       mReadBookList = booklist;
-      // if(mReadBookList?.isNotEmpty?? false)
-      //   {
-      //     mReadBookList?.sort((a,b)=> (a.bookId??0)-(b.bookId??0));
-      //   }
-
+     /* if(mReadBookList?.isNotEmpty?? false)
+        {
+          mReadBookList?.sort((a,b)=> a.bookId?.compareTo(b.bookId));
+        }*/
       notifyListeners();
     }).onError((error) {
       debugPrint(error.toString());
     });
   }
 
+  void onTapItem(){
+
+  }
 
 }

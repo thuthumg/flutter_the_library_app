@@ -38,11 +38,40 @@ class LibraryModelImpl extends LibraryModel{
   }
 
   @override
-  Stream<List<BookVO>> getReadBookList() {
+  Stream<List<BookVO>> getReadBookList(int sortingFlag) {
     return mBookDao
         .getAllBooksEventStream()
-        .startWith(mBookDao.getBookVOListStream())
-        .map((event)=> mBookDao.getAllBooks());
+        .startWith(mBookDao.getBookVOListStream(sortingFlag))
+        .map((event)=> mBookDao.getAllBooks(sortingFlag));
+  }
+
+  @override
+  Stream<List<BookVO>> getCategoryList() {
+    return mBookDao
+        .getAllBooksEventStream()
+        .startWith(mBookDao.getCategoryListStream())
+        .map((event) => mBookDao.getCategoryList());
+  }
+
+  @override
+  Stream<List<BookVO>> getReadBookListByCategory(List<BookVO>? selectedCategoryBookList) {
+
+    print("Stream selected data =${selectedCategoryBookList?.length}");
+
+    if(selectedCategoryBookList?.length == 0)
+      {
+        return mBookDao
+            .getAllBooksEventStream()
+            .startWith(mBookDao.getBookVOListStream(1))
+            .map((event)=> mBookDao.getAllBooks(1));
+      }else{
+
+      return mBookDao
+          .getAllBooksEventStream()
+          .startWith(mBookDao.getBookVOListByCategoryStream(selectedCategoryBookList))
+          .map((event)=> mBookDao.getAllBooksByCategory(selectedCategoryBookList));
+    }
+
   }
 
 

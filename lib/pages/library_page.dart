@@ -8,15 +8,12 @@ class LibraryPage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
    return
-     ChangeNotifierProvider(
-       create: (context) => LibraryBloc(),
-       child: Container(
-        //  width: MediaQuery.of(context).size.width,
-        //  height: MediaQuery.of(context).size.height,
-         color: Color.fromRGBO(223, 235, 249, 1),
-         child: YourBooksYourShelvesTabBarView(),
-         // color: BACKGROUND_COLOR,
-       ),
+     Container(
+      //  width: MediaQuery.of(context).size.width,
+      //  height: MediaQuery.of(context).size.height,
+       color: Color.fromRGBO(223, 235, 249, 1),
+       child: YourBooksYourShelvesTabBarView(),
+       // color: BACKGROUND_COLOR,
      );
 
   }

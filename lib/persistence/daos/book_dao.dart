@@ -14,9 +14,10 @@ class BookDao {
 
   void saveBookVO(BookVO bookVO) async {
     bookVO.bookId = generateCurrentTimeUuid();
+    bookVO.selected = false;
 
     debugPrint("check uuid "+generateCurrentTimeUuid());
-    List<BookVO> bookList = getAllBooks();
+    List<BookVO> bookList = getAllBooks(1);
     if(bookList.isNotEmpty && bookList.length > 0)
       {
 
@@ -68,10 +69,90 @@ class BookDao {
     return getBookBox().get(bookId);
   }
 
-  List<BookVO> getAllBooks() {
-    return getBookBox().values.toList();
+  List<BookVO> getAllBooks(int sortingFlag) {
+
+    final data = getBookBox().values.toList();
+    List<BookVO> bookList;
+    switch(sortingFlag)
+    {
+      case 1:
+        data.sort((a, b) => (a.bookId??"").compareTo(b.bookId??""));
+        break;
+      case 2:
+        data.sort((a,b) => (a.title??"").compareTo(b.title??""));
+        break;
+      case 3:
+        data.sort((a,b) => (a.author??"").compareTo(b.author??""));
+        break;
+      default:
+        data.sort((a, b) => a.bookId?.compareTo(b.bookId??"")??0);
+    }
+
+    return  data;
   }
 
+  List<BookVO> getAllBooksByCategory(List<BookVO>? selectedCategoryBookList) {
+
+    final data = getBookBox().values.toList();
+    List<BookVO> selectedDataList = [];
+
+    selectedCategoryBookList?.forEach((selectedCategoryObj) {
+      selectedDataList.addAll(data.where((element) => element.categoryId == selectedCategoryObj.categoryId).toList());
+    });
+
+    return  selectedDataList;
+  }
+
+/*
+  List<BookVO> getCategoryList(){
+    if (getAllBooks(1) != null && (getAllBooks(1).isNotEmpty ?? false)) {
+
+      List<BookVO> distinctBooks = [];
+
+      getAllBooks(1).forEach((book) {
+        if (distinctBooks.isEmpty || !distinctBooks.any((distinctBook) => distinctBook.categoryId == book.categoryId)) {
+          distinctBooks.add(book);
+        }
+      });
+
+      print(distinctBooks);
+
+      return distinctBooks;
+
+      *//*  getAllBooks(1)
+         // .map((bookVO) => bookVO.categoryName??"")
+          .toSet()
+          .toList();*//*
+
+    } else {
+      return [];
+    }
+  }*/
+
+  List<BookVO> getCategoryList(){
+    if (getAllBooks(1) != null && (getAllBooks(1).isNotEmpty ?? false)) {
+
+      List<BookVO> distinctBooks = [];
+
+      getAllBooks(1).forEach((book) {
+        if (distinctBooks.isEmpty || !distinctBooks.any((distinctBook) => distinctBook.categoryId == book.categoryId)) {
+          distinctBooks.add(book);
+        }
+      });
+
+      print(distinctBooks);
+
+      return distinctBooks;
+
+      /*  getAllBooks(1)
+         // .map((bookVO) => bookVO.categoryName??"")
+          .toSet()
+          .toList();*/
+
+    } else {
+      return [];
+    }
+  }
 
 
   Box<BookVO> getBookBox() {
@@ -83,8 +164,19 @@ class BookDao {
     return getBookBox().watch();
   }
 
-  Stream<List<BookVO>> getBookVOListStream() {
-    return Stream.value(getAllBooks().toList());
+  Stream<List<BookVO>> getBookVOListStream(int sortingFlag) {
+    return Stream.value(getAllBooks(sortingFlag).toList());
+  }
+
+  Stream<List<BookVO>> getBookVOListByCategoryStream(List<BookVO>? selectedCategoryBookList) {
+    return Stream.value(getAllBooksByCategory(selectedCategoryBookList).toList());
+  }
+
+
+  Stream<List<BookVO>> getCategoryListStream() {
+    // final distinctData = getBookBox().values.map((item) => item.categoryName).toSet().toList();
+
+    return Stream.value(getCategoryList().toSet().toList());
   }
 
 

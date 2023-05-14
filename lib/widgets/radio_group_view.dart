@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_the_library_app/blocs/library_bloc.dart';
+import 'package:provider/provider.dart';
 
 class RadioGroupView extends StatefulWidget {
-  final Function(String?) onTapFilterItem;
+  final Function(String?,BuildContext) onTapFilterItem;
   final List<String> filterTypeList;
   String autoSelectedData;
 
@@ -38,7 +40,8 @@ class _RadioGroupWidgetState extends State<RadioGroupView> {
           setState(() {
             _selectedItem = value;
             debugPrint("RadioGroupView ${_selectedItem}");
-            widget.onTapFilterItem(_selectedItem);
+
+            widget.onTapFilterItem(_selectedItem,context);
 
           });
         },

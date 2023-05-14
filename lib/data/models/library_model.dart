@@ -9,5 +9,7 @@ abstract class LibraryModel{
 
   ///Database
  Future<BookVO?> getBookDetails(BookVO bookVO);
- Stream<List<BookVO>> getReadBookList();
+ Stream<List<BookVO>> getReadBookList(int sortingFlag);
+  Stream<List<BookVO>> getReadBookListByCategory(List<BookVO>? selectedCategory);
+  Stream<List<BookVO>> getCategoryList();
 }

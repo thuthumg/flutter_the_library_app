@@ -123,7 +123,11 @@ class _CreateShelfPageState extends State<CreateShelfPage> {
            Visibility(
              visible:  !widget.isCreateNewShelf,
              child: Expanded(
-                 child: DisplayAndSortingView()),
+                 child: DisplayAndSortingView(
+                   onTapSortFilterItem: (){},
+                   onTapCategoryItem: (bookVO){},
+                   sortedBookList: [],
+                 )),
            )
 
          ],

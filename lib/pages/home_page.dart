@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_the_library_app/blocs/home_bloc.dart';
 import 'package:flutter_the_library_app/data/vos/book_vo.dart';
+import 'package:flutter_the_library_app/pages/book_detail_page.dart';
 import 'package:flutter_the_library_app/resources/dimens.dart';
 import 'package:flutter_the_library_app/widgets/ebooks_audiobook_tab_bar_view.dart';
 
@@ -110,7 +111,13 @@ class FloatingHeader extends SliverPersistentHeaderDelegate {
         selector: (context,bloc)=> bloc.mReadBookList,
         builder: (context, readBookList, child) => CarouselSlider(
           items: readBookList?.map((item) {
-            return Container(width: 200, child: ReadBookItemView(bookVO:item));
+            return Container(width: 200, child: ReadBookItemView(bookVO:item,
+            onTapItem: (){
+
+              _navigateToBookDetailsScreen(context,item);
+
+
+            },));
           }).toList(),
           options: CarouselOptions(
             // aspectRatio: 16/8,
@@ -144,10 +151,12 @@ class FloatingHeader extends SliverPersistentHeaderDelegate {
 class ReadBookItemView extends StatelessWidget {
 
   final BookVO bookVO;
+  Function onTapItem;
 
-  const ReadBookItemView({
+  ReadBookItemView({
     super.key,
-    required this.bookVO
+    required this.bookVO,
+    required this.onTapItem
   });
 
   @override
@@ -159,19 +168,24 @@ class ReadBookItemView extends StatelessWidget {
           bottom: 0.0,
           left: 0.0,
           right: 0.0,
-          child: Container(
-            margin:  EdgeInsets.only(top: 3.0, bottom: 3.0),
-            decoration: BoxDecoration(
-                color: Colors.black45,
-                borderRadius: BorderRadius.all(Radius.circular(8)),
-                image:
-
-                DecorationImage(
-                  fit: BoxFit.cover,
+          child: GestureDetector(
+            onTap: (){
+              onTapItem();
+            },
+            child: Container(
+              margin:  EdgeInsets.only(top: 3.0, bottom: 3.0),
+              decoration: BoxDecoration(
+                  color: Colors.black45,
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
                   image:
-                  NetworkImage(bookVO.bookImage??""),
-                 // AssetImage("assets/images/sample_book_img.jpg"),
-                )
+
+                  DecorationImage(
+                    fit: BoxFit.cover,
+                    image:
+                    NetworkImage(bookVO.bookImage??""),
+                   // AssetImage("assets/images/sample_book_img.jpg"),
+                  )
+              ),
             ),
           ),
         ),
@@ -228,4 +242,15 @@ class ReadBookItemView extends StatelessWidget {
       ],
     );
   }
+}
+Future<dynamic> _navigateToBookDetailsScreen(BuildContext context, BookVO? bookVO) {
+
+
+
+  return Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => BookDetailPage(bookVO: bookVO,),
+    ),
+  );
 }

@@ -80,6 +80,10 @@ class BookVO{
   String? updatedDate;
 
 
+  @HiveField(17)
+  bool? selected;
+
+
   BookVO(
       this.bookId,
       this.categoryId,
@@ -97,10 +101,14 @@ class BookVO{
       this.book_uri,
       this.publisher,
       this.title,
-      this.updatedDate);
+      this.updatedDate,
+      this.selected);
 
   factory BookVO.fromJson(Map<String,dynamic> json) =>_$BookVOFromJson(json);
   Map<String,dynamic> toJson()=> _$BookVOToJson(this);
 
-
+  @override
+  String toString() {
+    return 'BookVO{bookId: $bookId, categoryId: $categoryId, categoryName: $categoryName, author: $author, bookImage: $bookImage, bookImageWidth: $bookImageWidth, bookImageHeight: $bookImageHeight, bookReviewLink: $bookReviewLink, contributor: $contributor, contributorNote: $contributorNote, createdDate: $createdDate, description: $description, price: $price, book_uri: $book_uri, publisher: $publisher, title: $title, updatedDate: $updatedDate, selected: $selected}';
+  }
 }

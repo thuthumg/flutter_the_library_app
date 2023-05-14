@@ -34,13 +34,14 @@ class BookVOAdapter extends TypeAdapter<BookVO> {
       fields[14] as String?,
       fields[15] as String?,
       fields[16] as String?,
+      fields[17] as bool?,
     );
   }
 
   @override
   void write(BinaryWriter writer, BookVO obj) {
     writer
-      ..writeByte(17)
+      ..writeByte(18)
       ..writeByte(0)
       ..write(obj.bookId)
       ..writeByte(1)
@@ -74,7 +75,9 @@ class BookVOAdapter extends TypeAdapter<BookVO> {
       ..writeByte(15)
       ..write(obj.title)
       ..writeByte(16)
-      ..write(obj.updatedDate);
+      ..write(obj.updatedDate)
+      ..writeByte(17)
+      ..write(obj.selected);
   }
 
   @override
@@ -110,6 +113,7 @@ BookVO _$BookVOFromJson(Map<String, dynamic> json) => BookVO(
       json['publisher'] as String?,
       json['title'] as String?,
       json['updated_date'] as String?,
+      json['selected'] as bool?,
     );
 
 Map<String, dynamic> _$BookVOToJson(BookVO instance) => <String, dynamic>{
@@ -130,4 +134,5 @@ Map<String, dynamic> _$BookVOToJson(BookVO instance) => <String, dynamic>{
       'publisher': instance.publisher,
       'title': instance.title,
       'updated_date': instance.updatedDate,
+      'selected': instance.selected,
     };
