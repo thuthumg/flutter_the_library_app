@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_the_library_app/blocs/home_bloc.dart';
 import 'package:flutter_the_library_app/blocs/library_bloc.dart';
 import 'package:flutter_the_library_app/data/vos/book_vo.dart';
 import 'package:flutter_the_library_app/resources/dimens.dart';
@@ -10,12 +9,14 @@ import 'package:provider/provider.dart';
 
 class DisplayAndSortingView extends StatelessWidget {
   Function(List<BookVO>?) onTapCategoryItem;
-  Function onTapSortFilterItem;
+  Function(String?,BuildContext) onTapSortFilterItem;
+  Function(String?,BuildContext) onTapChangeGridView;
+
   List<BookVO>? sortedBookList;
 
-  String selectedItemData = "Recently opened";
-  String selectedViewItemData = "List";
-  String selectedViewIcon = "assets/images/ic_list_gray_64.png";
+ // String selectedItemData = "Recently opened";
+//  String selectedViewItemData = "List";
+//  String selectedViewIcon = "assets/images/ic_list_gray_64.png";
   List<String> viewItems = ['List', 'Large grid', 'Small grid'];
   List<String> items = ['Recently opened', 'Title', 'Author'];
 
@@ -23,7 +24,8 @@ class DisplayAndSortingView extends StatelessWidget {
       {super.key,
       required this.onTapCategoryItem,
       required this.onTapSortFilterItem,
-      required this.sortedBookList});
+      required this.sortedBookList,
+      required this.onTapChangeGridView});
 
   @override
   Widget build(BuildContext context) {
@@ -34,13 +36,6 @@ class DisplayAndSortingView extends StatelessWidget {
       child: Column(
         children: [
           ///category list section
-          //     Selector<LibraryBloc,List<BookVO>?>(
-          //     selector: (context,bloc)=> bloc.mReadBookList,
-          // builder: (context, readBookList, child) {
-          //   print("check read book list from Display and Sorting view= ${readBookList}");
-          //
-          //
-          // return
 
           FilterChipView(
             categoryList: sortedBookList,
@@ -48,9 +43,7 @@ class DisplayAndSortingView extends StatelessWidget {
               onTapCategoryItem(bookVOList);
             },
           ),
-          //  }
 
-          // ),
           ///filter section (sortbyfilter + viewasview)
           Padding(
             padding: const EdgeInsets.only(
@@ -58,82 +51,73 @@ class DisplayAndSortingView extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    /// recently opened , title , author sort filter
+                /// recently opened , title , author sort filter
+                Selector<LibraryBloc,String?>(
+                selector: (context,bloc)=> bloc.selectedItemData,
+              builder: (context, selectedSortedItemData, child)
+                  => GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return FilterBottomSheetView(
+                            autoSelectedData: selectedSortedItemData??"Recently opened",
+                            bookVO: null,
+                            isMarkAsRead: true,
+                            filterTypeList: items,
+                            filterTitle: SORT_BY_TXT,
+                            onTapFilterItem: (selectedItem, buildContext) {
+                              onTapSortFilterItem(selectedItem,buildContext!);
+                              // LibraryBloc bloc = Provider.of<LibraryBloc>(buildContext!, listen: false);
+                              // bloc.onTapSortFilter(sortFilterId);
+                              //  bloc.onTapSortFilter(sortFilterId);
 
-                    showModalBottomSheet<void>(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return FilterBottomSheetView(
-                          autoSelectedData: selectedItemData,
-                          bookVO: null,
-                          isMarkAsRead: true,
-                          filterTypeList: items,
-                          filterTitle: SORT_BY_TXT,
-                          onTapFilterItem: (selectedItem, buildContext) {
-                            int sortFilterId = 1;
-                            if (selectedItem == "Recently opened") {
-                              sortFilterId = 1;
-                            } else if (selectedItem == "Title") {
-                              sortFilterId = 2;
-                            } else if (selectedItem == "Author") {
-                              sortFilterId = 3;
-                            }
-                            // LibraryBloc bloc = Provider.of<LibraryBloc>(buildContext!, listen: false);
-                            // bloc.onTapSortFilter(sortFilterId);
-                            //  bloc.onTapSortFilter(sortFilterId);
-
-                            //  setState(() {
-                            debugPrint("DisplayAndSortingView ${selectedItem}");
-                            selectedItemData = selectedItem ?? "";
-                            debugPrint(
-                                "DisplayAndSortingView 2 ${selectedItemData}");
-                            Navigator.pop(context);
-                            // });
-                          },
-                        );
-                      },
-                    );
-                  },
-                  child: SortByFilterView(selectedItemData: selectedItemData),
+                              //  setState(() {
+                              // debugPrint("DisplayAndSortingView ${selectedItem}");
+                              // selectedItemData = selectedItem ?? "";
+                              // debugPrint(
+                              //     "DisplayAndSortingView 2 ${selectedItemData}");
+                             // Navigator.pop(context);
+                              // });
+                            },
+                          );
+                        },
+                      );
+                    },
+                    child: SortByFilterView(selectedItemData: selectedSortedItemData??"Recently opened"),
+                  ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    ///large grid , small grid , list view filter
+                ///large grid , small grid , list view filter
+                Selector<LibraryBloc,String?>(
+                  selector: (context,bloc)=> bloc.selectedViewItemData,
+                  builder: (context, selectedViewItemData, child)
+                  => GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return FilterBottomSheetView(
+                            autoSelectedData: selectedViewItemData??"List",
+                            bookVO: null,
+                            isMarkAsRead: true,
+                            filterTypeList: viewItems,
+                            filterTitle: VIEW_AS_TXT,
+                            onTapFilterItem: (selectedItem, buildContext) {
+                              onTapChangeGridView(selectedItem, buildContext!);
 
-                    showModalBottomSheet<void>(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return FilterBottomSheetView(
-                          autoSelectedData: selectedViewItemData,
-                          bookVO: null,
-                          isMarkAsRead: true,
-                          filterTypeList: viewItems,
-                          filterTitle: VIEW_AS_TXT,
-                          onTapFilterItem: (selectedItem, buildContext) {
-                            // setState(() {
-                            debugPrint("DisplayAndSortingView ${selectedItem}");
-                            selectedViewItemData = selectedItem ?? "";
-                            if (selectedViewItemData == "List") {
-                              selectedViewIcon =
-                                  "assets/images/ic_list_gray_64.png";
-                            } else if (selectedViewItemData == "Large grid") {
-                              selectedViewIcon =
-                                  "assets/images/ic_large_grid_gray_64.png";
-                            } else {
-                              selectedViewIcon =
-                                  "assets/images/ic_small_grid_gray_64.png";
-                            }
+                              // setState(() {
 
-                            Navigator.pop(context);
-                            //  });
-                          },
-                        );
-                      },
-                    );
-                  },
-                  child: ViewAsView(selectedViewIcon: selectedViewIcon),
+                              //  });
+                            },
+                          );
+                        },
+                      );
+                    },
+                    child:  Selector<LibraryBloc,String?>(
+                        selector: (context,bloc)=> bloc.selectedViewIcon,
+                        builder: (context, selectedViewIcon, child)
+                        => ViewAsView(selectedViewIcon: selectedViewIcon??"assets/images/ic_list_gray_64.png")),
+                  ),
                 ),
               ],
             ),
@@ -142,14 +126,17 @@ class DisplayAndSortingView extends StatelessWidget {
           ///read book list section
           Selector<LibraryBloc, List<BookVO>?>(
             selector: (context, bloc) => bloc.mReadBookList,
-            builder: (context, readBookList, child) => Expanded(
-              child: (selectedViewItemData == "Large grid")
-                  ? LargeGridView(mBookList: readBookList)
-                  : (selectedViewItemData == "Small grid")
-                      ? SmallGridView(mBookList: readBookList)
-                      : (selectedViewItemData == "List")
-                          ? ListStyleView(mBookList: readBookList)
-                          : Container(),
+            builder: (context, readBookList, child) => Selector<LibraryBloc, String>(
+              selector: (context, bloc) => bloc.selectedViewItemData,
+              builder: (context, selectedViewItemData, child) => Expanded(
+                child: (selectedViewItemData == "Large grid")
+                    ? LargeGridView(mBookList: readBookList)
+                    : (selectedViewItemData == "Small grid")
+                        ? SmallGridView(mBookList: readBookList)
+                        : (selectedViewItemData == "List")
+                            ? ListStyleView(mBookList: readBookList)
+                            : Container(),
+              ),
             ),
           ),
         ],
@@ -157,9 +144,6 @@ class DisplayAndSortingView extends StatelessWidget {
     );
   }
 }
-
-/*ChangeNotifierProvider(
-      create: (context) => LibraryBloc(),*/
 
 class FilterChipView extends StatefulWidget {
   Function(List<BookVO>?) onTapCategoryItem;
@@ -174,18 +158,18 @@ class FilterChipView extends StatefulWidget {
 
 class _FilterChipViewState extends State<FilterChipView> {
   // Function onTapCategoryItem;
-  final List _chips = [
-    {"name": "", "selected": true},
-    {"name": "Ebooks", "selected": false},
-    {"name": "Purchases", "selected": true},
-    {"name": "Samples", "selected": false},
-    {"name": "Downloaded", "selected": false},
-    {"name": "Uploads", "selected": false},
-    {"name": "Not started", "selected": false},
-    {"name": "Chip 7", "selected": false},
-    {"name": "Chip 8", "selected": false},
-    {"name": "Chip 9", "selected": false},
-  ];
+  // final List _chips = [
+  //   {"name": "", "selected": true},
+  //   {"name": "Ebooks", "selected": false},
+  //   {"name": "Purchases", "selected": true},
+  //   {"name": "Samples", "selected": false},
+  //   {"name": "Downloaded", "selected": false},
+  //   {"name": "Uploads", "selected": false},
+  //   {"name": "Not started", "selected": false},
+  //   {"name": "Chip 7", "selected": false},
+  //   {"name": "Chip 8", "selected": false},
+  //   {"name": "Chip 9", "selected": false},
+  // ];
   List<BookVO> selectedChips = [];
 
   @override
@@ -194,8 +178,6 @@ class _FilterChipViewState extends State<FilterChipView> {
         widget.categoryList?.any((bookVO) => bookVO.selected ?? false);
 
     print(hasSelectedBook); // Output: true
-
-    var bloc = Provider.of<LibraryBloc>(context, listen: false);
 
     return Container(
         height: MediaQuery.of(context).size.height * 0.07,
@@ -287,22 +269,7 @@ class _FilterChipViewState extends State<FilterChipView> {
             ),
           ],
         )
-        // ListView(
-        //   scrollDirection: Axis.horizontal,
-        //   children: _chips.map((chip) {
-        //     return Padding(
-        //       padding: const EdgeInsets.all(8.0),
-        //       child: Chip(
-        //         label: Text(chip.name),
-        //         backgroundColor: Colors.grey[300],
-        //         labelStyle: TextStyle(color: Colors.black),
-        //         elevation: 3,
-        //         shadowColor: Colors.grey[50],
-        //         padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        //       ),
-        //     );
-        //   }).toList(),
-        // ),
+
         );
   }
 }

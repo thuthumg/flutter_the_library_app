@@ -10,6 +10,12 @@ class LibraryBloc extends ChangeNotifier{
 ///State Variables
 List<BookVO>? mCategoryTypeList;
 List<BookVO>? mReadBookList;
+String selectedItemData = "Recently opened";
+String selectedViewItemData = "List";
+String selectedViewIcon = "assets/images/ic_list_gray_64.png";
+
+
+
 ///2
 ///Model
 LibraryModel mLibraryModel = LibraryModelImpl();
@@ -46,23 +52,48 @@ void getAllCategoryList(){
     debugPrint(error.toString());
   });
 }
-void onTapSortFilter(int filterId){
-  _getReadBooksByFilterIdAndRefresh(filterId);
-}
+void onTapSortFilter(String selectedSortFilterItem){
+  print("filterId = "+selectedSortFilterItem);
 
-void _getReadBooksByFilterIdAndRefresh(int filterId){
+  int sortFilterId = 1;
+  if (selectedSortFilterItem == "Recently opened") {
+    sortFilterId = 1;
+  } else if (selectedSortFilterItem == "Title") {
+    sortFilterId = 2;
+  } else if (selectedSortFilterItem == "Author") {
+    sortFilterId = 3;
+  }
 
-  print("filterId = "+filterId.toString());
+  selectedItemData = selectedSortFilterItem;
 
-  mLibraryModel.getReadBookList(filterId).listen((booklist) {
+  mLibraryModel.getReadBookList(sortFilterId).listen((booklist) {
     mReadBookList = booklist;
 
     notifyListeners();
   }).onError((error) {
     debugPrint(error.toString());
   });
+
 }
 
+void onTapChangeGridView(String selectedChangeGridView){
+
+  debugPrint("DisplayAndSortingView ${selectedChangeGridView}");
+  selectedViewItemData = selectedChangeGridView;
+  if (selectedViewItemData == "List") {
+    selectedViewIcon =
+    "assets/images/ic_list_gray_64.png";
+  } else if (selectedViewItemData == "Large grid") {
+    selectedViewIcon =
+    "assets/images/ic_large_grid_gray_64.png";
+  } else {
+    selectedViewIcon =
+    "assets/images/ic_small_grid_gray_64.png";
+  }
+
+  notifyListeners();
+
+}
 
 void onTapCategoryFilter(List<BookVO>? paramBookVO){
   print("onTapCategoryFilter = ${paramBookVO?.length}");

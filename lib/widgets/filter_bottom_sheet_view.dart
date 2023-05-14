@@ -60,22 +60,6 @@ class FilterBottomSheetView extends StatelessWidget {
                 filterTypeList: filterTypeList,
                 onTapFilterItem: (selectedItem,context){
                 debugPrint("FilterBottomSheetView ${selectedItem}");
-
-                int sortFilterId = 1;
-                if(selectedItem == "Recently opened")
-                {
-                  sortFilterId = 1;
-                }else if(selectedItem == "Title")
-                {
-                  sortFilterId = 2;
-                }else if(selectedItem == "Author")
-                {
-                  sortFilterId = 3;
-                }
-
-                LibraryBloc bloc = Provider.of<LibraryBloc>(context, listen: false);
-                bloc.onTapSortFilter(sortFilterId);
-
                 this.onTapFilterItem(selectedItem,context);
               },)
             ],

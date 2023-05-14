@@ -79,7 +79,16 @@ class _YourBooksYourShelvesTabBarViewState extends State<YourBooksYourShelvesTab
                                   LibraryBloc bloc = Provider.of<LibraryBloc>(context, listen: false);
                                   bloc.onTapCategoryFilter(selectedBookList);
                                 },
-                                onTapSortFilterItem: (){},
+                                onTapSortFilterItem: (selectedSortFilterItem,buildContext){
+                                  LibraryBloc bloc = Provider.of<LibraryBloc>(context, listen: false);
+                                  bloc.onTapSortFilter(selectedSortFilterItem??"Recently opened");
+                                  Navigator.pop(buildContext);
+                                },
+                              onTapChangeGridView: (selectedChangeGridView,buildContext){
+                                LibraryBloc bloc = Provider.of<LibraryBloc>(context, listen: false);
+                                bloc.onTapChangeGridView(selectedChangeGridView??"List");
+                                Navigator.pop(buildContext);
+                              },
                                 sortedBookList: readBookList
 
                             );

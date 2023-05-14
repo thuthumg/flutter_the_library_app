@@ -124,8 +124,9 @@ class _CreateShelfPageState extends State<CreateShelfPage> {
              visible:  !widget.isCreateNewShelf,
              child: Expanded(
                  child: DisplayAndSortingView(
-                   onTapSortFilterItem: (){},
+                   onTapSortFilterItem: (selectedSortedItem,buildContext){},
                    onTapCategoryItem: (bookVO){},
+                   onTapChangeGridView:  (selectedChangeGridView,buildContext){},
                    sortedBookList: [],
                  )),
            )
