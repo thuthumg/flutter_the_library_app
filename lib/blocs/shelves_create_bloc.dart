@@ -27,7 +27,7 @@ class ShelvesCreateBloc extends ChangeNotifier{
   LibraryModel mLibraryModel = LibraryModelImpl();
 
 
-  ShelvesCreateBloc(){//ShelvesVO shelvesVO
+  ShelvesCreateBloc(String shelfId){//ShelvesVO shelvesVO
     debugPrint("Shelves bloc");
 
     ///shelves list from Database
@@ -47,14 +47,14 @@ class ShelvesCreateBloc extends ChangeNotifier{
     //   debugPrint(error.toString());
     // });
 
-    mLibraryModel.getReadBookList(1).listen((booklist) {
+    mLibraryModel.getBookListFromShelves(1,shelfId).listen((booklist) {
       mReadBookList = booklist;
       notifyListeners();
     }).onError((error) {
       debugPrint(error.toString());
     });
 
-    mLibraryModel.getCategoryList().listen((categoryList) {
+    mLibraryModel.getCategoryListFromShelves(shelfId).listen((categoryList) {
       mCategoryTypeList = categoryList;
 
       notifyListeners();

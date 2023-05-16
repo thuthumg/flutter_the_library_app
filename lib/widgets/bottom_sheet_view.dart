@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_the_library_app/data/vos/book_vo.dart';
+import 'package:flutter_the_library_app/pages/add_to_shelves_page.dart';
 import 'package:flutter_the_library_app/resources/colors.dart';
 import 'package:flutter_the_library_app/resources/dimens.dart';
 import 'package:flutter_the_library_app/resources/strings.dart';
@@ -9,12 +10,14 @@ class BottomSheetView extends StatelessWidget {
   final BookVO? bookVO;
   final bool isMarkAsRead;
   final bool isFromFilterPage;
+  Function onTapAddToShelves;
 
-  const BottomSheetView({
+  BottomSheetView({
     super.key,
     required this.isMarkAsRead,
     required this.bookVO,
-    required this.isFromFilterPage
+    required this.isFromFilterPage,
+    required this.onTapAddToShelves
   });
 
   @override
@@ -58,6 +61,8 @@ class ActionButtonView extends StatelessWidget {
       Column(
         children: [
           const SizedBox(height: MARGIN_MEDIUM_1,),
+
+          ///Remove download
           Padding(
             padding: const EdgeInsets.only(left: MARGIN_MEDIUM_2),
             child: Row(
@@ -80,6 +85,7 @@ class ActionButtonView extends StatelessWidget {
               ],),
           ),
           const SizedBox(height: MARGIN_MEDIUM_1,),
+          ///delete from your library
           Padding(
             padding: const EdgeInsets.only(left: MARGIN_MEDIUM_2),
             child: Row(children: [
@@ -99,6 +105,7 @@ class ActionButtonView extends StatelessWidget {
             ],),
           ),
           const SizedBox(height: MARGIN_MEDIUM_1,),
+          ///add to whishlist
           Padding(
             padding: const EdgeInsets.only(left: MARGIN_MEDIUM_2),
             child: Row(children: [
@@ -118,25 +125,38 @@ class ActionButtonView extends StatelessWidget {
             ],),
           ),
           const SizedBox(height: MARGIN_MEDIUM_1,),
-          Padding(
-            padding: const EdgeInsets.only(left: MARGIN_MEDIUM_2),
-            child: Row(children: [
-              Container(
-                  padding: const EdgeInsets.all(MARGIN_MEDIUM),
-                  width: BOTTOM_SHEET_ICON_SIZE,
-                  height: BOTTOM_SHEET_ICON_SIZE,
-                  child: const Image(image: AssetImage('assets/images/ic_add_64.png'),)),
-              const SizedBox(width: MARGIN_MEDIUM_1,),
-              const Text(
-                ADD_TO_SHELVES_TXT,
-                style: TextStyle(
-                    fontSize: TEXT_REGULAR_2X, fontWeight: FontWeight.w600),
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-              )
-            ],),
+          ///Add to shelves
+          GestureDetector(
+            onTap: (){
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddToShelvesPage(),
+                ),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(left: MARGIN_MEDIUM_2),
+              child: Row(children: [
+                Container(
+                    padding: const EdgeInsets.all(MARGIN_MEDIUM),
+                    width: BOTTOM_SHEET_ICON_SIZE,
+                    height: BOTTOM_SHEET_ICON_SIZE,
+                    child: const Image(image: AssetImage('assets/images/ic_add_64.png'),)),
+                const SizedBox(width: MARGIN_MEDIUM_1,),
+                const Text(
+                  ADD_TO_SHELVES_TXT,
+                  style: TextStyle(
+                      fontSize: TEXT_REGULAR_2X, fontWeight: FontWeight.w600),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                )
+              ],),
+            ),
           ),
           const SizedBox(height: MARGIN_MEDIUM_1,),
+          ///About this book
           Padding(
             padding: const EdgeInsets.only(left: MARGIN_MEDIUM_2),
             child: Row(children: [
@@ -160,6 +180,7 @@ class ActionButtonView extends StatelessWidget {
       Column(
       children: [
         const SizedBox(height: MARGIN_MEDIUM_1,),
+        ///download
         Padding(
           padding: const EdgeInsets.only(left: MARGIN_MEDIUM_2),
           child: Row(
@@ -182,6 +203,7 @@ class ActionButtonView extends StatelessWidget {
             ],),
         ),
         const SizedBox(height: MARGIN_MEDIUM_1,),
+        ///delete from library
         Padding(
           padding: const EdgeInsets.only(left: MARGIN_MEDIUM_2),
           child: Row(children: [
@@ -201,6 +223,7 @@ class ActionButtonView extends StatelessWidget {
           ],),
         ),
         const SizedBox(height: MARGIN_MEDIUM_1,),
+        ///Add to shelves
         Padding(
           padding: const EdgeInsets.only(left: MARGIN_MEDIUM_2),
           child: Row(children: [
@@ -220,6 +243,7 @@ class ActionButtonView extends StatelessWidget {
           ],),
         ),
         const SizedBox(height: MARGIN_MEDIUM_1,),
+        ///Mark as read
         Padding(
           padding: const EdgeInsets.only(left: MARGIN_MEDIUM_2),
           child: Row(children: [

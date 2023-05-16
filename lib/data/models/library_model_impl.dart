@@ -95,6 +95,22 @@ class LibraryModelImpl extends LibraryModel {
     mShelfDao.deleteShelfVO(shelvesVO);
   }
 
+  @override
+  Stream<List<BookVO>> getBookListFromShelves(int sortingFlag, String shelfId) {
+   return mShelfDao
+       .getAllShelvesEventStream()
+       .startWith(mShelfDao.getAllBookListStream(sortingFlag, shelfId))
+       .map((event) => mShelfDao.getAllBookList(sortingFlag, shelfId));
+  }
+
+  @override
+  Stream<List<BookVO>> getCategoryListFromShelves(String shelfId) {
+    return mShelfDao
+        .getAllShelvesEventStream()
+        .startWith(mShelfDao.getAllCategoryListStream(shelfId))
+        .map((event) => mShelfDao.getAllCategoryList(shelfId));
+  }
+
   // @override
   // Stream<List<BookVO>> getBookListFromShelves(int sortingFlag) {
   //   return mShelfDao

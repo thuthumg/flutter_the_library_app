@@ -470,6 +470,7 @@ class ListEachItemView extends StatelessWidget {
                         bookVO: mBookVO,
                         isMarkAsRead: true,
                         isFromFilterPage: true,
+                        onTapAddToShelves: (){},
                       );
                     },
                   );

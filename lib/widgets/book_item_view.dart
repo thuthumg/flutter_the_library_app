@@ -57,7 +57,8 @@ class BookItemView extends StatelessWidget {
                                 return BottomSheetView(
                                   bookVO: bookVO,
                                   isMarkAsRead: true,
-                                isFromFilterPage: false,);
+                                isFromFilterPage: false,
+                                onTapAddToShelves: (){},);
                               },
                             );
                           },

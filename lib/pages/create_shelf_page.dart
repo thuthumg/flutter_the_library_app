@@ -36,7 +36,7 @@ class _CreateShelfPageState extends State<CreateShelfPage> {
     print("create shelf page = ${widget.mShelvesVO?.shelfName}");
 
     return ChangeNotifierProvider(
-      create: (context) => ShelvesCreateBloc(),//widget.mShelvesVO?
+      create: (context) => ShelvesCreateBloc(widget.mShelvesVO?.shelfId??""),//widget.mShelvesVO?
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -183,7 +183,7 @@ class _CreateShelfPageState extends State<CreateShelfPage> {
                                   // print(
                                   //     "check read book list = ${widget.readBookList}");
 
-                                  return DisplayAndSortingView(
+                                  return categoryReadBookList?.length==0 ? Container() : DisplayAndSortingView(
                                       selectedViewIcon: selectedViewIcon ??
                                           "assets/images/ic_list_gray_64.png",
                                       readBookList: readBookList,

@@ -65,6 +65,7 @@ class ShelvesBloc extends ChangeNotifier{
   }
 
   void onTapDeleteShelfVO(ShelvesVO shelvesVO) {
+    print("onTap delete shelf");
     mLibraryModel.deleteShelfVO(shelvesVO);
   }
 

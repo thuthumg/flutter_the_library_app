@@ -11,7 +11,9 @@ abstract class LibraryModel {
 
   Stream<List<BookVO>> getReadBookList(int sortingFlag);
 
-  // Stream<List<BookVO>> getBookListFromShelves(String shelfId);
+  Stream<List<BookVO>> getBookListFromShelves(int sortingFlag,String shelfId);
+
+  Stream<List<BookVO>> getCategoryListFromShelves(String shelfId);
 
   Stream<List<BookVO>> getReadBookListByCategory(
       List<BookVO>? selectedCategory);
