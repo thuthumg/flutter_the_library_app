@@ -8,10 +8,12 @@ const String ENDPOINT_GET_OVERVIEW = "v3/lists/overview.json";
 const String ENDPOINT_GET_LIST = "v3/lists.json";
 const String ENDPOINT_GET_VOLUMES = "v1/volumes";
 
+
 /// Parameters
 const String PARAM_API_KEY = "api-key";
 const String PARAM_PUBLISHED_DATE = "published_date";
 const String PARAM_LIST_NAME = "list";
+const String PARAM_Q = "q";
 
 
 /// Constant Values

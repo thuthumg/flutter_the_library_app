@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_the_library_app/network/api_constants.dart';
+import 'package:flutter_the_library_app/network/responses/get_list_response.dart';
 import 'package:flutter_the_library_app/network/responses/get_overview_response.dart';
 import 'package:retrofit/retrofit.dart';
 part 'the_library_api.g.dart';
@@ -13,6 +14,12 @@ abstract class TheLibraryApi{
   Future<GetOverviewResponse> getOverview(
       @Query(PARAM_API_KEY) String apiKey,
       @Query(PARAM_PUBLISHED_DATE) String publishedDate
+      );
+
+  @GET(ENDPOINT_GET_LIST)
+  Future<GetListResponse> getLists(
+      @Query(PARAM_API_KEY) String apiKey,
+      @Query(PARAM_LIST_NAME) String listName
       );
 
 }

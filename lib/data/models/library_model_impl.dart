@@ -1,6 +1,8 @@
 import 'package:flutter_the_library_app/data/models/library_model.dart';
 import 'package:flutter_the_library_app/data/vos/book_vo.dart';
 import 'package:flutter_the_library_app/data/vos/category_books_list_vo.dart';
+import 'package:flutter_the_library_app/data/vos/each_category_book_vo.dart';
+import 'package:flutter_the_library_app/data/vos/google_book_vo.dart';
 import 'package:flutter_the_library_app/data/vos/shelves_vo.dart';
 import 'package:flutter_the_library_app/network/dataagents/library_data_agent.dart';
 import 'package:flutter_the_library_app/network/dataagents/retrofit_data_agent_impl.dart';
@@ -83,6 +85,12 @@ class LibraryModelImpl extends LibraryModel {
   }
 
   @override
+  void addBookVODataToShelf(String shelfId,BookVO? bookVO){
+    mShelfDao.saveBookListDataToShelfVO(shelfId,bookVO);
+  }
+
+
+  @override
   Stream<List<ShelvesVO>> getShelvesList() {
     return mShelfDao
         .getAllShelvesEventStream()
@@ -96,11 +104,11 @@ class LibraryModelImpl extends LibraryModel {
   }
 
   @override
-  Stream<List<BookVO>> getBookListFromShelves(int sortingFlag, String shelfId) {
+  Stream<List<BookVO>> getBookListFromShelves(String shelfId) {
    return mShelfDao
        .getAllShelvesEventStream()
-       .startWith(mShelfDao.getAllBookListStream(sortingFlag, shelfId))
-       .map((event) => mShelfDao.getAllBookList(sortingFlag, shelfId));
+       .startWith(mShelfDao.getAllBookListStream(shelfId))
+       .map((event) => mShelfDao.getAllBookList(shelfId));
   }
 
   @override
@@ -119,6 +127,21 @@ class LibraryModelImpl extends LibraryModel {
   //       .map((event) => mShelfDao.getAllBooks(sortingFlag));
   // }
 
+
+
+  @override
+  Future<List<EachCategoryBookVO>?> getEachCategoryBookListDetail(String categoryName) {
+    return _libraryDataAgent.getLists(categoryName).then((value) async {
+      return Future.value(value);
+    });
+  }
+
+  @override
+  Future<List<GoogleBookVO>?> getGoogleBooksList(String searchQuery) {
+    return _libraryDataAgent.getGoogleBooksList(searchQuery).then((value) async {
+      return Future.value(value);
+    });
+  }
 
 
 }

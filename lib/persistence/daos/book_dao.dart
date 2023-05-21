@@ -13,7 +13,9 @@ class BookDao {
   BookDao._internal();
 
   void saveBookVO(BookVO bookVO) async {
+
     bookVO.bookId = generateCurrentTimeUuid();
+   // bookVO.bookId = UniqueKey().toString();
     bookVO.selected = false;
 
     debugPrint("check uuid "+generateCurrentTimeUuid());
@@ -42,12 +44,10 @@ class BookDao {
         //
         //     }
         // });
-        return getBookBox().put(generateCurrentTimeUuid(), bookVO);
+        return getBookBox().put(bookVO.bookId, bookVO);
       }else{
-      return getBookBox().put(generateCurrentTimeUuid(), bookVO);
+      return getBookBox().put(bookVO.bookId, bookVO);
     }
-
-
   }
  // void deleteItem(String uuidString) {
  //   // final box = Hive.box<BookVO>("deliveries");
@@ -77,6 +77,7 @@ class BookDao {
     {
       case 1:
         data.sort((a, b) => (a.bookId??"").compareTo(b.bookId??""));
+        data.reversed;
         break;
       case 2:
         data.sort((a,b) => (a.title??"").compareTo(b.title??""));
@@ -175,7 +176,6 @@ class BookDao {
 
   Stream<List<BookVO>> getCategoryListStream() {
     // final distinctData = getBookBox().values.map((item) => item.categoryName).toSet().toList();
-
     return Stream.value(getCategoryList().toSet().toList());
   }
 

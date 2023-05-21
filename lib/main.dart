@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_the_library_app/blocs/library_bloc.dart';
+import 'package:flutter_the_library_app/blocs/shelves_bloc.dart';
+import 'package:flutter_the_library_app/blocs/shelves_create_bloc.dart';
 import 'package:flutter_the_library_app/data/vos/book_vo.dart';
 import 'package:flutter_the_library_app/data/vos/shelves_vo.dart';
 import 'package:flutter_the_library_app/pages/app_main_page.dart';
@@ -24,7 +26,15 @@ void main() async {
 
   print('Box is open: $isOpen');
 
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider<ShelvesBloc>(create: (_) => ShelvesBloc()),
+       // Provider<ShelvesCreateBloc>(create: (_) => ShelvesCreateBloc(""))
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

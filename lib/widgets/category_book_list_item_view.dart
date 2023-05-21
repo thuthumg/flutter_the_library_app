@@ -57,7 +57,10 @@ class _CategoryBookListItemViewState extends State<CategoryBookListItemView> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => EachCategoryBooksListPage(),
+                          builder: (context) => EachCategoryBooksListPage(
+                            listNameEncoded: widget.categoryBooksListVO?.listNameEncoded ?? "",
+                             categoryName: widget.categoryBooksListVO?.listNameEncoded ?? ""
+                          ),
                         ),
                       );
                     });

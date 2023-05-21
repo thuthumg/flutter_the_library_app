@@ -78,7 +78,7 @@ class BookShelvesView extends StatelessWidget {
                           Align(
                             alignment: Alignment.bottomCenter,
                             child:
-                            ShelfCreateNewView(onTapSaveShelf: (shelfName, context) {
+                            ShelfCreateNewView(onTapSaveShelf: (shelfName, paramcontext) {
                               // onTapSaveShelf(shelfName,context);
 
                               ShelvesBloc bloc = Provider.of<ShelvesBloc>(
@@ -87,6 +87,8 @@ class BookShelvesView extends StatelessWidget {
                               bloc.saveShelfVO(
                                   ShelvesVO("", shelfName, [], false));
                               Navigator.pop(context);
+
+
                             },),
                           )
                         ],
@@ -131,22 +133,56 @@ class ShelvesListView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        (shelvesList?.elementAt(index).booksList == null || shelvesList?.elementAt(index).booksList?.length == 0) ?
                         Container(
                           height: 80,
                           width: 70,
                           margin: const EdgeInsets.only(
                               top: MARGIN_MEDIUM, bottom: MARGIN_MEDIUM),
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                               color: Colors.black45,
                               borderRadius: BorderRadius.all(
                                   Radius.circular(5)),
                               image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image:
-                                // NetworkImage(bookVO?.bookImage??""),
+                                // NetworkImage(shelvesList?.elementAt(index).booksList?[0].bookImage??""),
                                 AssetImage("assets/images/empty_book.png"),
                               )),
-                        ),
+                        ):
+                        ((shelvesList?.elementAt(index).booksList?[0].bookImage??"") != "") ?  Container(
+                          height: 80,
+                          width: 70,
+                          margin: const EdgeInsets.only(
+                              top: MARGIN_MEDIUM, bottom: MARGIN_MEDIUM),
+                          decoration: BoxDecoration(
+                              color: Colors.black45,
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(5)),
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image:
+                                 NetworkImage(shelvesList?.elementAt(index).booksList?[0].bookImage??""),
+                               // AssetImage("assets/images/empty_book.png"),
+                              )),
+                        ) :
+                        Container(
+                          height: 80,
+                          width: 70,
+                          margin: const EdgeInsets.only(
+                              top: MARGIN_MEDIUM, bottom: MARGIN_MEDIUM),
+                          decoration: BoxDecoration(
+                              color: Colors.black45,
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(5)),
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image:
+                               // NetworkImage(shelvesList?.elementAt(index).booksList?[0].bookImage??""),
+                                 AssetImage("assets/images/empty_book.png"),
+                              )),
+                        )
+                       ,
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,

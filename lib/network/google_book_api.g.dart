@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'the_library_api.dart';
+part of 'google_book_api.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,12 +8,12 @@ part of 'the_library_api.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _TheLibraryApi implements TheLibraryApi {
-  _TheLibraryApi(
+class _GoogleBookApi implements GoogleBookApi {
+  _GoogleBookApi(
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://api.nytimes.com/svc/books/';
+    baseUrl ??= 'https://www.googleapis.com/books/';
   }
 
   final Dio _dio;
@@ -21,60 +21,25 @@ class _TheLibraryApi implements TheLibraryApi {
   String? baseUrl;
 
   @override
-  Future<GetOverviewResponse> getOverview(
-    apiKey,
-    publishedDate,
-  ) async {
+  Future<GetGoogleBooksResponse> getGoogleBooksList(q) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'api-key': apiKey,
-      r'published_date': publishedDate,
-    };
+    final queryParameters = <String, dynamic>{r'q': q};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<GetOverviewResponse>(Options(
+        _setStreamType<GetGoogleBooksResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              'v3/lists/overview.json',
+              'v1/volumes',
               queryParameters: queryParameters,
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = GetOverviewResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<GetListResponse> getLists(
-    apiKey,
-    listName,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'api-key': apiKey,
-      r'list': listName,
-    };
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<GetListResponse>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'v3/lists.json',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = GetListResponse.fromJson(_result.data!);
+    final value = GetGoogleBooksResponse.fromJson(_result.data!);
     return value;
   }
 

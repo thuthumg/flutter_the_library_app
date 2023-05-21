@@ -1,17 +1,20 @@
 import 'package:flutter_the_library_app/data/vos/book_vo.dart';
 import 'package:flutter_the_library_app/data/vos/category_books_list_vo.dart';
+import 'package:flutter_the_library_app/data/vos/each_category_book_vo.dart';
+import 'package:flutter_the_library_app/data/vos/google_book_vo.dart';
 import 'package:flutter_the_library_app/data/vos/shelves_vo.dart';
 
 abstract class LibraryModel {
   ///Network
   Future<List<CategoryBooksListVO>?> getOverviewBooksList();
-
+  Future<List<EachCategoryBookVO>?> getEachCategoryBookListDetail(String categoryName);
+  Future<List<GoogleBookVO>?> getGoogleBooksList(String searchQuery);
   ///Database
   Future<BookVO?> getBookDetails(BookVO bookVO);
 
   Stream<List<BookVO>> getReadBookList(int sortingFlag);
 
-  Stream<List<BookVO>> getBookListFromShelves(int sortingFlag,String shelfId);
+  Stream<List<BookVO>> getBookListFromShelves(String shelfId);
 
   Stream<List<BookVO>> getCategoryListFromShelves(String shelfId);
 
@@ -26,5 +29,6 @@ abstract class LibraryModel {
 
   void deleteShelfVO(ShelvesVO shelvesVO);
 
+  void addBookVODataToShelf(String shelfId,BookVO? bookVO);
 
 }

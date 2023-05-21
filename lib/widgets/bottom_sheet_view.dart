@@ -36,7 +36,7 @@ class BottomSheetView extends StatelessWidget {
           height: 1,
         ),
         //action button
-          ActionButtonView(isFromFilterPage:isFromFilterPage)
+          ActionButtonView(isFromFilterPage:isFromFilterPage,bookVO: bookVO,)
 
         ],
       )
@@ -46,12 +46,13 @@ class BottomSheetView extends StatelessWidget {
 }
 
 class ActionButtonView extends StatelessWidget {
-
+  final BookVO? bookVO;
   final bool isFromFilterPage;
 
   const ActionButtonView({
     super.key,
-    required this.isFromFilterPage
+    required this.isFromFilterPage,
+    required this.bookVO
   });
 
   @override
@@ -113,7 +114,7 @@ class ActionButtonView extends StatelessWidget {
                   padding: const EdgeInsets.all(MARGIN_MEDIUM),
                   width: BOTTOM_SHEET_ICON_SIZE,
                   height: BOTTOM_SHEET_ICON_SIZE,
-                  child: const Image(image: AssetImage('assets/images/ic_bookmark_white_64.png'),)),
+                  child: const Image(image: AssetImage('assets/images/ic_bookmark_grey_64.png'),)),
               const SizedBox(width: MARGIN_MEDIUM_1,),
               const Text(
                 ADD_TO_WHISHLIST_TXT,
@@ -132,7 +133,7 @@ class ActionButtonView extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AddToShelvesPage(),
+                  builder: (context) => AddToShelvesPage(bookVO: bookVO),
                 ),
               );
             },

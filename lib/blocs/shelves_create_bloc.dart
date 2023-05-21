@@ -20,8 +20,9 @@ class ShelvesCreateBloc extends ChangeNotifier{
   String selectedViewItemData = "List";
   String selectedViewIcon = "assets/images/ic_list_gray_64.png";
 
+  bool isRenameShelf = false;
 
-
+  String renameShelfName = "";
   ///2
   ///Model
   LibraryModel mLibraryModel = LibraryModelImpl();
@@ -47,23 +48,39 @@ class ShelvesCreateBloc extends ChangeNotifier{
     //   debugPrint(error.toString());
     // });
 
-    mLibraryModel.getBookListFromShelves(1,shelfId).listen((booklist) {
-      mReadBookList = booklist;
-      notifyListeners();
-    }).onError((error) {
-      debugPrint(error.toString());
-    });
+    if(shelfId != "")
 
-    mLibraryModel.getCategoryListFromShelves(shelfId).listen((categoryList) {
-      mCategoryTypeList = categoryList;
+      {
+        mLibraryModel.getBookListFromShelves(shelfId).listen((booklist) {
+          mReadBookList = booklist;
+          notifyListeners();
+        }).onError((error) {
+          debugPrint(error.toString());
+        });
 
-      notifyListeners();
-    }).onError((error) {
-      debugPrint(error.toString());
-    });
+        mLibraryModel.getCategoryListFromShelves(shelfId).listen((categoryList) {
+          mCategoryTypeList = categoryList;
+
+          notifyListeners();
+        }).onError((error) {
+          debugPrint(error.toString());
+        });
+      }
+
+
 
 
   }
+
+  void setRenameFlagAndName(bool renameFlag,String oldShelfName){
+    isRenameShelf = renameFlag;
+    renameShelfName = oldShelfName;
+    notifyListeners();
+  }
+
+  // void setRenameShelfName(String shelfName){
+  //   renameShelfName = shelfName;
+  // }
 
   void saveShelfVO(ShelvesVO shelvesVO){
     mLibraryModel.createNewShelf(shelvesVO);
@@ -72,6 +89,7 @@ class ShelvesCreateBloc extends ChangeNotifier{
 
   void onTapDeleteShelfVO(ShelvesVO shelvesVO) {
     mLibraryModel.deleteShelfVO(shelvesVO);
+    notifyListeners();
   }
 
   void onTapShelfDetail(ShelvesVO? shelvesVO){

@@ -20,6 +20,9 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    debugPrint("search page changes text ${_searchText}");
+
    return Scaffold(
      backgroundColor: PRIMARY_COLOR,
      appBar: AppBar(
@@ -40,7 +43,9 @@ class _SearchPageState extends State<SearchPage> {
      body: Container(
        color: PRIMARY_COLOR,
        child: _searchText.isNotEmpty?
-       GoogleSearchEbookAndAudioBookListView()
+       GoogleSearchEbookAndAudioBookListView(
+         searchQuery: _searchText,
+       )
            :Container()
      ),
    );

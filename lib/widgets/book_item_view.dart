@@ -29,7 +29,8 @@ class BookItemView extends StatelessWidget {
                     bottom: 0.0,
                     left: 0.0,
                     right: 0.0,
-                    child: Container(
+                    child:  ((bookVO?.bookImage ?? "") == "") ?
+                    Container(
                       margin: const EdgeInsets.only(top: 3.0, bottom: 3.0),
                       decoration: BoxDecoration(
                           color: Colors.black45,
@@ -37,8 +38,20 @@ class BookItemView extends StatelessWidget {
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image:
-                                NetworkImage(bookVO?.bookImage??""),
-                               // AssetImage("assets/images/sample_book_img.jpg"),
+                               // NetworkImage(bookVO?.bookImage??""),
+                                AssetImage("assets/images/sample_book_img.jpg"),
+                          )),
+                    ):
+                    Container(
+                      margin: const EdgeInsets.only(top: 3.0, bottom: 3.0),
+                      decoration: BoxDecoration(
+                          color: Colors.black45,
+                          borderRadius: const BorderRadius.all(Radius.circular(8)),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image:
+                            NetworkImage(bookVO?.bookImage??""),
+                            // AssetImage("assets/images/sample_book_img.jpg"),
                           )),
                     ),
                   ),

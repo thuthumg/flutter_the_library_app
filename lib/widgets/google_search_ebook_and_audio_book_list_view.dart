@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_the_library_app/blocs/search_book_bloc.dart';
+import 'package:flutter_the_library_app/data/vos/book_vo.dart';
 import 'package:flutter_the_library_app/resources/dimens.dart';
 import 'package:flutter_the_library_app/resources/strings.dart';
+import 'package:provider/provider.dart';
 
 
 class GoogleSearchEbookAndAudioBookListView extends StatefulWidget {
+
+  final String searchQuery;
+
+  GoogleSearchEbookAndAudioBookListView({required this.searchQuery});
+
   @override
   _GoogleSearchEbookAndAudioBookListViewState createState() => _GoogleSearchEbookAndAudioBookListViewState();
 }
@@ -25,54 +33,64 @@ class _GoogleSearchEbookAndAudioBookListViewState extends State<GoogleSearchEboo
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        children: [
-          TabBar(
-            // indicatorColor: Colors.blue, // set the color of the selected tab indicator
-            indicatorSize:TabBarIndicatorSize.label,
-            labelColor: Colors.blue, // set the color of the selected tab
-            unselectedLabelColor: Colors.grey, // set the color of the unselected tabs
-            controller: _tabController,
-            tabs: [
-              Tab(child: Text(
-                EBOOKS_TXT,
-                style: TextStyle(
-                    fontSize: TEXT_REGULAR_2X,
-                    fontWeight: FontWeight.w600), // set the tab label size
-              ),), //
-              Tab(child: Text(
-                AUDIOBOOKS_TXT,
-                style: TextStyle(
-                    fontSize: TEXT_REGULAR_2X,
-                    fontWeight: FontWeight.w600), // set the tab label size
-              ),),
-
-            ],
-          ),
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.only(top: MARGIN_MEDIUM),
-              child: TabBarView(
+    debugPrint("GoogleSearchEbookAndAudioBookListView query ${widget.searchQuery}");
+    return ChangeNotifierProvider(
+      create: (context) => SearchBookBloc(widget.searchQuery),
+      child: Selector<SearchBookBloc, List<BookVO>?>(
+        selector: (context, bloc) => bloc.mBooksList,
+        builder: (context, booksList, child) =>
+        Column(
+            children: [
+              TabBar(
+                // indicatorColor: Colors.blue, // set the color of the selected tab indicator
+                indicatorSize:TabBarIndicatorSize.label,
+                labelColor: Colors.blue, // set the color of the selected tab
+                unselectedLabelColor: Colors.grey, // set the color of the unselected tabs
                 controller: _tabController,
-                children: [
-                  GoogleSearchBookListView(isEbook: true,),
-                  GoogleSearchBookListView(isEbook: false,),
+                tabs: [
+                  Tab(child: Text(
+                    EBOOKS_TXT,
+                    style: TextStyle(
+                        fontSize: TEXT_REGULAR_2X,
+                        fontWeight: FontWeight.w600), // set the tab label size
+                  ),), //
+                  Tab(child: Text(
+                    AUDIOBOOKS_TXT,
+                    style: TextStyle(
+                        fontSize: TEXT_REGULAR_2X,
+                        fontWeight: FontWeight.w600), // set the tab label size
+                  ),),
 
                 ],
               ),
-            ),
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.only(top: MARGIN_MEDIUM),
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      GoogleSearchBookListView(isEbook: true,mBookList:booksList),
+                      GoogleSearchBookListView(isEbook: false,mBookList: booksList),
+
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      );
+      ),
+    );
 
   }
 }
 class GoogleSearchBookListView extends StatelessWidget {
   final bool isEbook;
+  final List<BookVO>? mBookList;
 
   const GoogleSearchBookListView({
     super.key,
-    required this.isEbook
+    required this.isEbook,
+    required this.mBookList
   });
 
   @override
@@ -84,7 +102,7 @@ class GoogleSearchBookListView extends StatelessWidget {
           // shrinkWrap: true,
           //  physics: NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
-          itemCount: 10,
+          itemCount: mBookList?.length,
           itemBuilder: (BuildContext context, int index) {
 
             return GestureDetector(
@@ -102,15 +120,15 @@ class GoogleSearchBookListView extends StatelessWidget {
                         width: isEbook? 55 :60,
                         margin: const EdgeInsets.only(
                             top: MARGIN_MEDIUM, bottom: MARGIN_MEDIUM),
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                             color: Colors.black45,
                             borderRadius: BorderRadius.all(Radius.circular(6)),
                             image: DecorationImage(
                               fit: BoxFit.cover,
                               image:
-                              // NetworkImage(bookVO?.bookImage??""),
-                              AssetImage("assets/images/sample_book_img.jpg"),
-                            )),
+                               NetworkImage(mBookList?[index].bookImage??""),
+                             // AssetImage("assets/images/sample_book_img.jpg"),
+                            ),),
                       ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -122,8 +140,8 @@ class GoogleSearchBookListView extends StatelessWidget {
                                 top: MARGIN_MEDIUM,
                                 left: MARGIN_MEDIUM_2,
                                 right: MARGIN_MEDIUM_2),
-                            child: const Text(
-                              "Android App Development",
+                            child: Text(
+                              mBookList?[index].title??"",
                               style: TextStyle(
                                   fontSize: TEXT_REGULAR_2X,
                                   fontWeight: FontWeight.w600),
@@ -135,7 +153,7 @@ class GoogleSearchBookListView extends StatelessWidget {
                             padding: const EdgeInsets.only(
                                 left: MARGIN_MEDIUM_2, right: MARGIN_MEDIUM_2),
                             child: Text(
-                             isEbook? "Ebook.Sample" : "Audiobook",
+                             isEbook? " ${mBookList?[index].author??""} \n Ebook.Sample" : "${mBookList?[index].author??""} \n Audiobook",
                               style: TextStyle(
                                   fontSize: TEXT_REGULAR,
                                   fontWeight: FontWeight.w400),
