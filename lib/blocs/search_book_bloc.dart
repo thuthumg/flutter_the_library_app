@@ -34,5 +34,18 @@ class SearchBookBloc extends ChangeNotifier{
 
   }
 
+  void onSearchQuery(String query){
+    mLibraryModel.getGoogleBooksList(query).then((searchBooksList){
+
+      List<BookVO> bookList = [];
+      searchBooksList?.forEach((element) {
+        bookList.add(element.convertBookVO(element.id??""));
+      });
+      mBooksList = bookList;
+
+      notifyListeners();
+    }).catchError((error){debugPrint(error.toString());});
+  }
+
 
 }

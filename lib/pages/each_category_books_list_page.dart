@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_the_library_app/blocs/category_detail_bloc.dart';
 import 'package:flutter_the_library_app/data/vos/each_category_book_vo.dart';
 import 'package:flutter_the_library_app/resources/dimens.dart';
+import 'package:flutter_the_library_app/widgets/bottom_sheet_view.dart';
 import 'package:provider/provider.dart';
 
 class EachCategoryBooksListPage extends StatelessWidget{
@@ -106,8 +107,11 @@ class EachCategoryBooksListPage extends StatelessWidget{
                                             //   context: context,
                                             //   builder: (BuildContext context) {
                                             //     return BottomSheetView(
-                                            //       bookVO: bookVO,
-                                            //       isMarkAsRead: true,);
+                                            //       bookVO: eachCategoryBookVOList?[index],
+                                            //       isMarkAsRead: true,
+                                            //       isFromFilterPage: true,
+                                            //       onTapAddToShelves: (){},
+                                            //     );
                                             //   },
                                             // );
                                           },

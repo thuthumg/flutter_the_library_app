@@ -20,13 +20,13 @@ class HomeBloc extends ChangeNotifier{
   debugPrint("home bloc");
     ///booklist with category from Network
     mLibraryModel.getOverviewBooksList().then((categoryBooksListVO){
-      mCategoryBooksListVOList = categoryBooksListVO;
+      mCategoryBooksListVOList = categoryBooksListVO?.reversed.toList();
       notifyListeners();
     }).catchError((error){debugPrint(error.toString());});
 
     ///bookslist from Database
     mLibraryModel.getReadBookList(1).listen((booklist) {
-      mReadBookList = booklist;
+      mReadBookList = booklist.reversed.toList();
       notifyListeners();
     }).onError((error) {
       debugPrint(error.toString());

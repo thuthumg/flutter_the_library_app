@@ -5,6 +5,7 @@ import 'package:flutter_the_library_app/blocs/home_bloc.dart';
 import 'package:flutter_the_library_app/data/vos/book_vo.dart';
 import 'package:flutter_the_library_app/pages/book_detail_page.dart';
 import 'package:flutter_the_library_app/resources/dimens.dart';
+import 'package:flutter_the_library_app/widgets/bottom_sheet_view.dart';
 import 'package:flutter_the_library_app/widgets/ebooks_audiobook_tab_bar_view.dart';
 
 import 'package:provider/provider.dart';
@@ -197,11 +198,26 @@ class ReadBookItemView extends StatelessWidget {
           alignment: Alignment.topRight,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Container(
-              width: 32,
-              height: 32,
-              child: Image(
-                image: AssetImage('assets/images/contextualMenu.png'),
+            child: GestureDetector(
+              onTap: (){
+                showModalBottomSheet<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return BottomSheetView(
+                      bookVO: bookVO,
+                      isMarkAsRead: true,
+                      isFromFilterPage: true,
+                      onTapAddToShelves: (){},
+                    );
+                  },
+                );
+              },
+              child: Container(
+                width: 32,
+                height: 32,
+                child: Image(
+                  image: AssetImage('assets/images/contextualMenu.png'),
+                ),
               ),
             ),
           ),

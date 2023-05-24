@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_the_library_app/blocs/search_book_bloc.dart';
 import 'package:flutter_the_library_app/data/vos/book_vo.dart';
+import 'package:flutter_the_library_app/pages/book_detail_page.dart';
 import 'package:flutter_the_library_app/resources/dimens.dart';
 import 'package:flutter_the_library_app/resources/strings.dart';
 import 'package:provider/provider.dart';
@@ -8,9 +9,12 @@ import 'package:provider/provider.dart';
 
 class GoogleSearchEbookAndAudioBookListView extends StatefulWidget {
 
-  final String searchQuery;
+ // final String searchQuery;
+  final List<BookVO>? mBookList;
 
-  GoogleSearchEbookAndAudioBookListView({required this.searchQuery});
+  GoogleSearchEbookAndAudioBookListView({
+   // required this.searchQuery,
+    required this.mBookList});
 
   @override
   _GoogleSearchEbookAndAudioBookListViewState createState() => _GoogleSearchEbookAndAudioBookListViewState();
@@ -33,12 +37,8 @@ class _GoogleSearchEbookAndAudioBookListViewState extends State<GoogleSearchEboo
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("GoogleSearchEbookAndAudioBookListView query ${widget.searchQuery}");
-    return ChangeNotifierProvider(
-      create: (context) => SearchBookBloc(widget.searchQuery),
-      child: Selector<SearchBookBloc, List<BookVO>?>(
-        selector: (context, bloc) => bloc.mBooksList,
-        builder: (context, booksList, child) =>
+
+    return
         Column(
             children: [
               TabBar(
@@ -69,17 +69,16 @@ class _GoogleSearchEbookAndAudioBookListViewState extends State<GoogleSearchEboo
                   child: TabBarView(
                     controller: _tabController,
                     children: [
-                      GoogleSearchBookListView(isEbook: true,mBookList:booksList),
-                      GoogleSearchBookListView(isEbook: false,mBookList: booksList),
+                      GoogleSearchBookListView(isEbook: true,mBookList:widget.mBookList),
+                      GoogleSearchBookListView(isEbook: false,mBookList: widget.mBookList),
 
                     ],
                   ),
                 ),
               ),
             ],
-          ),
-      ),
-    );
+          );
+
 
   }
 }
@@ -106,7 +105,9 @@ class GoogleSearchBookListView extends StatelessWidget {
           itemBuilder: (BuildContext context, int index) {
 
             return GestureDetector(
-              onTap: () {},
+              onTap: () {
+                _navigateToBookDetailsScreen(context,mBookList?[index]);
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -173,4 +174,16 @@ class GoogleSearchBookListView extends StatelessWidget {
         ),
     );
   }
+}
+
+Future<dynamic> _navigateToBookDetailsScreen(
+    BuildContext context, BookVO? bookVO) {
+  return Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => BookDetailPage(
+        bookVO: bookVO,
+      ),
+    ),
+  );
 }

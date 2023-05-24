@@ -76,7 +76,7 @@ class BookDao {
     switch(sortingFlag)
     {
       case 1:
-        data.sort((a, b) => (a.bookId??"").compareTo(b.bookId??""));
+       // data.sort((a, b) => (a.bookId??"").compareTo(b.bookId??""));
         data.reversed;
         break;
       case 2:
