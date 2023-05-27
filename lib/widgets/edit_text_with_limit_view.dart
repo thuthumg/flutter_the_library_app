@@ -6,7 +6,7 @@ class EditTextWithLimitView extends StatefulWidget {
   final Function(String) onTapDone;
   final String paramRenameShelfName;
 
-  EditTextWithLimitView({Key? key,
+   EditTextWithLimitView({Key? key,
     required this.maxLength,
     required this.paramRenameShelfName,
   required this.onTapDone}) : super(key: key);
@@ -18,18 +18,17 @@ class EditTextWithLimitView extends StatefulWidget {
 class _EditTextWithLimitViewState extends State<EditTextWithLimitView> {
   late TextEditingController _controller;
  // int _textLength = 0;
+ // String initialValue = 'Initial Value';
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController();
-
-    _controller.addListener(() {
-      setState(() {
-       // _textLength = _controller.text.length;
-       // widget.onTapDone();
-      });
-    });
+   // _controller = TextEditingController();
+    _controller = TextEditingController(text: widget.paramRenameShelfName);
+    _controller.selection = TextSelection(
+      baseOffset: 0,
+      extentOffset: widget.paramRenameShelfName.length,
+    );
   }
 
   @override
@@ -40,14 +39,15 @@ class _EditTextWithLimitViewState extends State<EditTextWithLimitView> {
 
   @override
   Widget build(BuildContext context) {
+
     return Column(
       children: [
         TextFormField(
+
           textInputAction: TextInputAction.done,
           controller: _controller,
           maxLength: widget.maxLength,
-         // initialValue: widget.paramRenameShelfName??"",
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             labelText: '',
             hintText: 'Shelf name',
             hintStyle: TextStyle(
@@ -56,20 +56,12 @@ class _EditTextWithLimitViewState extends State<EditTextWithLimitView> {
               fontWeight: FontWeight.w500
             )
           ),
-         // initialValue: "Initial value",
+
           onFieldSubmitted: (value){
             widget.onTapDone(value);
           },
         ),
         SizedBox(height: 8),
-        // Text(
-        //   '$_textLength/${widget.maxLength}',
-        //   style: TextStyle(
-        //     fontSize: 12,
-        //     color: _textLength > widget.maxLength ? Colors.red : Colors.grey,
-        //   ),
-        // ),
-
       ],
     );
   }

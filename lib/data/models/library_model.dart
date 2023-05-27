@@ -31,4 +31,8 @@ abstract class LibraryModel {
 
   void addBookVODataToShelf(String shelfId,BookVO? bookVO);
 
+  void deleteBookFromLibrary(BookVO bookVO);
+
+  void renameShelf(ShelvesVO shelvesVO);
+
 }

@@ -72,7 +72,7 @@ class BookDao {
   List<BookVO> getAllBooks(int sortingFlag) {
 
     final data = getBookBox().values.toList();
-    List<BookVO> bookList;
+
     switch(sortingFlag)
     {
       case 1:
@@ -131,7 +131,7 @@ class BookDao {
   }*/
 
   List<BookVO> getCategoryList(){
-    if (getAllBooks(1) != null && (getAllBooks(1).isNotEmpty ?? false)) {
+    if (getAllBooks(1) != null && (getAllBooks(1).isNotEmpty)) {
 
       List<BookVO> distinctBooks = [];
 
@@ -154,6 +154,12 @@ class BookDao {
       return [];
     }
   }
+
+
+  void deleteBookVO(BookVO bookVO) async {
+    return getBookBox().delete(bookVO.bookId);
+  }
+
 
 
   Box<BookVO> getBookBox() {

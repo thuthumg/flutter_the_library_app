@@ -19,26 +19,27 @@ class GoogleBookVO{
   factory GoogleBookVO.fromJson(Map<String,dynamic> json) =>_$GoogleBookVOFromJson(json);
   Map<String,dynamic> toJson()=> _$GoogleBookVOToJson(this);
 
-  BookVO convertBookVO(String bookid)
+  BookVO convertBookVO(String bookid,int positionId)
   {
-    return BookVO(bookid,
-        null,
-        null,
-        volumeInfo?.authors?.join(","),
-        volumeInfo?.imageLinks?.smallThumbnail,
-        60,
-        80,
-        "",
-        "",
-        "",
-        volumeInfo?.publishedDate,
-        volumeInfo?.description,
-        "0.0",
-        "",
-        volumeInfo?.publisher,
-        volumeInfo?.title,
-        volumeInfo?.publishedDate,
-        false);
+    return BookVO(
+        bookId:bookid,
+        categoryId:positionId,
+        categoryName:volumeInfo?.categories?.join(","),
+        author:volumeInfo?.authors?.join(","),
+        bookImage:volumeInfo?.imageLinks?.smallThumbnail,
+        bookImageWidth:60,
+        bookImageHeight:80,
+        bookReviewLink: "",
+        contributor:"",
+        contributorNote:"",
+        createdDate:volumeInfo?.publishedDate,
+        description:volumeInfo?.description,
+        price: "0.0",
+        book_uri:"",
+        publisher:volumeInfo?.publisher,
+        title:volumeInfo?.title,
+        updatedDate:volumeInfo?.publishedDate,
+        selected:false);
 
   }
 

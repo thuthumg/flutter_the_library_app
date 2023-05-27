@@ -6,8 +6,8 @@ import 'package:flutter_the_library_app/resources/dimens.dart';
 class ShelfActionBottomSheetView extends StatelessWidget {
 
   final String shelfTitle;
-  final Function(String) onTapRenameShelf;
-  final Function onTapDeleteShelf;
+  final Function(String,BuildContext) onTapRenameShelf;
+  final Function(BuildContext) onTapDeleteShelf;
 
 
 
@@ -46,7 +46,7 @@ class ShelfActionBottomSheetView extends StatelessWidget {
             const SizedBox(height: MARGIN_MEDIUM_1,),
             GestureDetector(
               onTap: (){
-                this.onTapRenameShelf(shelfTitle);
+                this.onTapRenameShelf(shelfTitle,context);
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: MARGIN_MEDIUM_2),
@@ -70,7 +70,7 @@ class ShelfActionBottomSheetView extends StatelessWidget {
             ,const SizedBox(height: MARGIN_MEDIUM_1,),
             GestureDetector(
               onTap: (){
-                this.onTapDeleteShelf();
+                this.onTapDeleteShelf(context);
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: MARGIN_MEDIUM_2),

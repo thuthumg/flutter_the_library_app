@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_the_library_app/blocs/library_bloc.dart';
 import 'package:flutter_the_library_app/data/vos/book_vo.dart';
 import 'package:flutter_the_library_app/resources/dimens.dart';
 import 'package:flutter_the_library_app/resources/strings.dart';
 import 'package:flutter_the_library_app/widgets/bottom_sheet_view.dart';
 import 'package:flutter_the_library_app/widgets/filter_bottom_sheet_view.dart';
-import 'package:provider/provider.dart';
 
 class DisplayAndSortingView extends StatelessWidget {
   Function(List<BookVO>?) onTapCategoryItem;
@@ -22,6 +20,7 @@ class DisplayAndSortingView extends StatelessWidget {
 //  String selectedViewIcon = "assets/images/ic_list_gray_64.png";
   List<String> viewItems = ['List', 'Large grid', 'Small grid'];
   List<String> items = ['Recently opened', 'Title', 'Author'];
+  Function(BookVO?) onTapDeleteBookFromYourLibrary;
 
   DisplayAndSortingView(
       {super.key,
@@ -32,7 +31,8 @@ class DisplayAndSortingView extends StatelessWidget {
       required this.readBookList,
       required this.selectedSortedItemData,
       required this.selectedViewItemData,
-      required this.selectedViewIcon});
+      required this.selectedViewIcon,
+      required this.onTapDeleteBookFromYourLibrary});
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +88,7 @@ class DisplayAndSortingView extends StatelessWidget {
                         },
                       );
                     },
-                    child: SortByFilterView(selectedItemData: selectedSortedItemData??"Recently opened"),
+                    child: SortByFilterView(selectedItemData: selectedSortedItemData),
                   ),
 
                 ///large grid , small grid , list view filter
@@ -131,11 +131,20 @@ class DisplayAndSortingView extends StatelessWidget {
           ///read book list section
           Expanded(
                 child: (selectedViewItemData == "Large grid")
-                    ? LargeGridView(mBookList: readBookList)
+                    ? LargeGridView(mBookList: readBookList,
+                    onTapDeleteBookFromYourLibrary: (mBookVO){
+                      onTapDeleteBookFromYourLibrary(mBookVO);
+                    })
                     : (selectedViewItemData == "Small grid")
-                        ? SmallGridView(mBookList: readBookList)
+                        ? SmallGridView(mBookList: readBookList,
+                    onTapDeleteBookFromYourLibrary: (mBookVO){
+              onTapDeleteBookFromYourLibrary(mBookVO);
+    })
                         : (selectedViewItemData == "List")
-                            ? ListStyleView(mBookList: readBookList)
+                            ? ListStyleView(mBookList: readBookList,
+                  onTapDeleteBookFromYourLibrary: (mBookVO){
+                  onTapDeleteBookFromYourLibrary(mBookVO);
+                },)
                             : Container(),
               ),
 
@@ -272,8 +281,9 @@ class _FilterChipViewState extends State<FilterChipView> {
 
 class ListStyleView extends StatelessWidget {
   List<BookVO>? mBookList;
+  Function(BookVO?) onTapDeleteBookFromYourLibrary;
 
-  ListStyleView({super.key, required this.mBookList});
+  ListStyleView({super.key, required this.mBookList,required this.onTapDeleteBookFromYourLibrary});
 
   @override
   Widget build(BuildContext context) {
@@ -287,86 +297,14 @@ class ListStyleView extends StatelessWidget {
         scrollDirection: Axis.vertical,
         itemCount: mBookList?.length,
         itemBuilder: (BuildContext context, int index) {
-          // return ListTile(
-          //   title: Text(
-          //     "Android App Development",
-          //     style: TextStyle(
-          //         fontSize: TEXT_REGULAR_2X, fontWeight: FontWeight.w600),
-          //     maxLines: 1,
-          //     overflow: TextOverflow.ellipsis,
-          //   ),
-          //   subtitle: Text(
-          //     "Ebook.Sample",
-          //     style: TextStyle(
-          //         fontSize: TEXT_REGULAR, fontWeight: FontWeight.w400),
-          //     maxLines: 1,
-          //     overflow: TextOverflow.ellipsis,
-          //   ),
-          //   leading: Container(
-          //     height: 80,
-          //     width: 55,
-          //     margin: const EdgeInsets.only(
-          //         top: MARGIN_MEDIUM, bottom: MARGIN_MEDIUM),
-          //     decoration: const BoxDecoration(
-          //         color: Colors.black45,
-          //         borderRadius: BorderRadius.all(Radius.circular(8)),
-          //         image: DecorationImage(
-          //           fit: BoxFit.cover,
-          //           image:
-          //               // NetworkImage(bookVO?.bookImage??""),
-          //               AssetImage("assets/images/sample_book_img.jpg"),
-          //         )),
-          //   ),
-          //   trailing: Row(
-          //     children: [
-          //       Container(
-          //         width: 32,
-          //         height: 32,
-          //         // decoration: const BoxDecoration(
-          //         //   color: Colors.black45,
-          //         //   borderRadius: BorderRadius.all(Radius.circular(8)),
-          //         // ),
-          //         child: const Padding(
-          //           padding: EdgeInsets.only(
-          //               left: MARGIN_MEDIUM, right: MARGIN_MEDIUM),
-          //           child: Image(
-          //             image: AssetImage('assets/images/ic_check_gray_64.png'),
-          //           ),
-          //         ),
-          //       ),
-          //       SizedBox(
-          //         width: 32,
-          //         height: 32,
-          //         child: GestureDetector(
-          //           onTap: () {
-          //             showModalBottomSheet<void>(
-          //               context: context,
-          //               builder: (BuildContext context) {
-          //                 return BottomSheetView(
-          //                   bookVO: null,
-          //                   isMarkAsRead: true,
-          //                   isFromFilterPage: true,
-          //                 );
-          //               },
-          //             );
-          //           },
-          //           child: const Padding(
-          //             padding: EdgeInsets.only(
-          //                 left: MARGIN_MEDIUM, right: MARGIN_MEDIUM),
-          //             child: Image(
-          //               image: AssetImage('assets/images/ic_more_gray_64.png'),
-          //             ),
-          //           ),
-          //         ),
-          //       )
-          //     ],
-          //   ),
-          // );
 
           return GestureDetector(
             onTap: () {},
             child: ListEachItemView(
               mBookVO: mBookList?.elementAt(index),
+              onTapDeleteBookFromYourLibrary: (mBookVO){
+                onTapDeleteBookFromYourLibrary(mBookVO);
+              },
             ),
           );
         },
@@ -377,8 +315,9 @@ class ListStyleView extends StatelessWidget {
 
 class ListEachItemView extends StatelessWidget {
   BookVO? mBookVO;
+  Function(BookVO?) onTapDeleteBookFromYourLibrary;
 
-  ListEachItemView({super.key, required this.mBookVO});
+  ListEachItemView({super.key, required this.mBookVO,required this.onTapDeleteBookFromYourLibrary});
 
   @override
   Widget build(BuildContext context) {
@@ -390,6 +329,8 @@ class ListEachItemView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
+            (mBookVO?.bookImage == "" || mBookVO?.bookImage == null)?
             Container(
               height: 80,
               width: 55,
@@ -400,7 +341,23 @@ class ListEachItemView extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: NetworkImage(mBookVO?.bookImage ?? ""),
+                    image:
+                    //NetworkImage(mBookVO?.bookImage ?? ""),
+                     AssetImage("assets/images/empty_book.png"),
+                  )),
+            ) :
+            Container(
+              height: 80,
+              width: 55,
+              margin: const EdgeInsets.only(
+                  top: MARGIN_MEDIUM, bottom: MARGIN_MEDIUM),
+              decoration: BoxDecoration(
+                  color: Colors.black45,
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image:
+                    NetworkImage(mBookVO?.bookImage ?? ""),
                     // AssetImage("assets/images/sample_book_img.jpg"),
                   )),
             ),
@@ -471,6 +428,9 @@ class ListEachItemView extends StatelessWidget {
                         isMarkAsRead: true,
                         isFromFilterPage: true,
                         onTapAddToShelves: (){},
+                        onTapDeleteBookFromYourLibrary: (){
+                          onTapDeleteBookFromYourLibrary(mBookVO);
+                        },
                       );
                     },
                   );
@@ -493,8 +453,10 @@ class ListEachItemView extends StatelessWidget {
 
 class SmallGridView extends StatelessWidget {
   List<BookVO>? mBookList;
+  Function(BookVO?) onTapDeleteBookFromYourLibrary;
 
-  SmallGridView({super.key, required this.mBookList});
+  SmallGridView({super.key, required this.mBookList,
+  required this.onTapDeleteBookFromYourLibrary});
 
   @override
   Widget build(BuildContext context) {
@@ -511,6 +473,9 @@ class SmallGridView extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return SmallGridEachItemView(
             mBookVO: mBookList?.elementAt(index),
+            onTapDeleteBookFromYourLibrary: (mBookVO){
+              onTapDeleteBookFromYourLibrary(mBookVO);
+            },
           );
         },
       ),
@@ -520,8 +485,10 @@ class SmallGridView extends StatelessWidget {
 
 class SmallGridEachItemView extends StatelessWidget {
   BookVO? mBookVO;
+  Function(BookVO?) onTapDeleteBookFromYourLibrary;
 
-  SmallGridEachItemView({super.key, required this.mBookVO});
+  SmallGridEachItemView({super.key, required this.mBookVO,
+  required this.onTapDeleteBookFromYourLibrary});
 
   @override
   Widget build(BuildContext context) {
@@ -546,7 +513,26 @@ class SmallGridEachItemView extends StatelessWidget {
                         bottom: 0.0,
                         left: 0.0,
                         right: 0.0,
-                        child: Container(
+                        child:
+
+                        (mBookVO?.bookImage == "")?
+                        Container(
+                          // height: 200,
+                          margin: const EdgeInsets.only(top: 3.0, bottom: 3.0),
+                          decoration: BoxDecoration(
+                              color: Colors.black45,
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(6)),
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image:
+                                //NetworkImage(mBookVO?.bookImage ?? ""),
+                                 AssetImage(
+                                     "assets/images/empty_book.png"),
+                              )),
+                        ) :
+
+                        Container(
                           // height: 200,
                           margin: const EdgeInsets.only(top: 3.0, bottom: 3.0),
                           decoration: BoxDecoration(
@@ -570,14 +556,20 @@ class SmallGridEachItemView extends StatelessWidget {
                             height: 32,
                             child: GestureDetector(
                               onTap: () {
-                                // showModalBottomSheet<void>(
-                                //   context: context,
-                                //   builder: (BuildContext context) {
-                                //     return BottomSheetView(
-                                //       bookVO: bookVO,
-                                //       isMarkAsRead: true,);
-                                //   },
-                                // );
+                                showModalBottomSheet<void>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return BottomSheetView(
+                                      bookVO: mBookVO,
+                                      isMarkAsRead: true,
+                                      isFromFilterPage: true,
+                                      onTapAddToShelves: (){},
+                                      onTapDeleteBookFromYourLibrary: (){
+                                        onTapDeleteBookFromYourLibrary(mBookVO);
+                                      },
+                                    );
+                                  },
+                                );
                               },
                               child: const Image(
                                 image: AssetImage(
@@ -671,8 +663,10 @@ class SmallGridEachItemView extends StatelessWidget {
 
 class LargeGridView extends StatelessWidget {
   List<BookVO>? mBookList;
+  Function(BookVO?) onTapDeleteBookFromYourLibrary;
 
-  LargeGridView({super.key, required this.mBookList});
+  LargeGridView({super.key, required this.mBookList,
+  required this.onTapDeleteBookFromYourLibrary});
 
   @override
   Widget build(BuildContext context) {
@@ -689,6 +683,9 @@ class LargeGridView extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return LargeGridEachItemView(
             mBookVO: mBookList?.elementAt(index),
+            onTapDeleteBookFromYourLibrary: (mBookVO){
+              onTapDeleteBookFromYourLibrary(mBookVO);
+            },
           );
         },
       ),
@@ -698,8 +695,10 @@ class LargeGridView extends StatelessWidget {
 
 class LargeGridEachItemView extends StatelessWidget {
   BookVO? mBookVO;
+  Function(BookVO?) onTapDeleteBookFromYourLibrary;
 
-  LargeGridEachItemView({super.key, required this.mBookVO});
+  LargeGridEachItemView({super.key, required this.mBookVO,
+  required this.onTapDeleteBookFromYourLibrary});
 
   @override
   Widget build(BuildContext context) {
@@ -722,7 +721,25 @@ class LargeGridEachItemView extends StatelessWidget {
                       bottom: 0.0,
                       left: 0.0,
                       right: 0.0,
-                      child: Container(
+                      child:
+
+                      (mBookVO?.bookImage == "")?
+                      Container(
+                        // height: 200,
+                        // margin: const EdgeInsets.only(top: 3.0, bottom: 3.0),
+                        decoration: BoxDecoration(
+                            color: Colors.black45,
+                            borderRadius:
+                            const BorderRadius.all(Radius.circular(6)),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image:
+                              //NetworkImage(mBookVO?.bookImage ?? ""),
+                              AssetImage(
+                                  "assets/images/empty_book.png"),
+                            )),
+                      ):
+                    Container(
                         // height: 200,
                         // margin: const EdgeInsets.only(top: 3.0, bottom: 3.0),
                         decoration: BoxDecoration(
@@ -746,14 +763,20 @@ class LargeGridEachItemView extends StatelessWidget {
                           height: 32,
                           child: GestureDetector(
                             onTap: () {
-                              // showModalBottomSheet<void>(
-                              //   context: context,
-                              //   builder: (BuildContext context) {
-                              //     return BottomSheetView(
-                              //       bookVO: bookVO,
-                              //       isMarkAsRead: true,);
-                              //   },
-                              // );
+                              showModalBottomSheet<void>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return BottomSheetView(
+                                    bookVO: mBookVO,
+                                    isMarkAsRead: true,
+                                    isFromFilterPage: true,
+                                    onTapAddToShelves: (){},
+                                    onTapDeleteBookFromYourLibrary: (){
+                                      onTapDeleteBookFromYourLibrary(mBookVO);
+                                    },
+                                  );
+                                },
+                              );
                             },
                             child: const Image(
                               image: AssetImage(

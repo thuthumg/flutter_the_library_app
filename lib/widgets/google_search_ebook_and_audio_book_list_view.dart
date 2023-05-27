@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_the_library_app/blocs/search_book_bloc.dart';
+
 import 'package:flutter_the_library_app/data/vos/book_vo.dart';
 import 'package:flutter_the_library_app/pages/book_detail_page.dart';
 import 'package:flutter_the_library_app/resources/dimens.dart';
 import 'package:flutter_the_library_app/resources/strings.dart';
-import 'package:provider/provider.dart';
+
 
 
 class GoogleSearchEbookAndAudioBookListView extends StatefulWidget {
@@ -116,6 +116,23 @@ class GoogleSearchBookListView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
+                      (mBookList?[index].bookImage == "") ?
+                      Container(
+                        height:  isEbook? 80 :60,
+                        width: isEbook? 55 :60,
+                        margin: const EdgeInsets.only(
+                            top: MARGIN_MEDIUM, bottom: MARGIN_MEDIUM),
+                        decoration: BoxDecoration(
+                          color: Colors.black45,
+                          borderRadius: BorderRadius.all(Radius.circular(6)),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image:
+                           // NetworkImage(mBookList?[index].bookImage??""),
+                             AssetImage("assets/images/empty_book.png"),
+                          ),),
+                      ):
                       Container(
                         height:  isEbook? 80 :60,
                         width: isEbook? 55 :60,

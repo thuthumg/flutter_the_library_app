@@ -143,5 +143,15 @@ class LibraryModelImpl extends LibraryModel {
     });
   }
 
+  @override
+  void deleteBookFromLibrary(BookVO bookVO) {
+    mBookDao.deleteBookVO(bookVO);
+  }
+
+  @override
+  void renameShelf(ShelvesVO shelvesVO) {
+    mShelfDao.renameShelf(shelvesVO);
+  }
+
 
 }

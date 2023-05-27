@@ -638,7 +638,7 @@ class BookDetailInfoView extends StatelessWidget {
         children:[
           Padding(
               padding: EdgeInsets.all(MARGIN_MEDIUM_2),
-              child:
+              child:(bookVO?.bookImage == "")?
               Container(
                 height: 150,
                 width: 100,
@@ -649,7 +649,21 @@ class BookDetailInfoView extends StatelessWidget {
                       fit: BoxFit.cover,
                       image:
                       //(bookVO?.bookImage == null) ?
-                     //  AssetImage("assets/images/sample_book_img.jpg")
+                       AssetImage("assets/images/empty_book.png")
+                     // NetworkImage(bookVO?.bookImage??""),
+                    )),
+              )
+                  : Container(
+                height: 150,
+                width: 100,
+                decoration: BoxDecoration(
+                    color: Colors.black45,
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image:
+                      //(bookVO?.bookImage == null) ?
+                      //  AssetImage("assets/images/sample_book_img.jpg")
                       NetworkImage(bookVO?.bookImage??""),
                     )),
               )

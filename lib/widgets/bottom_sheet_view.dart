@@ -11,9 +11,11 @@ class BottomSheetView extends StatelessWidget {
   final bool isMarkAsRead;
   final bool isFromFilterPage;
   Function onTapAddToShelves;
+  Function onTapDeleteBookFromYourLibrary;
 
   BottomSheetView({
     super.key,
+    required this.onTapDeleteBookFromYourLibrary,
     required this.isMarkAsRead,
     required this.bookVO,
     required this.isFromFilterPage,
@@ -36,7 +38,13 @@ class BottomSheetView extends StatelessWidget {
           height: 1,
         ),
         //action button
-          ActionButtonView(isFromFilterPage:isFromFilterPage,bookVO: bookVO,)
+          ActionButtonView(isFromFilterPage:isFromFilterPage,bookVO: bookVO,onTapAddToShelves: (){
+            onTapAddToShelves();
+          },
+          onTapDeleteBookFromYourLibrary: (){
+             onTapDeleteBookFromYourLibrary();
+          },
+          )
 
         ],
       )
@@ -46,11 +54,15 @@ class BottomSheetView extends StatelessWidget {
 }
 
 class ActionButtonView extends StatelessWidget {
+  Function onTapAddToShelves;
+  Function onTapDeleteBookFromYourLibrary;
   final BookVO? bookVO;
   final bool isFromFilterPage;
 
-  const ActionButtonView({
+  ActionButtonView({
     super.key,
+    required this.onTapDeleteBookFromYourLibrary,
+    required this.onTapAddToShelves,
     required this.isFromFilterPage,
     required this.bookVO
   });
@@ -89,21 +101,26 @@ class ActionButtonView extends StatelessWidget {
           ///delete from your library
           Padding(
             padding: const EdgeInsets.only(left: MARGIN_MEDIUM_2),
-            child: Row(children: [
-              Container(
-                  padding: const EdgeInsets.all(MARGIN_MEDIUM),
-                  width: BOTTOM_SHEET_ICON_SIZE,
-                  height: BOTTOM_SHEET_ICON_SIZE,
-                  child: const Image(image: AssetImage('assets/images/ic_delete_64.png'),)),
-              const SizedBox(width: MARGIN_MEDIUM_1,),
-              const Text(
-                DELETE_FROMA_YOUR_LIBRARY_TXT,
-                style: TextStyle(
-                    fontSize: TEXT_REGULAR_2X, fontWeight: FontWeight.w600),
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-              )
-            ],),
+            child: GestureDetector(
+              onTap: (){
+                onTapDeleteBookFromYourLibrary();
+              },
+              child: Row(children: [
+                Container(
+                    padding: const EdgeInsets.all(MARGIN_MEDIUM),
+                    width: BOTTOM_SHEET_ICON_SIZE,
+                    height: BOTTOM_SHEET_ICON_SIZE,
+                    child: const Image(image: AssetImage('assets/images/ic_delete_64.png'),)),
+                const SizedBox(width: MARGIN_MEDIUM_1,),
+                const Text(
+                  DELETE_FROMA_YOUR_LIBRARY_TXT,
+                  style: TextStyle(
+                      fontSize: TEXT_REGULAR_2X, fontWeight: FontWeight.w600),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                )
+              ],),
+            ),
           ),
           const SizedBox(height: MARGIN_MEDIUM_1,),
           ///add to whishlist
@@ -227,21 +244,34 @@ class ActionButtonView extends StatelessWidget {
         ///Add to shelves
         Padding(
           padding: const EdgeInsets.only(left: MARGIN_MEDIUM_2),
-          child: Row(children: [
-            Container(
-                padding: const EdgeInsets.all(MARGIN_MEDIUM),
-                width: BOTTOM_SHEET_ICON_SIZE,
-                height: BOTTOM_SHEET_ICON_SIZE,
-                child: const Image(image: AssetImage('assets/images/ic_add_64.png'),)),
-            const SizedBox(width: MARGIN_MEDIUM_1,),
-            const Text(
-              ADD_TO_SHELVES_TXT,
-              style: TextStyle(
-                  fontSize: TEXT_REGULAR_2X, fontWeight: FontWeight.w600),
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-            )
-          ],),
+          child: GestureDetector(
+            onTap: (){
+              onTapAddToShelves();
+             //
+             //  Navigator.push(
+             //    context,
+             //    MaterialPageRoute(
+             //      builder: (context) => AddToShelvesPage(bookVO: bookVO),
+             //    ),
+             //  );
+
+            },
+            child: Row(children: [
+              Container(
+                  padding: const EdgeInsets.all(MARGIN_MEDIUM),
+                  width: BOTTOM_SHEET_ICON_SIZE,
+                  height: BOTTOM_SHEET_ICON_SIZE,
+                  child: const Image(image: AssetImage('assets/images/ic_add_64.png'),)),
+              const SizedBox(width: MARGIN_MEDIUM_1,),
+              const Text(
+                ADD_TO_SHELVES_TXT,
+                style: TextStyle(
+                    fontSize: TEXT_REGULAR_2X, fontWeight: FontWeight.w600),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              )
+            ],),
+          ),
         ),
         const SizedBox(height: MARGIN_MEDIUM_1,),
         ///Mark as read
@@ -284,6 +314,21 @@ class BookInfoView extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(MARGIN_MEDIUM_2),
           child:
+          (bookVO?.bookImage == "")?
+          Container(
+            height: 125,
+            width: 80,
+            decoration: BoxDecoration(
+                color: Colors.black45,
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image:
+                  //(bookVO?.bookImage == null) ?
+                   AssetImage("assets/images/empty_book.png")
+                 // NetworkImage(bookVO?.bookImage??""),
+                )),
+          ):
           Container(
             height: 125,
             width: 80,

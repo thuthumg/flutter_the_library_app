@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_the_library_app/blocs/home_bloc.dart';
@@ -11,7 +10,6 @@ import 'package:flutter_the_library_app/widgets/ebooks_audiobook_tab_bar_view.da
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
-  // List<String> items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
 
   @override
   Widget build(BuildContext context) {
@@ -36,65 +34,6 @@ class HomePage extends StatelessWidget {
           ),
         )
 
-        // CustomScrollView(
-        //   slivers: [
-        //     SliverPersistentHeader(
-        //       floating: true,
-        //       delegate: FloatingHeader(),
-        //     ),
-        //     SliverList(
-        //       delegate: SliverChildListDelegate(
-        //         [
-        //           // Container(
-        //           // height: MediaQuery.of(context).size.height*0.8,
-        //           //   child: Stack(
-        //           //     children: <Widget>[
-        //           //       Positioned(
-        //           //         left: 0.0,
-        //           //         top: 0.0,
-        //           //         right: 0,
-        //           //         child: Container(
-        //           //           width: MediaQuery.of(context).size.width,
-        //           //           height: 250,
-        //           //           decoration: const BoxDecoration(
-        //           //               gradient: LinearGradient(
-        //           //                   begin: Alignment.centerLeft,
-        //           //                   end: Alignment.centerRight,
-        //           //                   colors: [
-        //           //                     Color.fromRGBO(25, 91, 183, 1),
-        //           //                     Color.fromRGBO(18, 17, 151, 1)
-        //           //                   ])),
-        //           //           // color: BACKGROUND_COLOR,
-        //           //         ),
-        //           //       ),
-        //           //       Positioned(
-        //           //         left: 0.0,
-        //           //         top: 250.0,
-        //           //         right: 0,
-        //           //         child: Container(
-        //           //           width: MediaQuery.of(context).size.width,
-        //           //           height: MediaQuery.of(context).size.height,
-        //           //           color: Color.fromRGBO(223, 235, 249, 1),
-        //           //           child: MyTabBarView(),
-        //           //           // color: BACKGROUND_COLOR,
-        //           //         ),
-        //           //       ),
-        //           //
-        //           //     ],
-        //           //   ),),
-
-        //           Container(
-        //             width: MediaQuery.of(context).size.width,
-        //             height: MediaQuery.of(context).size.height * 0.5,
-        //             color: const Color.fromRGBO(223, 235, 249, 1),
-        //             child: EBooksAudioBooksTabBarView(),
-        //             // color: BACKGROUND_COLOR,
-        //           ),
-        //         ],
-        //       ),
-        //     )
-        //   ],
-        // ),
         );
   }
 }
@@ -109,31 +48,51 @@ class FloatingHeader extends SliverPersistentHeaderDelegate {
       height: MediaQuery.of(context).size.height * 0.3,
       child: Selector<HomeBloc, List<BookVO>?>(
         selector: (context, bloc) => bloc.mReadBookList,
-        builder: (context, readBookList, child) => CarouselSlider(
-          items: readBookList?.map((item) {
-            return Container(
-                width: 200,
-                child: ReadBookItemView(
-                  bookVO: item,
-                  onTapItem: () {
-                    _navigateToBookDetailsScreen(context, item);
-                  },
-                ));
-          }).toList(),
-          options: CarouselOptions(
-            // aspectRatio: 16/8,
-            viewportFraction: 0.5,
-            enlargeFactor: 0.25,
-            enableInfiniteScroll: false,
-            // enable circular loop
-            height: 200,
-            enlargeCenterPage: true,
-            autoPlay: false,
-            onPageChanged: (index, reason) {
-              // Do something when the page changes.
-            },
-          ),
-        ),
+        builder: (context, readBookList, child) 
+        {
+         return (readBookList == null || readBookList.length == 0) ?
+         Container(
+           width: 200,
+           child: Column(
+             children: [
+               Image.asset("assets/images/read_book_empty.png"),
+               Text(
+                 "Let's find your next read",
+                 style: TextStyle(
+                     color: Colors.black,
+                     fontSize: TEXT_REGULAR_2X,
+                     fontWeight: FontWeight.w500),
+               )
+             ],
+           ),
+         ): CarouselSlider(
+            items: readBookList.map((item) {
+              return Container(
+                  width: 200,
+                  child: ReadBookItemView(
+                    bookVO: item,
+                    onTapItem: () {
+                      _navigateToBookDetailsScreen(context, item);
+                    },
+                  ));
+            }).toList(),
+            options: CarouselOptions(
+              // aspectRatio: 16/8,
+              viewportFraction: 0.5,
+              enlargeFactor: 0.25,
+              enableInfiniteScroll: false,
+              // enable circular loop
+              height: 200,
+              enlargeCenterPage: true,
+              autoPlay: false,
+              onPageChanged: (index, reason) {
+                // Do something when the page changes.
+              },
+            ),
+          )
+         ;
+        }
+            
       ),
       // color: BACKGROUND_COLOR,
     );
@@ -177,7 +136,7 @@ class ReadBookItemView extends StatelessWidget {
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image:
-                              AssetImage("assets/images/sample_book_img.jpg"),
+                              AssetImage("assets/images/empty_book.png"),
                           // AssetImage("assets/images/sample_book_img.jpg"),
                         )),
                   )
@@ -208,6 +167,11 @@ class ReadBookItemView extends StatelessWidget {
                       isMarkAsRead: true,
                       isFromFilterPage: true,
                       onTapAddToShelves: (){},
+                      onTapDeleteBookFromYourLibrary: (){
+                         HomeBloc bloc = Provider.of<HomeBloc>(context, listen: false);
+                         bloc.onTapDeleteBookFromYourLibrary(bookVO);
+
+                      },
                     );
                   },
                 );

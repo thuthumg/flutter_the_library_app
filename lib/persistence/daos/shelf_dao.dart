@@ -22,10 +22,16 @@ class ShelfDao {
 
   void saveBookListDataToShelfVO(String shelfId, BookVO? bookVO) async
   {
+
+    bookVO?.bookId = UniqueKey().toString();
+
     List<ShelvesVO> shelvesVOList= getShelfBox().values.where((element) => element.shelfId == shelfId).toList();
+
     if( shelvesVOList[0].booksList?.length == 0)
       {
+
         shelvesVOList[0].booksList?.add(bookVO!);
+
       }else if ( (shelvesVOList[0].booksList?.length)! > 0){
 
       // Using contains method
@@ -35,6 +41,11 @@ class ShelfDao {
       if(!isContained)
         {
           shelvesVOList[0].booksList?.add(bookVO!);
+          // if(bookVO?.selected == true)
+          //   {
+          //     shelvesVOList[0].booksList?.add(bookVO!);
+          //   }
+
         }
 
     }
@@ -42,6 +53,8 @@ class ShelfDao {
     // var existingData = getShelfBox().get('key');
     // var updatedData = modifyData(existingData);
     // await getShelfBox().put('key', updatedData);///remain
+
+
     return getShelfBox().put(shelvesVOList[0].shelfId, shelvesVOList[0]);
   }
   dynamic modifyData(dynamic existingData) {
@@ -60,7 +73,7 @@ class ShelfDao {
   }
 
   List<BookVO> getAllCategoryList(String shelfId){
-    if (getAllBookList(shelfId) != null && (getAllBookList(shelfId).isNotEmpty ?? false)) {
+    if (getAllBookList(shelfId) != null && (getAllBookList(shelfId).isNotEmpty)) {
 
       List<BookVO> distinctBooks = [];
 
@@ -89,10 +102,16 @@ class ShelfDao {
     List<ShelvesVO> shelfListData = getShelfBox().values.toList();
     List<ShelvesVO> returnShelfData = [];
     for (int i = 0; i< shelfListData.length;i++) {
-      shelfListData[i].booksList?.sort((a, b) => (a.bookId??"").compareTo(b.bookId??""));
+     // shelfListData[i].booksList?.sort((a, b) => (a.bookId??"").compareTo(b.bookId??""));
       returnShelfData.add(shelfListData[i]);
-    }
+      // List<BookVO> shelfBookList = shelfListData[i].booksList??[];
+      // for (int i = 0; i< shelfBookList.length;i++) {
+      //   debugPrint("shelf dao loop ${shelfBookList[i]}");
+      // }
 
+    }
+    debugPrint("shelf dao ${returnShelfData.toString()}");
+    //return returnShelfData;
     return  getShelfBox().values.toList();
   }
 
@@ -116,5 +135,7 @@ Stream<List<BookVO>> getAllBookListStream(String shelfId){
     return Stream.value(getAllCategoryList(shelfId).toSet().toList());
   }
 
-
+  void renameShelf(ShelvesVO shelvesVO) async {
+    return getShelfBox().put(shelvesVO.shelfId, shelvesVO);
+  }
 }

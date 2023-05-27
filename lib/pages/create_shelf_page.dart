@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_the_library_app/blocs/shelves_bloc.dart';
 import 'package:flutter_the_library_app/blocs/shelves_create_bloc.dart';
 import 'package:flutter_the_library_app/components/display_and_sorting_view.dart';
 import 'package:flutter_the_library_app/data/vos/book_vo.dart';
@@ -13,7 +12,7 @@ import 'package:provider/provider.dart';
 class CreateShelfPage extends StatelessWidget {
   bool isCreateNewShelf;
   ShelvesVO? mShelvesVO;
-  Function(String?, BuildContext) onTapSaveShelf;
+  Function(String?) onTapSaveShelf;
   Function(ShelvesVO?, BuildContext) onTapDeleteShelf;
  // bool renameShelf = false;
  // String paramRenameShelfName = "";
@@ -63,35 +62,30 @@ class CreateShelfPage extends StatelessWidget {
                     child: Container(
                       width: 35,
                       height: 35,
-                      margin: EdgeInsets.only(right: MARGIN_MEDIUM),
-                      padding: EdgeInsets.only(
+                      margin: const EdgeInsets.only(right: MARGIN_MEDIUM),
+                      padding: const EdgeInsets.only(
                           left: MARGIN_MEDIUM, right: MARGIN_MEDIUM),
                       child: GestureDetector(
                         onTap: () {
                           showModalBottomSheet<void>(
                             context: context,
-                            builder: (BuildContext context) {
+                            builder: (BuildContext bottomSheetContext) {
                               return ShelfActionBottomSheetView(
                                 shelfTitle: mShelvesVO?.shelfName ?? "",
-                                onTapRenameShelf: (oldShelfName) {
-                                 // setState(() {
+                                onTapRenameShelf: (oldShelfName,contextParam) {
 
                                   ShelvesCreateBloc bloc =
                                   Provider.of<ShelvesCreateBloc>(context,
                                       listen: false);
-
                                     bloc.setRenameFlagAndName(true,oldShelfName);
-
-                                   // paramRenameShelfName = oldShelfName;
                                     Navigator.pop(context);
-                                 // });
+
                                 },
-                                onTapDeleteShelf: () {
-                                 // setState(() {
+                                onTapDeleteShelf: (contextParam) {
                                     onTapDeleteShelf(
                                         mShelvesVO, context);
-                                    // Navigator.pop(context);
-                                 // });
+                                     Navigator.pop(context);
+
                                 },
                               );
                             },
@@ -121,43 +115,11 @@ class CreateShelfPage extends StatelessWidget {
                         maxLength: 50,
                         paramRenameShelfName: oldRenameShelfName,//paramRenameShelfName
                         onTapDone: (enterShelfName) {
-                          print("check shelf Name = ${enterShelfName}");
-                          onTapSaveShelf(enterShelfName, context);
+                          onTapSaveShelf(enterShelfName);
                         },
                       ),
                     ),
                   ),
-                  // Visibility(
-                  //   visible:
-                  //       (widget.isCreateNewShelf == true || renameShelf == true),
-                  //   child: Padding(
-                  //     padding:
-                  //         const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
-                  //     child: EditTextWithLimitView(
-                  //       maxLength: 50,
-                  //       paramRenameShelfName: paramRenameShelfName,
-                  //       onTapDone: (enterShelfName) {
-                  //         print("check shelf Name = ${enterShelfName}");
-                  //
-                  //         // ShelvesBloc bloc = Provider.of<ShelvesBloc>(
-                  //         //     context,
-                  //         //     listen: false);
-                  //         // bloc.saveShelfVO(
-                  //         //     ShelvesVO("", shelfName, [], false));
-                  //         // Navigator.pop(context);
-                  //         ShelvesCreateBloc bloc = Provider.of<ShelvesCreateBloc>(
-                  //             context,
-                  //             listen: false);
-                  //         bloc.saveShelfVO(
-                  //             ShelvesVO("", enterShelfName, [], false));
-                  //         Navigator.pop(context);
-                  //
-                  //        // widget.onTapSaveShelf(enterShelfName, context);
-                  //       },
-                  //     ),
-                  //   ),
-                  // ),
-
                   ///existing shelf Name view section
                   Visibility(
                     visible: (!isCreateNewShelf && renameShelfFlag == false),
@@ -218,7 +180,8 @@ class CreateShelfPage extends StatelessWidget {
                                                       // print(
                                                       //     "check read book list = ${widget.readBookList}");
 
-                                                      return categoryReadBookList?.length==0 ? Container() : DisplayAndSortingView(
+                                                      return categoryReadBookList?.length==0 ? Container() :
+                                                      DisplayAndSortingView(
                                                           selectedViewIcon: selectedViewIcon ??
                                                               "assets/images/ic_list_gray_64.png",
                                                           readBookList: readBookList,
@@ -266,7 +229,19 @@ class CreateShelfPage extends StatelessWidget {
                                                                 selectedChangeGridView ?? "List");
                                                             Navigator.pop(buildContext);
                                                           },
-                                                          sortedBookList: categoryReadBookList);
+                                                          sortedBookList: categoryReadBookList,
+                                                      onTapDeleteBookFromYourLibrary: (mBookVO){
+                                                        if(mBookVO != null)
+                                                          {
+                                                            ShelvesCreateBloc bloc =
+                                                            Provider.of<ShelvesCreateBloc>(
+                                                                context,
+                                                                listen: false);
+                                                            bloc.onTapDeleteBookFromYourLibrary(mBookVO);
+                                                          }
+                                                        Navigator.pop(context);
+
+                                                      },);
                                                     },
                                                   ),
                                                 ),
@@ -276,16 +251,6 @@ class CreateShelfPage extends StatelessWidget {
                             ),
                       )
 
-                    // Expanded(
-                    //     child: DisplayAndSortingView( readBookList: [],
-                    //       selectedSortedItemData: "Recently opened",
-                    //       selectedViewItemData:"List",
-                    //       onTapSortFilterItem: (selectedSortedItem,buildContext){},
-                    //       onTapCategoryItem: (bookVO){},
-                    //       onTapChangeGridView:  (selectedChangeGridView,buildContext){},
-                    //       sortedBookList: [],
-                    //     ),
-                    // ),
                   )
                 ],
               ),

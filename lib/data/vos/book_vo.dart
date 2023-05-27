@@ -84,25 +84,26 @@ class BookVO{
   bool? selected;
 
 
-  BookVO(
-      this.bookId,
-      this.categoryId,
-      this.categoryName,
-      this.author,
-      this.bookImage,
-      this.bookImageWidth,
-      this.bookImageHeight,
-      this.bookReviewLink,
-      this.contributor,
-      this.contributorNote,
-      this.createdDate,
-      this.description,
-      this.price,
-      this.book_uri,
-      this.publisher,
-      this.title,
-      this.updatedDate,
-      this.selected);
+  BookVO({
+    this.bookId,
+    this.categoryId,
+    this.categoryName,
+    this.author,
+    this.bookImage,
+    this.bookImageWidth,
+    this.bookImageHeight,
+    this.bookReviewLink,
+    this.contributor,
+    this.contributorNote,
+    this.createdDate,
+    this.description,
+    this.price,
+    this.book_uri,
+    this.publisher,
+    this.title,
+    this.updatedDate,
+    this.selected
+});
 
   factory BookVO.fromJson(Map<String,dynamic> json) =>_$BookVOFromJson(json);
   Map<String,dynamic> toJson()=> _$BookVOToJson(this);

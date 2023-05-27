@@ -9,7 +9,6 @@ class SearchBookBloc extends ChangeNotifier{
 
   ///1
   ///State Variables
- // List<GoogleBookVO>? mGoogleBooksList;
   List<BookVO>? mBooksList;
 
   ///2
@@ -22,11 +21,13 @@ class SearchBookBloc extends ChangeNotifier{
     ///booklist with category from Network
 
     mLibraryModel.getGoogleBooksList(searchQuery).then((searchBooksList){
-
+      List<GoogleBookVO> searchBookList = searchBooksList??[];
       List<BookVO> bookList = [];
-     searchBooksList?.forEach((element) {
-       bookList.add(element.convertBookVO(element.id??""));
-     });
+
+
+      for (var index = 0; index < searchBookList.length; index++) {
+        bookList.add(searchBookList[index].convertBookVO(searchBookList[index].id??"",index));
+      }
       mBooksList = bookList;
 
       notifyListeners();
@@ -37,10 +38,15 @@ class SearchBookBloc extends ChangeNotifier{
   void onSearchQuery(String query){
     mLibraryModel.getGoogleBooksList(query).then((searchBooksList){
 
+
+      List<GoogleBookVO> searchBookList = searchBooksList??[];
       List<BookVO> bookList = [];
-      searchBooksList?.forEach((element) {
-        bookList.add(element.convertBookVO(element.id??""));
-      });
+
+
+      for (var index = 0; index < searchBookList.length; index++) {
+        bookList.add(searchBookList[index].convertBookVO(searchBookList[index].id??"",index));
+      }
+
       mBooksList = bookList;
 
       notifyListeners();

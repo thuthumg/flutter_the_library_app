@@ -3,8 +3,6 @@ import 'package:flutter_the_library_app/blocs/library_bloc.dart';
 
 import 'package:flutter_the_library_app/components/display_and_sorting_view.dart';
 import 'package:flutter_the_library_app/data/vos/book_vo.dart';
-import 'package:flutter_the_library_app/data/vos/shelves_vo.dart';
-import 'package:flutter_the_library_app/pages/create_shelf_page.dart';
 
 import 'package:flutter_the_library_app/resources/dimens.dart';
 import 'package:flutter_the_library_app/resources/strings.dart';
@@ -139,7 +137,20 @@ class _YourBooksYourShelvesTabBarViewState
                                               selectedChangeGridView ?? "List");
                                           Navigator.pop(buildContext);
                                         },
-                                        sortedBookList: categoryReadBookList);
+                                        sortedBookList: categoryReadBookList,
+                                    onTapDeleteBookFromYourLibrary: (mBookVO){
+                                      if(mBookVO != null)
+                                        {
+                                          LibraryBloc bloc =
+                                          Provider.of<LibraryBloc>(context,
+                                              listen: false);
+                                          bloc.onTapDeleteBookFromYourLibrary(
+                                              mBookVO);
+                                        }
+
+                                      Navigator.pop(context);
+
+                                    },);
                                   }),
                             ),
                           ),

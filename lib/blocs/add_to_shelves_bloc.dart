@@ -12,6 +12,7 @@ class AddToShelvesBloc  extends ChangeNotifier{
   ///State Variables
   List<ShelvesVO>? mShelvesList;
   bool isChecked = false;
+  String? checkedDataId;
 
   ///2
   ///Model
@@ -26,6 +27,9 @@ class AddToShelvesBloc  extends ChangeNotifier{
 
     mLibraryModel.getShelvesList().listen((shelvesList) {
       mShelvesList = shelvesList;
+      mShelvesList?.forEach((element) {
+        element.isSelected = false;
+      });
       notifyListeners();
     }).onError((error) {
       debugPrint(error.toString());
@@ -35,16 +39,26 @@ class AddToShelvesBloc  extends ChangeNotifier{
 
   void saveShelfVO(ShelvesVO shelvesVO){
     mLibraryModel.createNewShelf(shelvesVO);
-
+    notifyListeners();
   }
 
   void onTapDeleteShelfVO(ShelvesVO shelvesVO) {
     mLibraryModel.deleteShelfVO(shelvesVO);
+    notifyListeners();
   }
 
-  void onTapCheckBox(String shelvesId,BookVO? bookVO){
-    isChecked = !isChecked;
+  void onTapCheckBox(String shelvesId,BookVO? bookVO,bool checkStatus){
+    isChecked = checkStatus;
+   // bookVO?.selected = isChecked;
+    checkedDataId = shelvesId;
+
     mLibraryModel.addBookVODataToShelf(shelvesId, bookVO);
+    // mLibraryModel.getShelvesList().listen((shelvesList) {
+    //   mShelvesList = shelvesList;
+    //   notifyListeners();
+    // }).onError((error) {
+    //   debugPrint(error.toString());
+    // });
   }
 
 }

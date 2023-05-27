@@ -10,10 +10,6 @@ class ShelvesCreateBloc extends ChangeNotifier{
 
   ///1
   ///State Variables
- // List<ShelvesVO>? mShelvesList;
-
-
-
   List<BookVO>? mCategoryTypeList;
   List<BookVO>? mReadBookList;
   String selectedItemData = "Recently opened";
@@ -33,23 +29,7 @@ class ShelvesCreateBloc extends ChangeNotifier{
 
     ///shelves list from Database
 
-    // mLibraryModel.getShelvesList().listen((shelvesList) {
-    //   mShelvesList = shelvesList;
-    //   notifyListeners();
-    // }).onError((error) {
-    //   debugPrint(error.toString());
-    // });
-   // getBookListFromShelves
-
-    // mLibraryModel.getBookListFromShelves(shelvesVO.shelfId).listen((booklist) {
-    //   mReadBookList = booklist;
-    //   notifyListeners();
-    // }).onError((error) {
-    //   debugPrint(error.toString());
-    // });
-
     if(shelfId != "")
-
       {
         mLibraryModel.getBookListFromShelves(shelfId).listen((booklist) {
           mReadBookList = booklist;
@@ -78,19 +58,16 @@ class ShelvesCreateBloc extends ChangeNotifier{
     notifyListeners();
   }
 
-  // void setRenameShelfName(String shelfName){
-  //   renameShelfName = shelfName;
-  // }
-
   void saveShelfVO(ShelvesVO shelvesVO){
     mLibraryModel.createNewShelf(shelvesVO);
-
-  }
-
-  void onTapDeleteShelfVO(ShelvesVO shelvesVO) {
-    mLibraryModel.deleteShelfVO(shelvesVO);
     notifyListeners();
+
   }
+
+  // void onTapDeleteShelfVO(ShelvesVO shelvesVO) {
+  //   mLibraryModel.deleteShelfVO(shelvesVO);
+  //   notifyListeners();
+  // }
 
   void onTapShelfDetail(ShelvesVO? shelvesVO){
 
@@ -162,5 +139,10 @@ class ShelvesCreateBloc extends ChangeNotifier{
     }).onError((error) {
       debugPrint(error.toString());
     });
+  }
+
+  void onTapDeleteBookFromYourLibrary(BookVO bookVO){
+    mLibraryModel.deleteBookFromLibrary(bookVO);
+    notifyListeners();
   }
 }

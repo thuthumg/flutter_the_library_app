@@ -27,4 +27,5 @@ class EachCategoryBookVO {
   factory EachCategoryBookVO.fromJson(Map<String,dynamic> json) =>_$EachCategoryBookVOFromJson(json);
   Map<String,dynamic> toJson()=> _$EachCategoryBookVOToJson(this);
 
+
 }

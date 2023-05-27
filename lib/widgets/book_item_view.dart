@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_the_library_app/data/vos/book_vo.dart';
+import 'package:flutter_the_library_app/pages/add_to_shelves_page.dart';
 import 'package:flutter_the_library_app/resources/dimens.dart';
 import 'package:flutter_the_library_app/widgets/bottom_sheet_view.dart';
 
@@ -39,7 +40,7 @@ class BookItemView extends StatelessWidget {
                             fit: BoxFit.cover,
                             image:
                                // NetworkImage(bookVO?.bookImage??""),
-                                AssetImage("assets/images/sample_book_img.jpg"),
+                                AssetImage("assets/images/empty_book.png"),
                           )),
                     ):
                     Container(
@@ -71,7 +72,17 @@ class BookItemView extends StatelessWidget {
                                   bookVO: bookVO,
                                   isMarkAsRead: true,
                                 isFromFilterPage: false,
-                                onTapAddToShelves: (){},);
+                                onTapAddToShelves: (){
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => AddToShelvesPage(bookVO: bookVO),
+                                    ),
+                                  );
+                                },
+                                onTapDeleteBookFromYourLibrary: (){
+                                },
+                                );
                               },
                             );
                           },

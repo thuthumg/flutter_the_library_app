@@ -58,6 +58,7 @@ class _CategoryBookListItemViewState extends State<CategoryBookListItemView> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => EachCategoryBooksListPage(
+                            listId: widget.categoryBooksListVO?.listId ?? 0,
                             listNameEncoded: widget.categoryBooksListVO?.listNameEncoded ?? "",
                              categoryName: widget.categoryBooksListVO?.listNameEncoded ?? ""
                           ),
@@ -82,6 +83,9 @@ class _CategoryBookListItemViewState extends State<CategoryBookListItemView> {
                 scrollDirection: Axis.horizontal,
                 itemCount: widget.categoryBooksListVO?.books?.length,
                 itemBuilder: (BuildContext context, int index) {
+                  widget.categoryBooksListVO?.books?[index].categoryId = widget.categoryBooksListVO?.listId;
+                  widget.categoryBooksListVO?.books?[index].categoryName = widget.categoryBooksListVO?.listName;
+
                   return GestureDetector(
                     onTap: () {
                       setState(() {

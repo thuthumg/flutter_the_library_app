@@ -33,8 +33,9 @@ class HomeBloc extends ChangeNotifier{
     });
   }
 
-  void onTapItem(){
-
+  void onTapDeleteBookFromYourLibrary(BookVO bookVO){
+    mLibraryModel.deleteBookFromLibrary(bookVO);
+    notifyListeners();
   }
 
 }
