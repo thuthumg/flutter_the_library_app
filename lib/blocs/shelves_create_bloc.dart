@@ -23,6 +23,13 @@ class ShelvesCreateBloc extends ChangeNotifier{
   ///Model
   LibraryModel mLibraryModel = LibraryModelImpl();
 
+  bool _disposed = false;
+
+  void dispose() {
+    _disposed = true;
+    // Clean up resources or perform other necessary tasks
+    super.dispose();
+  }
 
   ShelvesCreateBloc(String shelfId){//ShelvesVO shelvesVO
     debugPrint("Shelves bloc");
@@ -33,7 +40,11 @@ class ShelvesCreateBloc extends ChangeNotifier{
       {
         mLibraryModel.getBookListFromShelves(shelfId).listen((booklist) {
           mReadBookList = booklist;
-          notifyListeners();
+
+          if (!_disposed) {
+            // Perform operations or computations
+            notifyListeners();
+          }
         }).onError((error) {
           debugPrint(error.toString());
         });
@@ -41,7 +52,10 @@ class ShelvesCreateBloc extends ChangeNotifier{
         mLibraryModel.getCategoryListFromShelves(shelfId).listen((categoryList) {
           mCategoryTypeList = categoryList;
 
-          notifyListeners();
+          if (!_disposed) {
+            // Perform operations or computations
+            notifyListeners();
+          }
         }).onError((error) {
           debugPrint(error.toString());
         });

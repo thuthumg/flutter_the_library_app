@@ -65,6 +65,7 @@ class DisplayAndSortingView extends StatelessWidget {
                         context: context,
                         builder: (BuildContext context) {
                           return FilterBottomSheetView(
+                            key: Key('filterBottomSheet'),
                             autoSelectedData: selectedSortedItemData,
                             bookVO: null,
                             isMarkAsRead: true,
@@ -88,7 +89,8 @@ class DisplayAndSortingView extends StatelessWidget {
                         },
                       );
                     },
-                    child: SortByFilterView(selectedItemData: selectedSortedItemData),
+                    child: SortByFilterView(
+                        selectedItemData: selectedSortedItemData),
                   ),
 
                 ///large grid , small grid , list view filter
@@ -98,6 +100,7 @@ class DisplayAndSortingView extends StatelessWidget {
                         context: context,
                         builder: (BuildContext context) {
                           return FilterBottomSheetView(
+                            key: Key('filterByViewBottomSheet'),
                             autoSelectedData: selectedViewItemData,
                             bookVO: null,
                             isMarkAsRead: true,
@@ -130,6 +133,7 @@ class DisplayAndSortingView extends StatelessWidget {
 
           ///read book list section
           Expanded(
+            key: Key('bookListExtend'),
                 child: (selectedViewItemData == "Large grid")
                     ? LargeGridView(mBookList: readBookList,
                     onTapDeleteBookFromYourLibrary: (mBookVO){
@@ -213,6 +217,7 @@ class _FilterChipViewState extends State<FilterChipView> {
                       ),
                     ),
                     child: Icon(
+                      key:Key('chipCategoryClosebtn'),
                       Icons.close,
                       color: Colors.grey,
                       size: 20,
@@ -221,6 +226,7 @@ class _FilterChipViewState extends State<FilterChipView> {
                 )),
             Expanded(
               child: ListView.builder(
+                key:Key("chipListView"),
                   // shrinkWrap: true,
                   //  physics: NeverScrollableScrollPhysics(),
                   scrollDirection: Axis.horizontal,
@@ -292,6 +298,7 @@ class ListStyleView extends StatelessWidget {
         child: SizedBox(
       // height: 500,
       child: ListView.builder(
+        key: Key('bookListViewByListStyle'),
         // shrinkWrap: true,
         //  physics: NeverScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
@@ -435,10 +442,11 @@ class ListEachItemView extends StatelessWidget {
                     },
                   );
                 },
-                child: const Padding(
+                child: Padding(
                   padding: EdgeInsets.only(
                       left: MARGIN_MEDIUM, right: MARGIN_MEDIUM),
                   child: Image(
+                    key: Key('libraryListViewContextualIcon-${mBookVO?.bookId}'),
                     image: AssetImage('assets/images/ic_more_gray_64.png'),
                   ),
                 ),
@@ -673,6 +681,7 @@ class LargeGridView extends StatelessWidget {
     return Container(
       // height: MediaQuery.of(context).size.height * 0.55,
       child: GridView.builder(
+
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2, // Number of columns
             crossAxisSpacing: 15.0, // Spacing between columns
@@ -876,6 +885,7 @@ class ViewAsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      key:Key('filterByView'),
       width: 25,
       height: 25,
       child: Image(
@@ -900,6 +910,7 @@ class SortByFilterView extends StatelessWidget {
         const Padding(
           padding: EdgeInsets.all(MARGIN_MEDIUM_1),
           child: SizedBox(
+            key:Key('filterSortIcon'),
             width: 25,
             height: 25,
             child: Image(

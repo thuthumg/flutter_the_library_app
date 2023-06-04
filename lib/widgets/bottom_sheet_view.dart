@@ -147,7 +147,7 @@ class ActionButtonView extends StatelessWidget {
           GestureDetector(
             onTap: (){
 
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => AddToShelvesPage(bookVO: bookVO),

@@ -28,6 +28,7 @@ class _RadioGroupWidgetState extends State<RadioGroupView> {
 
   @override
   Widget build(BuildContext context) {
+
     return Column(
       children: widget.filterTypeList
           .map((item) => RadioListTile(

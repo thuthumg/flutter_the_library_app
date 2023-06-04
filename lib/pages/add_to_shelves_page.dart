@@ -40,12 +40,14 @@ class AddToShelvesPage extends StatelessWidget {
                       Navigator.pop(context);
                     },
                     child: Icon(
+                      key:Key('closeIcon'),
                       Icons.close,
                       color: Colors.black,
                     ))
               ],
           ),
           body: ListView.builder(
+                key: Key('shelvesCheckBoxListView'),
               itemCount: shelvesVOList?.length,
               // Replace with the actual length of your list
               itemBuilder: (BuildContext context, int index) {
@@ -53,27 +55,10 @@ class AddToShelvesPage extends StatelessWidget {
                     // Selector<AddToShelvesBloc, bool>(
                     //   selector: (context, bloc) => bloc.isChecked,
                     //   builder: (context, isChecked, child) =>
-                    CheckboxListTile(
-                  tristate: true,
-                  title: Text('${shelvesVOList?[index].shelfName}'),
-                  value: ((checkedDataId == shelvesVOList?[index].shelfId) &&
-                      isChecked)? true : false,
-                  //isCheckedList[index],
-                  onChanged: (bool? value) {
-                    // setState(() {
-                    // isCheckedList[index] = value!;
-                    // shelvesVOList?[index].isSelected = value ?? false;
-                    // if(shelvesVOList?[index].isSelected == true)
-                    //   {
-                    //
-                    //   }
-                    AddToShelvesBloc bloc =
-                        Provider.of<AddToShelvesBloc>(context, listen: false);
-                    bloc.onTapCheckBox(
-                        shelvesVOList?[index].shelfId ?? "0", bookVO,value??false);
-                    //  });
-                  },
-                );
+                    ShelfCheckBoxListItemView(bookVO: bookVO,
+                        shelvesVO:shelvesVOList?[index],
+                        checkedDataId:checkedDataId,
+                        isChecked:isChecked);
                 // );
               },
           ),
@@ -82,6 +67,47 @@ class AddToShelvesPage extends StatelessWidget {
             ),
       ),
     );
+  }
+}
+
+class ShelfCheckBoxListItemView extends StatelessWidget {
+  const ShelfCheckBoxListItemView({
+    super.key,
+    required this.bookVO,
+    required this.shelvesVO,
+    required this.checkedDataId,
+    required this.isChecked
+  });
+
+  final BookVO? bookVO;
+  final ShelvesVO? shelvesVO;
+  final String? checkedDataId;
+  final bool isChecked;
+
+  @override
+  Widget build(BuildContext context) {
+    return CheckboxListTile(
+      key: Key('chk-${shelvesVO?.shelfId}'),
+                  tristate: true,
+                  title: Text('${shelvesVO?.shelfName}'),
+                  value: ((checkedDataId == shelvesVO?.shelfId) &&
+      isChecked)? true : false,
+                  //isCheckedList[index],
+                  onChanged: (bool? value) {
+    // setState(() {
+    // isCheckedList[index] = value!;
+    // shelvesVOList?[index].isSelected = value ?? false;
+    // if(shelvesVOList?[index].isSelected == true)
+    //   {
+    //
+    //   }
+    AddToShelvesBloc bloc =
+        Provider.of<AddToShelvesBloc>(context, listen: false);
+    bloc.onTapCheckBox(
+        shelvesVO?.shelfId ?? "0", bookVO,value??false);
+    //  });
+                  },
+                );
   }
 }
 

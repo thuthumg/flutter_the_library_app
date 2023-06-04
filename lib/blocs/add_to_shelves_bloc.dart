@@ -18,7 +18,13 @@ class AddToShelvesBloc  extends ChangeNotifier{
   ///Model
   LibraryModel mLibraryModel = LibraryModelImpl();
 
+  bool _disposed = false;
 
+  void dispose() {
+    _disposed = true;
+    // Clean up resources or perform other necessary tasks
+    super.dispose();
+  }
   AddToShelvesBloc(){//ShelvesVO shelvesVO
     debugPrint("add to Shelves bloc");
 
@@ -30,7 +36,11 @@ class AddToShelvesBloc  extends ChangeNotifier{
       mShelvesList?.forEach((element) {
         element.isSelected = false;
       });
-      notifyListeners();
+      if (!_disposed) {
+        // Perform operations or computations
+        notifyListeners();
+      }
+     // notifyListeners();
     }).onError((error) {
       debugPrint(error.toString());
     });

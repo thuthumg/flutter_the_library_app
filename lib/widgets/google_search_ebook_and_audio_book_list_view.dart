@@ -116,8 +116,7 @@ class GoogleSearchBookListView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
-                      (mBookList?[index].bookImage == "") ?
+                      (mBookList?[index].bookImage == null || mBookList?[index].bookImage == "") ?
                       Container(
                         height:  isEbook? 80 :60,
                         width: isEbook? 55 :60,

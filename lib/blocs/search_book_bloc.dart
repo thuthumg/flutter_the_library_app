@@ -20,37 +20,45 @@ class SearchBookBloc extends ChangeNotifier{
     // debugPrint("home bloc");
     ///booklist with category from Network
 
-    mLibraryModel.getGoogleBooksList(searchQuery).then((searchBooksList){
-      List<GoogleBookVO> searchBookList = searchBooksList??[];
-      List<BookVO> bookList = [];
+    if(searchQuery != "")
+      {
+        mLibraryModel.getGoogleBooksList(searchQuery).then((searchBooksList){
+          List<GoogleBookVO> searchBookList = searchBooksList??[];
+          List<BookVO> bookList = [];
 
 
-      for (var index = 0; index < searchBookList.length; index++) {
-        bookList.add(searchBookList[index].convertBookVO(searchBookList[index].id??"",index));
+          for (var index = 0; index < searchBookList.length; index++) {
+            bookList.add(searchBookList[index].convertBookVO(searchBookList[index].id??"",index));
+          }
+          mBooksList = bookList;
+
+          notifyListeners();
+        }).catchError((error){debugPrint(error.toString());});
       }
-      mBooksList = bookList;
 
-      notifyListeners();
-    }).catchError((error){debugPrint(error.toString());});
 
   }
 
   void onSearchQuery(String query){
-    mLibraryModel.getGoogleBooksList(query).then((searchBooksList){
+    if(query != "")
+    {
+      mLibraryModel.getGoogleBooksList(query).then((searchBooksList){
 
 
-      List<GoogleBookVO> searchBookList = searchBooksList??[];
-      List<BookVO> bookList = [];
+        List<GoogleBookVO> searchBookList = searchBooksList??[];
+        List<BookVO> bookList = [];
 
 
-      for (var index = 0; index < searchBookList.length; index++) {
-        bookList.add(searchBookList[index].convertBookVO(searchBookList[index].id??"",index));
-      }
+        for (var index = 0; index < searchBookList.length; index++) {
+          bookList.add(searchBookList[index].convertBookVO(searchBookList[index].id??"",index));
+        }
 
-      mBooksList = bookList;
+        mBooksList = bookList;
 
-      notifyListeners();
-    }).catchError((error){debugPrint(error.toString());});
+        notifyListeners();
+      }).catchError((error){debugPrint(error.toString());});
+    }
+
   }
 
 

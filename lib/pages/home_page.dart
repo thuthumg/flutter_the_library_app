@@ -16,6 +16,7 @@ class HomePage extends StatelessWidget {
     return ChangeNotifierProvider(
         create: (context) => HomeBloc(),
         child: NestedScrollView(
+          key: Key('nestedScrollView'),
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               ///Mark as read books list (CarouselSlider)
@@ -66,6 +67,7 @@ class FloatingHeader extends SliverPersistentHeaderDelegate {
              ],
            ),
          ): CarouselSlider(
+           key: Key('readBookCarouselSlider'),
             items: readBookList.map((item) {
               return Container(
                   width: 200,

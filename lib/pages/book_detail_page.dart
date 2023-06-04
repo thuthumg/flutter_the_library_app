@@ -34,7 +34,10 @@ class BookDetailPage extends StatelessWidget{
               },
               child: const Padding(
                 padding: EdgeInsets.all(MARGIN_MEDIUM_2),
-                child: Icon(Icons.arrow_back_ios_new_outlined,color: Colors.grey,size: 25,),
+                child: Icon(
+                  key: Key('backIconFromDetailPage'),
+                  Icons.arrow_back_ios_new_outlined,
+                  color: Colors.grey,size: 25,),
               ),
             ),
             actions: const [
@@ -45,6 +48,7 @@ class BookDetailPage extends StatelessWidget{
             ],
           ),
           body: SingleChildScrollView(
+            key: Key('bookDetailScrollView'),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
              // mainAxisAlignment: MainAxisAlignment.center,

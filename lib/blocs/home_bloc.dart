@@ -15,19 +15,31 @@ class HomeBloc extends ChangeNotifier{
 ///Model
   LibraryModel mLibraryModel = LibraryModelImpl();
 
+  bool _disposed = false;
 
+  void dispose() {
+    _disposed = true;
+    // Clean up resources or perform other necessary tasks
+    super.dispose();
+  }
   HomeBloc(){
   debugPrint("home bloc");
     ///booklist with category from Network
     mLibraryModel.getOverviewBooksList().then((categoryBooksListVO){
       mCategoryBooksListVOList = categoryBooksListVO?.reversed.toList();
-      notifyListeners();
+      if (!_disposed) {
+        // Perform operations or computations
+        notifyListeners();
+      }
     }).catchError((error){debugPrint(error.toString());});
 
     ///bookslist from Database
     mLibraryModel.getReadBookList(1).listen((booklist) {
       mReadBookList = booklist.reversed.toList();
-      notifyListeners();
+      if (!_disposed) {
+        // Perform operations or computations
+        notifyListeners();
+      }
     }).onError((error) {
       debugPrint(error.toString());
     });

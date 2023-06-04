@@ -68,6 +68,7 @@ class _SearchWidgetViewState extends State<SearchWidgetView> {
     return
 
       TextField(
+        key: Key('myTextField'),
         controller: _controller,
         // autofocus: true,
         decoration: InputDecoration(

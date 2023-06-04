@@ -15,7 +15,13 @@ class ShelvesBloc extends ChangeNotifier{
   ///Model
   LibraryModel mLibraryModel = LibraryModelImpl();
 
+  bool _disposed = false;
 
+  void dispose() {
+    _disposed = true;
+    // Clean up resources or perform other necessary tasks
+    super.dispose();
+  }
   ShelvesBloc(){
     debugPrint("Shelves bloc");
 
@@ -23,7 +29,11 @@ class ShelvesBloc extends ChangeNotifier{
 
     mLibraryModel.getShelvesList().listen((shelvesList) {
       mShelvesList = shelvesList;
-      notifyListeners();
+      if (!_disposed) {
+        // Perform operations or computations
+        notifyListeners();
+      }
+
     }).onError((error) {
       debugPrint(error.toString());
     });

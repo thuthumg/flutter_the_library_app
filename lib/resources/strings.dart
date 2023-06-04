@@ -1,4 +1,4 @@
-const SEARCH_TXT = "Search";
+const SEARCH_TXT = "Search Play Books";
 const EBOOKS_TXT = "Ebooks";
 const AUDIOBOOKS_TXT = "Audiobooks";
 const YOUR_BOOKS_TXT = "Your books";

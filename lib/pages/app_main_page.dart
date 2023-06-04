@@ -79,7 +79,7 @@ class _AppMainPageState extends State<AppMainPage> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: onTabTapped,
-        items: const [
+        items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
@@ -126,6 +126,7 @@ class SearchSectionView extends StatelessWidget {
               width: 10,
             ),
             Text(
+
              SEARCH_TXT,
               style: TextStyle(
                   color: Color.fromRGBO(85, 85, 85, 1),

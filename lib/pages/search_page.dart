@@ -39,7 +39,9 @@ class _SearchPageState extends State<SearchPage> {
                onTap: () {
                  Navigator.pop(context);
                },
-               child: const Icon(Icons.arrow_back_ios_new_outlined,color: Colors.black54,)),
+               child: const Icon(
+                 key: Key('backIconFromSearchPage'),
+                 Icons.arrow_back_ios_new_outlined,color: Colors.black54,)),
            title: SearchBoxView(onSearch: (String paramString){
              setState(() {
               // _onSearch(paramString);

@@ -78,6 +78,7 @@ class _CategoryBookListItemViewState extends State<CategoryBookListItemView> {
           SizedBox(
               height: 300,
               child: ListView.builder(
+                key: Key('categoryListView'),
                 // shrinkWrap: true,
                 //  physics: NeverScrollableScrollPhysics(),
                 scrollDirection: Axis.horizontal,

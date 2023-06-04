@@ -92,6 +92,7 @@ class CreateShelfPage extends StatelessWidget {
                           );
                         },
                         child: const Image(
+                          key: Key('contexturalMenu'),
                           image: AssetImage('assets/images/ic_more_gray_64.png'),
                         ),
                       ),
@@ -112,6 +113,7 @@ class CreateShelfPage extends StatelessWidget {
                       padding:
                       const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
                       child: EditTextWithLimitView(
+                        key: Key('editTextShelfName'),
                         maxLength: 50,
                         paramRenameShelfName: oldRenameShelfName,//paramRenameShelfName
                         onTapDone: (enterShelfName) {
